@@ -7,11 +7,20 @@ require 'require_all'
 STDOUT.sync = true
 STDERR.sync = true
 
+$plugins = {}
+
+def add_plugin(plugin_name, plugin_class)
+	$plugins[plugin_name] = plugin_class
+end
 
 #everything in these directories will be included
 require_rel './plugins'
 
-Editor.new
+
+
+Editor.new($plugins)
+
+
 
 Gtk.main
 
