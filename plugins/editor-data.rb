@@ -4,13 +4,13 @@ require 'yaml'
 class DataEditor
 
 	def initialize(single_file = false)
-		createGUI
+		create_gui()
 	end
 
-	def createGUI
+	def create_gui
 		@window = Gtk::Window.new
 		@treeStore = Gtk::TreeStore.new(String)
-		YAMLtoTree()
+		yaml_to_tree()
 		@treeView = Gtk::TreeView.new(@treeStore)
 		rend = Gtk::CellRendererText.new
 		col = Gtk::TreeViewColumn.new("Data", rend, :text => 0)
@@ -19,7 +19,11 @@ class DataEditor
 		@window.show_all
 	end
 
-	def YAMLtoTree
+	def append_children(parent)
+		
+	end
+
+	def yaml_to_tree
 		parsed = begin
   			YAML::load(File.open("#{$YAMLDir}/Map077.yaml"))
 		rescue ArgumentError => e
