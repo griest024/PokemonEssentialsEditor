@@ -19,19 +19,32 @@ class DataEditor
 		@window.show_all
 	end
 
+	def simple_type(data)
+		simple_types = [Fixnum, String, FalseClass, TrueClass]
+		check = false
+		simple_types.each do |e|
+			check = check || data.is_a?(e)
+		end
+		check ? "#{data}" : "#{data.class}"
+	end
+
+
 	def recursive_append_children(data, parent = nil)
 		if data.is_a?(Enumerable)
 			data.each do |e|
 				a = @treeStore.append(parent)
-				a[0] = "#{e.class}"
+				if e.is_a?(Array)
+					a[0] = "#{e[0]}: " + simple_type(e[1])
+				else
+					a[0] = simple_type(e)
+				end
 				recursive_append_children(e, a)
-				
 			end
 		else
 			data.instance_variables.each do |e|
 				a = @treeStore.append(parent)
 				var = data.instance_variable_get(e)
-				a[0] = e.to_s + " = #{var.class}"
+				a[0] = e.to_s + " = " + simple_type(var)
 				recursive_append_children(var, a)
 			end
 		end
