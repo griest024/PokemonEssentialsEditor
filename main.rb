@@ -9,7 +9,7 @@ STDOUT.sync = true
 STDERR.sync = true
 
 $plugins = {}
-$YAMLDir = '../Pokemon-Virginia/src/Data'
+$project = '../Pokemon-Virginia'
 
 def add_plugin(plugin_name, plugin_class)
 	$plugins[plugin_name] = plugin_class

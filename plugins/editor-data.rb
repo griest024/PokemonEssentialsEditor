@@ -52,7 +52,7 @@ class DataEditor
 
 	def yaml_to_tree
 		parsed = begin
-  			YAML::load(File.open("#{$YAMLDir}/Map077.yaml"))
+  			YAML::load(File.open("#{$project}/src/Data/Map077.yaml"))
 		rescue ArgumentError => e
   			puts "Could not parse YAML: #{e.message}"
 		end

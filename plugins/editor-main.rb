@@ -7,7 +7,9 @@ class Editor
 	def initialize(plugin_hash)
 		@plugins = plugin_hash
 		puts "Plugins loaded: #{plugin_hash}"
-		createGUI
+		create_gui
+		@window.icon=(Gdk::Pixbuf.new('./res/pkball.gif'))
+		@window.show_all
 	end
 
 	def open_plugin(plugin_name)
@@ -15,7 +17,7 @@ class Editor
 	end
 
 
-	def createGUI
+	def create_gui
 		@window = Gtk::Window.new
 		@window.signal_connect("destroy") {
 			Gtk.main_quit
@@ -26,7 +28,7 @@ class Editor
 		end
 		plugin_select.signal_connect("changed") { open_plugin(plugin_select.active_text) }
 		@window.add(plugin_select)
-		@window.show_all
+		
 	end
 	
 end
