@@ -5,38 +5,43 @@ class MapEditor
 	EDITOR_NAME = "Map Editor"
 
 	def initialize
-		load_map
+		load_map("077")
 		create_gui
 	end
 
-	def load_map
+	def load_map(mapID)
 		@tileset = Gdk::Pixbuf.new($project + '/Graphics/Tilesets/Caves.png')
-		
+		parsed = begin
+  			YAML::load(File.open("#{$project}/src/Data/Map" + mapID + ".yaml"))
+		rescue ArgumentError => e
+  			puts "Could not parse YAML: #{e.message}"
+		end
+		@map = parsed["root"]
 	end
 
 	def create_gui
 		@window = Gtk::Window.new
-		pack_table
+		pack_table(@map.instance_variable_get(:data))
 		@swin = Gtk::ScrolledWindow.new
 		@swin.add_with_viewport(@table)
 		@window.add(@swin)
 		@window.show_all
 	end
 
-	def pack_table
-		x = 0
-		y = 0
-		options = Gtk::FILL | Gtk::SHRINK
+
+
+	def pack_table(mapTable)
+		options = Gtk::FILL
+		@mapTable = mapTable
 		@table = Gtk::Table.new(8, 8, true)
-		@table.n_rows.times do
-			@table.n_columns.times do
-				@table.attach(Gtk::Image.new(Gdk::Pixbuf.new(@tileset,x*32,y*32,32,32)),x,x+1,y,y+1,options, options)
-				x += 1
-			end
-			x = 0
-			y += 1
+		# @table.n_rows.times do
+		# 	@table.n_columns.times do
+		# 		@table.attach(Gtk::Image.new(Gdk::Pixbuf.new(@tileset,x*32,y*32,32,32)),x,x+1,y,y+1,options, options)
+		# 	end
+		# end
+		mapTable.each do |e||
+			File.open("dbg.txt", "w") { |file| file.puts e }
 		end
-		
 	end
 
 	def self.editor_name
