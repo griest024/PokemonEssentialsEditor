@@ -24,17 +24,12 @@ class MapEditor
 	end
 
 	def pack_table
-		x = 0
-		y = 0
-		options = Gtk::FILL | Gtk::SHRINK
+		options = Gtk::FILL
 		@table = Gtk::Table.new(8, 8, true)
-		@table.n_rows.times do
-			@table.n_columns.times do
+		@table.n_rows.times do |y|
+			@table.n_columns.times do |x|
 				@table.attach(Gtk::Image.new(Gdk::Pixbuf.new(@tileset,x*32,y*32,32,32)),x,x+1,y,y+1,options, options)
-				x += 1
 			end
-			x = 0
-			y += 1
 		end
 		
 	end
