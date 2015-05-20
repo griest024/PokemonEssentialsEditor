@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.control.*?>
@@ -48,6 +49,9 @@
         </Menu>
       </menus>
     </MenuBar>
-      <ComboBox prefWidth="150.0" promptText="Choose your plugin!" />
+      <ComboBox fx:id="plugin_select" onAction="#open_plugin" prefHeight="25.0" prefWidth="224.0" promptText="Choose your plugin!">
+         <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </VBox.margin></ComboBox>
   </children>
 </VBox>

@@ -3,20 +3,14 @@ require 'yaml'
 
 class DataEditor
 
+	include JRubyFX::Controller
+
 	def initialize(single_file = false)
-		create_gui()
+		create_gui
 	end
 
 	def create_gui
-		@window = Gtk::Window.new
-		@treeStore = Gtk::TreeStore.new(String)
-		yaml_to_tree()
-		@treeView = Gtk::TreeView.new(@treeStore)
-		rend = Gtk::CellRendererText.new
-		col = Gtk::TreeViewColumn.new(@data.class.to_s, rend, :text => 0)
-		@treeView.append_column(col)
-		@window.add(@treeView)
-		@window.show_all
+		
 	end
 
 	def simple_type(data)
@@ -64,4 +58,4 @@ class DataEditor
 	end
 end
 
-add_plugin("View Raw Data", DataEditor)
+declare_plugin("View Raw Data", DataEditor)
