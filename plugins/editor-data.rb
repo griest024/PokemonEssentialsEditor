@@ -3,6 +3,8 @@ require 'yaml'
 
 class DataEditor
 
+	include JRubyFX::Controller
+
 	def initialize(single_file = false)
 		create_gui()
 	end

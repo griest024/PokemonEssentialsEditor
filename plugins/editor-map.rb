@@ -2,6 +2,8 @@
 
 class MapEditor
 
+	include JRubyFX::Controller
+
 	EDITOR_NAME = "Map Editor"
 
 	def initialize

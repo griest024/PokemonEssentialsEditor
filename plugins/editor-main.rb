@@ -2,6 +2,7 @@
 
 class Editor
 
+	include JRubyFX::Controller
 	
 
 	def initialize(plugin_hash)
