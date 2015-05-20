@@ -5,7 +5,7 @@ require 'jrubyfx'
 require 'require_all'
 
 
-#make program output in real time so errors visible in VR.
+#make program output in real time so errors are visible
 STDOUT.sync = true
 STDERR.sync = true
 
