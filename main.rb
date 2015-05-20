@@ -1,8 +1,9 @@
 #!/usr/bin/ruby
 
-require 'gtk2'
-require_relative './lib/rgss'
+require 'java'
+require 'jrubyfx'
 require 'require_all'
+
 
 #make program output in real time so errors visible in VR.
 STDOUT.sync = true
@@ -15,14 +16,18 @@ def add_plugin(plugin_name, plugin_class)
 	$plugins[plugin_name] = plugin_class
 end
 
+class PKMNEEditorApp < JRubyFX::Application
+
+
+	
+end
+
 #everything in these directories will be included
-require_rel './plugins'
+#require_rel './plugins' , './lib'
 
 
 
-Editor.new($plugins)
+#Editor.new($plugins)
 
 
-
-Gtk.main
 

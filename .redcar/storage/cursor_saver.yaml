@@ -1,9 +1,0 @@
---- 
-cursor_positions: 
-  - :path: main.rb
-    :cursor_offset: 304
-    :timestamp: 2015-05-13 13:43:32 -04:00
-  - :path: plugins/editor-main.rb
-    :cursor_offset: 45
-    :timestamp: 2015-05-13 13:10:29 -04:00
-files_to_retain: 0

@@ -1,5 +1,0 @@
-1431540025
-Editor	/home/griest/pkmn-editor/PokemonEssentialsEditor/plugins/editor-main.rb	class Editor
-before_show	/home/griest/pkmn-editor/PokemonEssentialsEditor/bin/MyClass.rb		def before_show()
-button1__clicked	/home/griest/pkmn-editor/PokemonEssentialsEditor/bin/MyClass.rb		def button1__clicked(*args)
-initialize	/home/griest/pkmn-editor/PokemonEssentialsEditor/plugins/editor-main.rb		def initialize
