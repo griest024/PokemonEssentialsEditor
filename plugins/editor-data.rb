@@ -1,16 +1,23 @@
 
 require 'yaml'
 
-class DataEditor
+class DataEditor < Java::javafx.scene.layout.Pane
+	#include PKMNEEPlugin
 
-	include JRubyFX::Controller
+	EDITOR_NAME = "Raw Data Viewer"
 
 	def initialize(single_file = false)
 		create_gui
 	end
 
 	def create_gui
-		
+		@stage = Java::javafx::stage::Stage.new
+		with(@stage, title: EDITOR_NAME, width: 800, height: 600) do
+			fxml 'editor-data.fxml'
+			icons.add image(resource_url(:images, "pokeball.png").to_s)
+			init_owner(PKMNEEditorApp.get_main_window)
+			show
+		end
 	end
 
 	def simple_type(data)
@@ -51,7 +58,7 @@ class DataEditor
   			puts "Could not parse YAML: #{e.message}"
 		end
 		@data = parsed["root"]
-		File.open("dbg.txt", "w") { |file| file.puts @data.inspect }
+		#File.open("dbg.txt", "w") { |file| file.puts @data.inspect }
 		recursive_append_children(@data)
 		
 

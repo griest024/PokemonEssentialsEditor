@@ -6,13 +6,13 @@ class Editor
 
 	fxml 'editor-main.fxml'	
 
-	def initialize()
+	def initialize
 		puts "Plugins loaded: #{$plugins}"
 		create_gui
 	end
 
-	def open_plugin(plugin_name)
-		
+	def open_plugin
+		$plugins[@plugin_select.get_value].new
 	end
 
 	def create_gui

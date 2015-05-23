@@ -49,11 +49,7 @@
         </Menu>
       </menus>
     </MenuBar>
-<<<<<<< HEAD:layout/editor-main.fxml
       <ComboBox fx:id="plugin_select" onAction="#open_plugin" prefHeight="25.0" prefWidth="224.0" promptText="Choose your plugin!">
-=======
-      <ComboBox prefWidth="150.0" promptText="Choose your plugin!">
->>>>>>> 636bf5c1cf62e2b4a4b0f5bacec8305e87d5e126:layout/editor-main.fxml
          <VBox.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </VBox.margin></ComboBox>
