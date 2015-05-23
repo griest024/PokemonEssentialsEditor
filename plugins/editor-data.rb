@@ -6,63 +6,29 @@ class DataEditor < Java::javafx.scene.layout.Pane
 
 	EDITOR_NAME = "Raw Data Viewer"
 
-	def initialize(single_file = false)
+	def initialize()
 		create_gui
+		@scene = @stage.get_scene
+		get_node("data_tree_view")
+		PKMNEEditor::DataTree.new(load_yaml("Map082"), @data_tree_view)
+	end
+
+	def get_node(fx_id)
+		instance_variable_set("@" + fx_id.to_s, @scene.lookup("##{fx_id}"))
 	end
 
 	def create_gui
 		@stage = Java::javafx::stage::Stage.new
 		with(@stage, title: EDITOR_NAME, width: 800, height: 600) do
 			fxml 'editor-data.fxml'
-			icons.add image(resource_url(:images, "pokeball.png").to_s)
+			icons.add(image(resource_url(:images, "pokeball.png").to_s))
 			init_owner(PKMNEEditorApp.get_main_window)
 			show
 		end
 	end
 
-	def simple_type(data)
-		simple_types = [Fixnum, String, FalseClass, TrueClass]
-		check = false
-		simple_types.each do |e|
-			check = check || data.is_a?(e)
-		end
-		check ? "#{data}" : "#{data.class}"
-	end
 
-
-	def recursive_append_children(data, parent = nil)
-		if data.is_a?(Enumerable)
-			data.each do |e|
-				a = @treeStore.append(parent)
-				if e.is_a?(Array)
-					a[0] = "#{e[0]}: " + simple_type(e[1])
-				else
-					a[0] = simple_type(e)
-				end
-				recursive_append_children(e, a)
-			end
-		else
-			data.instance_variables.each do |e|
-				a = @treeStore.append(parent)
-				var = data.instance_variable_get(e)
-				a[0] = e.to_s + " = " + simple_type(var)
-				recursive_append_children(var, a)
-			end
-		end
-	end
-
-	def yaml_to_tree
-		parsed = begin
-  			YAML::load(File.open("#{$project}/src/Data/Map082.yaml"))
-		rescue ArgumentError => e
-  			puts "Could not parse YAML: #{e.message}"
-		end
-		@data = parsed["root"]
-		#File.open("dbg.txt", "w") { |file| file.puts @data.inspect }
-		recursive_append_children(@data)
-		
-
-	end
+	
 end
 
 declare_plugin("View Raw Data", DataEditor)

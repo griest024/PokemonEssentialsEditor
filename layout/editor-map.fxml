@@ -25,10 +25,6 @@
       <Label text="Label" BorderPane.alignment="CENTER" />
    </bottom>
    <right>
-      <ScrollPane fx:id="data_scroll_pane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <content>
-            <TreeTableView fx:id="data_tree_view" prefHeight="200.0" prefWidth="200.0" />
-         </content>
-      </ScrollPane>
+      <TreeTableView fx:id="data_tree_view" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </right>
 </BorderPane>
