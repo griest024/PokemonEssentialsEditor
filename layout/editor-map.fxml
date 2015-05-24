@@ -6,25 +6,33 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-        <items>
-          <Button mnemonicParsing="false" text="Button" />
-        </items>
-      </ToolBar>
+      <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </top>
-   <left>
-      <ScrollPane prefHeight="200.0" prefWidth="200.0" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER" />
-   </left>
-   <center>
-      <ScrollPane fx:id="map_scroll_pane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <content>
-            <StackPane fx:id="map_pane" prefHeight="136.0" prefWidth="200.0" />
-         </content></ScrollPane>
-   </center>
    <bottom>
       <Label text="Label" BorderPane.alignment="CENTER" />
    </bottom>
    <right>
       <TreeTableView fx:id="data_tree_view" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </right>
+   <left>
+      <ScrollPane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefViewportWidth="256.0" prefWidth="274.0" BorderPane.alignment="CENTER">
+         <content>
+            <GridPane fx:id="tileset_grid_pane" gridLinesVisible="true" minWidth="256.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+         </content>
+      </ScrollPane>
+   </left>
+   <center>
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <content>
+            <StackPane fx:id="map_stack_pane" prefHeight="150.0" prefWidth="200.0" />
+         </content>
+      </ScrollPane>
+   </center>
 </BorderPane>

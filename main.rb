@@ -5,7 +5,7 @@ require 'jrubyfx'
 require 'require_all'
 
 
-puts "\n**********************Pokemon*Essentials*Editor*********************************"
+puts "\n***************************Pokemon Essentials Editor****************************"
 
 
 #make program output in real time so errors visible in VR.
@@ -17,6 +17,7 @@ resource_root(:images, File.join(File.dirname(__FILE__), "res", "img"), "res/img
 
 $plugins = {}
 $project = '../Pokemon-Virginia'
+$icon = 'pokeball.png'
 
 
 #everything in these directories will be included
@@ -27,7 +28,7 @@ class PKMNEEditorApp < JRubyFX::Application
 	def start(stage)
 		with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
 			fxml Editor
-			icons.add(image(resource_url(:images, "pokeball.png").to_s))
+			get_icons.set_all(Image.new("/res/img/#{$icon}"))
 			setX(50)
 			setY(30)
 			show

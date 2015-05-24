@@ -1,6 +1,9 @@
 java_import Java::javafx.scene.control.TreeTableColumn
 java_import Java::javafx.scene.control.TreeItem
 java_import Java::javafx.scene.control.TreeTableView
+java_import Java::javafx.scene.image.ImageView
+java_import Java::javafx.scene.image.WritableImage
+java_import Java::javafx.scene.layout.GridPane
 
 module Kernel
 
@@ -57,17 +60,20 @@ module PKMNEEditor
 		def recursive_append_children(data, parent = nil)
 			if !parent
 				item = TreeItem.new( ["@root", simple_type(data["root"])] )
+				item.set_expanded(true)
 				@tree_view.set_root(item)
 				recursive_append_children(data["root"], item)
-			elsif data.is_a?(Enumerable)
-				data.each do |e|
-					if e.is_a?(Array)
-						item = TreeItem.new( [e[0].to_s, simple_type(e[1])] )
-						recursive_append_children(e[1], item)
-					else
-						item = TreeItem.new( [data.index(e), simple_type(e)] )
-						recursive_append_children(e, item)
-					end
+			elsif data.is_a?(Hash)
+				data.each do |k,v|
+					item = TreeItem.new( [k.to_s, simple_type(v)] )
+					parent.get_children.add(item)
+					recursive_append_children(v, item)
+				end
+			elsif data.is_a?(Array)
+				data.each_index do |i|
+					item = TreeItem.new( [i.to_s, simple_type(data[i])] )
+					parent.get_children.add(item)
+					recursive_append_children(data[i], item)
 				end
 			else
 				data.instance_variables.each do |e|

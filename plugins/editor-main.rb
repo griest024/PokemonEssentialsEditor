@@ -12,6 +12,7 @@ class Editor
 	end
 
 	def open_plugin
+		puts "Opening #{@plugin_select.get_value}..."
 		$plugins[@plugin_select.get_value].new
 	end
 

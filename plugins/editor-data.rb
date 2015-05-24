@@ -21,7 +21,7 @@ class DataEditor < Java::javafx.scene.layout.Pane
 		@stage = Java::javafx::stage::Stage.new
 		with(@stage, title: EDITOR_NAME, width: 800, height: 600) do
 			fxml 'editor-data.fxml'
-			icons.add(image(resource_url(:images, "pokeball.png").to_s))
+			#get_icons.add(image(resource_url(:images, $icon).to_s))
 			init_owner(PKMNEEditorApp.get_main_window)
 			show
 		end
