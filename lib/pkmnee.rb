@@ -3,6 +3,7 @@ java_import Java::javafx.scene.control.TreeItem
 java_import Java::javafx.scene.control.TreeTableView
 java_import Java::javafx.scene.image.ImageView
 java_import Java::javafx.scene.image.WritableImage
+java_import Java::javafx.scene.image.Image
 java_import Java::javafx.scene.layout.GridPane
 
 module Kernel
@@ -25,13 +26,107 @@ module Kernel
 		parsed
 	end
 
+	def set_node_size(node, width, height)
+		node.set_min_width(width)
+		node.set_max_width(width)
+		node.set_min_height(height)
+		node.set_max_height(height)
+	end
+
 	def declare_plugin(plugin_name, plugin_class)
 		$plugins[plugin_name] = plugin_class
 	end
 
 end
 
+module RPG
+
+	class Tileset
+
+		def get_width
+			load_images if !@image
+			@image.get_width
+		end
+
+		def get_height
+			load_images if !@image
+			@image.get_height
+		end
+
+		def load_images
+			@images = []
+			8.times do |n|
+				@images << Image.new(resource_url(:images, "blank.png").to_s)
+			end
+			@image = Image.new(resource_url(:images, "#{tileset_name}.png").to_s)
+			reader = @image.get_pixel_reader
+			(@image.get_height/32).to_i.times do |y|
+				8.times do |x|
+					@images << WritableImage.new(reader,x*32,y*32,32,32)
+				end
+			end
+			# 8.times do |x|
+			# 	@images << Image.new(resource_url(:images, "blank.png").to_s) 
+			# 	(@image.get_height/32).to_i.times do |y|
+			# 		@images << WritableImage.new(reader,x*32,y*32,32,32)
+			# 	end
+			# end
+		end
+
+		def get_image(id = 0)
+			load_images if @images.empty?
+			# row = id/8
+			# col = id%8
+			# puts row
+			# puts col
+			# num = (id%199)*8 + (id/199)
+			# puts num
+			id < 8 ? @images[id] : @images[id - 376]
+		end
+
+		def each_image
+			load_images if @images.empty?
+			@images.each do |e|
+				yield(e)
+			end
+		end
+
+		def each_index_image
+			load_images if @images.empty?
+			@images.each_index do |i|
+				yield(i, @images[i])
+			end
+		end
+
+		def get_tile(id)
+			load_images if @images.empty?
+			tile = PKMNEEditor::Tile.new
+			tile.image=(get_image(id))
+			tile.id=(id)
+			tile.passage=(@passages[id])
+			tile.priority=(@priorities[id])
+			tile.terrain_tag=(@terrain_tags[id])
+			tile.tileset_id=(@id)
+		end
+
+		def each_tile
+			load_images if @images.empty?
+			@images.each_index do |i|
+				yield(get_tile(i))
+			end
+		end
+
+	end
+
+end
+
 module PKMNEEditor
+
+	class Tile
+
+		attr_accessor(:image, :id, :passage, :priority, :terrain_tag, :tileset_id)
+		
+	end
 
 	class DataTree
 

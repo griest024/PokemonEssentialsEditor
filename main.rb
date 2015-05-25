@@ -5,7 +5,7 @@ require 'jrubyfx'
 require 'require_all'
 
 
-puts "\n***************************Pokemon Essentials Editor****************************"
+puts "\n***************************Pokemon Essentials Editor****************************\n\n"
 
 
 #make program output in real time so errors visible in VR.
@@ -38,7 +38,7 @@ class PKMNEEditorApp < JRubyFX::Application
 
 	def stop
 		super
-		puts "********************************************************************************\n\n"
+		puts "\n********************************************************************************\n\n"
 	end
 
 	def self.get_main_window

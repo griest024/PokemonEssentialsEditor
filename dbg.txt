@@ -1,14 +1,1 @@
-
-***************************Pokemon Essentials Editor****************************
-Plugins loaded: {"View Raw Data"=>DataEditor, "Map Editor"=>MapEditor}
-Opening Map Editor...
-6368.0
-256.0
-0, 0
-1, 0
-2, 0
-3, 0
-4, 0
-5, 0
-6, 0
-7, 0
+Array

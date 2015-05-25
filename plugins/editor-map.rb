@@ -6,29 +6,57 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 
 	def initialize
 		create_gui
-		@map = load_map("082")
 		@scene = @stage.get_scene
 		get_nodes("data_tree_view", "tileset_grid_pane", "map_stack_pane")
-		PKMNEEditor::DataTree.new(@map, @data_tree_view)
-		load_tileset
-		build_map
+		load_map("077")
+		get_nodes("layer1_button", "layer2_button", "layer3_button")
+		add_event_handlers
+		#PKMNEEditor::DataTree.new(@map, @data_tree_view)
+	end
+
+	def add_event_handlers
+		3.times do |n|
+			handler = Java::javafx.event.EventHandler.new
+			class << handler
+				def handle(event)
+					@layer.set_visible(!@layer.visible_property.get)
+				end
+				def add_layer(layer)
+					@layer = layer
+				end
+			end
+			handler.add_layer(instance_variable_get("@layer#{n+1}"))
+			instance_variable_get("@layer#{n+1}_button").set_on_action(handler)
+		end
 	end
 
 	def build_map
-		layer3 = GridPane.new()
+		@map_table = @map["root"].data
+		xsize = @map_table.xsize
+		ysize = @map_table.ysize
+		3.times do |n|
+			instance_variable_set("@layer#{n+1}", GridPane.new())
+			instance_variable_get("@layer#{n+1}")
+			set_node_size(instance_variable_get("@layer#{n+1}"), xsize*32, ysize*32)
+			ysize.times do |y|
+				xsize.times do |x|
+					img = ImageView.new(@tileset.get_image(@map_table[x, y, n]))
+					instance_variable_get("@layer#{n+1}").add(img, x, y)
+				end
+			end
+			@map_stack_pane.get_children.add(instance_variable_get("@layer#{n+1}"))
+		end
+		set_node_size(@map_stack_pane, @map_table.xsize*32, @map_table.ysize*32)
 	end
 
-	def load_tileset
-		@tileset = image(resource_url(:images, 'Caves.png').to_s)
-		reader = @tileset.get_pixel_reader
-		@tileset_grid_pane.set_min_width(@tileset.get_width)
-		@tileset_grid_pane.set_max_width(@tileset.get_width)
-		@tileset_grid_pane.set_min_height(@tileset.get_height)
-		@tileset_grid_pane.set_max_height(@tileset.get_height)
-		(@tileset.get_height/32).to_i.times do |y|
-			8.times do |x|
-				@tileset_grid_pane.add(ImageView.new(WritableImage.new(reader,x*32,y*32,32,32)),x,y)
-			end
+	def load_tileset(tileset_id)
+		result = load_yaml("Tilesets")["root"].select do |e|
+			e.id == tileset_id if e
+		end
+		@tileset = result[0]
+		set_node_size(@tileset_grid_pane, @tileset.get_width, @tileset.get_height + 32)
+		@tileset.each_index_image do |i,e|
+			@tileset_grid_pane.add(ImageView.new(e), i%8, i/8)
 		end
 	end
 
@@ -39,8 +67,10 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 		end
 	end
 
-	def load_map(mapID)
-		load_yaml("Map#{mapID}")
+	def load_map(map_id)
+		@map = load_yaml("Map#{map_id}")
+		load_tileset(@map["root"].tileset_id)
+		build_map
 	end
 
 	def create_gui
@@ -50,17 +80,6 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 			#get_icons.add(image(resource_url(:images, $icon).to_s))
 			init_owner(PKMNEEditorApp.get_main_window)
 			show
-		end
-	end
-
-	def pack_table(mapTable)
-		mapData = mapTable.data
-		mapData.each_index do |i|
-			ele = mapData[i]
-			a = ele % 8
-			b = ele / 8
-			x = i % mapTable.xsize
-			y = i / mapTable.xsize
 		end
 	end
 
