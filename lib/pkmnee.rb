@@ -5,6 +5,9 @@ java_import Java::javafx.scene.image.ImageView
 java_import Java::javafx.scene.image.WritableImage
 java_import Java::javafx.scene.image.Image
 java_import Java::javafx.scene.layout.GridPane
+java_import Java::javafx.scene.control.Slider
+java_import Java::javafx.util.StringConverter
+java_import Java::javafx.scene.layout.TilePane
 
 module Kernel
 
@@ -43,6 +46,8 @@ module RPG
 
 	class Tileset
 
+		attr_accessor(:images, :autotiles, :image)
+
 		def get_width
 			load_images if !@image
 			@image.get_width
@@ -55,8 +60,30 @@ module RPG
 
 		def load_images
 			@images = []
-			8.times do |n|
-				@images << Image.new(resource_url(:images, "blank.png").to_s)
+			@autotile_names.unshift("").map! { |s| s == "" ? "blank" : s }
+			# blank = Image.new(resource_url(:images, "blank.png").to_s)
+			@autotile_names.each do |e|
+				img = Image.new(resource_url(:images, "#{e}.png").to_s)
+				reader = img.get_pixel_reader
+				@images << WritableImage.new(reader, 0, 0, 32, 32)
+				# i = 0
+				# row = (img.get_height/32).to_i
+				# col = (img.get_width/32).to_i
+				# puts e
+				# puts "row #{row}"
+				# puts "col #{col}"
+				# row.times do |y|
+				# 	col.times do |x|
+				# 		@autotiles << WritableImage.new(reader,x*32,y*32,32,32)
+				# 		i += 1
+				# 	end
+				# end
+				# puts "num #{i} size #{@autotiles.size}"
+				# if i < 47
+				# 	(47 - i).times do |n|
+				# 		@autotiles << blank
+				# 	end
+				# end
 			end
 			@image = Image.new(resource_url(:images, "#{tileset_name}.png").to_s)
 			reader = @image.get_pixel_reader
@@ -65,36 +92,21 @@ module RPG
 					@images << WritableImage.new(reader,x*32,y*32,32,32)
 				end
 			end
-			# 8.times do |x|
-			# 	@images << Image.new(resource_url(:images, "blank.png").to_s) 
-			# 	(@image.get_height/32).to_i.times do |y|
-			# 		@images << WritableImage.new(reader,x*32,y*32,32,32)
-			# 	end
-			# end
 		end
 
 		def get_image(id = 0)
 			load_images if @images.empty?
-			# row = id/8
-			# col = id%8
-			# puts row
-			# puts col
-			# num = (id%199)*8 + (id/199)
-			# puts num
-			id < 8 ? @images[id] : @images[id - 376]
+			id < 384 ? @images[(id / 48).to_i] : @images[id - 376]
 		end
 
-		def each_image
+		def each_image_index
 			load_images if @images.empty?
-			@images.each do |e|
-				yield(e)
-			end
-		end
-
-		def each_index_image
-			load_images if @images.empty?
-			@images.each_index do |i|
-				yield(i, @images[i])
+			if block_given?
+				@images.each_index do |i|
+					yield(@images[i], i)
+				end
+			else
+				return @images.each
 			end
 		end
 
@@ -121,6 +133,15 @@ module RPG
 end
 
 module PKMNEEditor
+
+	class FractionFormatter < Java::javafx.util.StringConverter
+		def toString(dbl)
+			dbl == 1 ? "1" : dbl.to_r.to_s
+		end
+		def fromString(str)
+			str.to_r.to_f
+		end
+	end
 
 	class Tile
 

@@ -7,14 +7,48 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 	def initialize
 		create_gui
 		@scene = @stage.get_scene
-		get_nodes("data_tree_view", "tileset_grid_pane", "map_stack_pane")
+		get_nodes("data_tree_view", "tileset_scroll_pane", "map_stack_pane", "map_scale_slider", "map_scroll_pane")
 		load_map("077")
 		get_nodes("layer1_button", "layer2_button", "layer3_button")
-		add_event_handlers
+		connect_controllers
+		setup_gui
 		#PKMNEEditor::DataTree.new(@map, @data_tree_view)
 	end
 
+	def setup_gui
+		(@map_scroll_pane.get_children.select { |e| e.is_a?(Java::javafx.scene.control.ScrollBar) }).each { |e| e.setBlockIncrement(32) }
+	end
+
+	def connect_controllers
+		add_event_handlers
+		bind_properties
+		format_slider_labels
+	end
+
+	def bind_properties
+		@map_stack_pane.scaleXProperty.bind(@map_scale_slider.value_property)
+		@map_stack_pane.scaleYProperty.bind(@map_scale_slider.value_property)
+		# @map_scroll_pane.viewportBoundsProperty.bind(@map_stack_pane.boundsInParentProperty)
+
+	end
+
+	def format_slider_labels
+		map_scale_slider_formatter = PKMNEEditor::FractionFormatter.new
+		@map_scale_slider.set_label_formatter(map_scale_slider_formatter)
+	end
+
 	def add_event_handlers
+		scale_listener = Java::javafx.beans.value.ChangeListener.new
+		class << scale_listener
+			def changed(observable, oldV, newV)
+				@scroll_pane.requestLayout
+			end
+			def add_pane(pane)
+				@scroll_pane = pane
+			end
+		end
+		scale_listener.add_pane(@map_scroll_pane)
+		@map_scale_slider.valueProperty.addListener(scale_listener)
 		3.times do |n|
 			handler = Java::javafx.event.EventHandler.new
 			class << handler
@@ -35,13 +69,13 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 		xsize = @map_table.xsize
 		ysize = @map_table.ysize
 		3.times do |n|
-			instance_variable_set("@layer#{n+1}", GridPane.new())
+			instance_variable_set("@layer#{n+1}", TilePane.new)
 			instance_variable_get("@layer#{n+1}")
 			set_node_size(instance_variable_get("@layer#{n+1}"), xsize*32, ysize*32)
 			ysize.times do |y|
 				xsize.times do |x|
 					img = ImageView.new(@tileset.get_image(@map_table[x, y, n]))
-					instance_variable_get("@layer#{n+1}").add(img, x, y)
+					instance_variable_get("@layer#{n+1}").add(img)
 				end
 			end
 			@map_stack_pane.get_children.add(instance_variable_get("@layer#{n+1}"))
@@ -54,10 +88,18 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 			e.id == tileset_id if e
 		end
 		@tileset = result[0]
+		@tileset_grid_pane = GridPane.new
+		@tileset_grid_pane.set_grid_lines_visible(true)
 		set_node_size(@tileset_grid_pane, @tileset.get_width, @tileset.get_height + 32)
-		@tileset.each_index_image do |i,e|
+		@tileset_tile_pane = TilePane.new
+		set_node_size(@tileset_tile_pane, @tileset.get_width, @tileset.get_height + 32)
+		@tileset_tile_pane.set_pref_columns(8)
+		@tileset.each_image_index do |e,i|
 			@tileset_grid_pane.add(ImageView.new(e), i%8, i/8)
+			@tileset_tile_pane.get_children.add(ImageView.new(e))
 		end
+		# @tileset_scroll_pane.set_content(@tileset_grid_pane)
+		@tileset_scroll_pane.set_content(@tileset_tile_pane)
 	end
 
 	#lookup the nodes in the scene and store them in instance variables (won't convert id to snake case!)
