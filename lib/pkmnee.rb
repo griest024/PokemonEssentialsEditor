@@ -1,13 +1,3 @@
-java_import Java::javafx.scene.control.TreeTableColumn
-java_import Java::javafx.scene.control.TreeItem
-java_import Java::javafx.scene.control.TreeTableView
-java_import Java::javafx.scene.image.ImageView
-java_import Java::javafx.scene.image.WritableImage
-java_import Java::javafx.scene.image.Image
-java_import Java::javafx.scene.layout.GridPane
-java_import Java::javafx.scene.control.Slider
-java_import Java::javafx.util.StringConverter
-java_import Java::javafx.scene.layout.TilePane
 
 module Kernel
 
@@ -63,9 +53,9 @@ module RPG
 			@autotile_names.unshift("").map! { |s| s == "" ? "blank" : s }
 			# blank = Image.new(resource_url(:images, "blank.png").to_s)
 			@autotile_names.each do |e|
-				img = Image.new(resource_url(:images, "#{e}.png").to_s)
+				img = JavaFX::Image.new(resource_url(:images, "#{e}.png").to_s)
 				reader = img.get_pixel_reader
-				@images << WritableImage.new(reader, 0, 0, 32, 32)
+				@images << JavaFX::WritableImage.new(reader, 0, 0, 32, 32)
 				# i = 0
 				# row = (img.get_height/32).to_i
 				# col = (img.get_width/32).to_i
@@ -85,11 +75,11 @@ module RPG
 				# 	end
 				# end
 			end
-			@image = Image.new(resource_url(:images, "#{tileset_name}.png").to_s)
+			@image = JavaFX::Image.new(resource_url(:images, "#{tileset_name}.png").to_s)
 			reader = @image.get_pixel_reader
 			(@image.get_height/32).to_i.times do |y|
 				8.times do |x|
-					@images << WritableImage.new(reader,x*32,y*32,32,32)
+					@images << JavaFX::WritableImage.new(reader,x*32,y*32,32,32)
 				end
 			end
 		end
@@ -154,14 +144,14 @@ module PKMNEEditor
 		def initialize(data, tree_view)
 			@data = data
 			@tree_view = tree_view
-			@col1 = TreeTableColumn.new("Data")
+			@col1 = JavaFX::TreeTableColumn.new("Data")
 			@col1.set_cell_value_factory(lambda do |e| 
-				Java::javafx.beans.property.ReadOnlyStringWrapper.new(e.get_value.get_value[0]) 
+				JavaFX::ReadOnlyStringWrapper.new(e.get_value.get_value[0]) 
 			end )
 			@col1.set_pref_width(200)
-			@col2 = TreeTableColumn.new("Value")
+			@col2 = JavaFX::TreeTableColumn.new("Value")
 			@col2.set_cell_value_factory(lambda do |e| 
-				Java::javafx.beans.property.ReadOnlyStringWrapper.new(e.get_value.get_value[1]) 
+				JavaFX::ReadOnlyStringWrapper.new(e.get_value.get_value[1]) 
 			end )
 			@col2.set_pref_width(200)
 			populate_tree_view
@@ -175,26 +165,26 @@ module PKMNEEditor
 
 		def recursive_append_children(data, parent = nil)
 			if !parent
-				item = TreeItem.new( ["@root", simple_type(data["root"])] )
+				item = JavaFX::TreeItem.new( ["@root", simple_type(data["root"])] )
 				item.set_expanded(true)
 				@tree_view.set_root(item)
 				recursive_append_children(data["root"], item)
 			elsif data.is_a?(Hash)
 				data.each do |k,v|
-					item = TreeItem.new( [k.to_s, simple_type(v)] )
+					item = JavaFX::TreeItem.new( [k.to_s, simple_type(v)] )
 					parent.get_children.add(item)
 					recursive_append_children(v, item)
 				end
 			elsif data.is_a?(Array)
 				data.each_index do |i|
-					item = TreeItem.new( [i.to_s, simple_type(data[i])] )
+					item = JavaFX::TreeItem.new( [i.to_s, simple_type(data[i])] )
 					parent.get_children.add(item)
 					recursive_append_children(data[i], item)
 				end
 			else
 				data.instance_variables.each do |e|
 					value = data.instance_variable_get(e)
-					item = TreeItem.new( [e.to_s, simple_type(value)] )
+					item = JavaFX::TreeItem.new( [e.to_s, simple_type(value)] )
 					parent.get_children.add(item)
 					recursive_append_children(value, item)
 				end
@@ -202,7 +192,4 @@ module PKMNEEditor
 		end
 
 	end
-
-	
-
 end

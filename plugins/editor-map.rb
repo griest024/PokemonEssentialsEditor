@@ -16,7 +16,7 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 	end
 
 	def setup_gui
-		(@map_scroll_pane.get_children.select { |e| e.is_a?(Java::javafx.scene.control.ScrollBar) }).each { |e| e.setBlockIncrement(32) }
+		(@map_scroll_pane.get_children.select { |e| e.is_a?(JavaFX::ScrollBar) }).each { |e| e.setBlockIncrement(32) }
 	end
 
 	def connect_controllers
@@ -28,8 +28,10 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 	def bind_properties
 		@map_stack_pane.scaleXProperty.bind(@map_scale_slider.value_property)
 		@map_stack_pane.scaleYProperty.bind(@map_scale_slider.value_property)
-		# @map_scroll_pane.viewportBoundsProperty.bind(@map_stack_pane.boundsInParentProperty)
-
+		3.times do |n|
+			prop = instance_variable_get("@layer#{n+1}_button").selectedProperty
+			prop.bindBidirectional(instance_variable_get("@layer#{n+1}").visibleProperty)
+		end
 	end
 
 	def format_slider_labels
@@ -38,30 +40,13 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 	end
 
 	def add_event_handlers
-		scale_listener = Java::javafx.beans.value.ChangeListener.new
-		class << scale_listener
-			def changed(observable, oldV, newV)
-				@scroll_pane.requestLayout
-			end
-			def add_pane(pane)
-				@scroll_pane = pane
+		handler = JavaFX::EventHandler.new
+		class << handler
+			def handle(mouse_clicked_event)
+				puts mouse_clicked_event.getTarget.class
 			end
 		end
-		scale_listener.add_pane(@map_scroll_pane)
-		@map_scale_slider.valueProperty.addListener(scale_listener)
-		3.times do |n|
-			handler = Java::javafx.event.EventHandler.new
-			class << handler
-				def handle(event)
-					@layer.set_visible(!@layer.visible_property.get)
-				end
-				def add_layer(layer)
-					@layer = layer
-				end
-			end
-			handler.add_layer(instance_variable_get("@layer#{n+1}"))
-			instance_variable_get("@layer#{n+1}_button").set_on_action(handler)
-		end
+		@tileset_scroll_pane.setOnMouseClicked(handler)
 	end
 
 	def build_map
@@ -69,12 +54,12 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 		xsize = @map_table.xsize
 		ysize = @map_table.ysize
 		3.times do |n|
-			instance_variable_set("@layer#{n+1}", TilePane.new)
+			instance_variable_set("@layer#{n+1}", JavaFX::TilePane.new)
 			instance_variable_get("@layer#{n+1}")
 			set_node_size(instance_variable_get("@layer#{n+1}"), xsize*32, ysize*32)
 			ysize.times do |y|
 				xsize.times do |x|
-					img = ImageView.new(@tileset.get_image(@map_table[x, y, n]))
+					img = JavaFX::ImageView.new(@tileset.get_image(@map_table[x, y, n]))
 					instance_variable_get("@layer#{n+1}").add(img)
 				end
 			end
@@ -88,18 +73,21 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 			e.id == tileset_id if e
 		end
 		@tileset = result[0]
-		# @tileset_grid_pane = GridPane.new
-		# @tileset_grid_pane.set_grid_lines_visible(true)
-		# set_node_size(@tileset_grid_pane, @tileset.get_width, @tileset.get_height + 32)
-		@tileset_tile_pane = TilePane.new
+		@tileset_select_pane = JavaFX::TilePane.new
+		# @tileset_select_pane.set_grid_lines_visible(true)
+		set_node_size(@tileset_select_pane, @tileset.get_width, @tileset.get_height + 32)
+		@tileset_tile_pane = JavaFX::TilePane.new
 		set_node_size(@tileset_tile_pane, @tileset.get_width, @tileset.get_height + 32)
 		@tileset_tile_pane.set_pref_columns(8)
+		blank = JavaFX::Image.new("/res/img/blank.png")
 		@tileset.each_image_index do |e,i|
-			# @tileset_grid_pane.add(ImageView.new(e), i%8, i/8)
-			@tileset_tile_pane.get_children.add(ImageView.new(e))
+			@tileset_select_pane.add(JavaFX::ImageView.new(blank))
+			@tileset_tile_pane.get_children.add(JavaFX::ImageView.new(e))
 		end
-		# @tileset_scroll_pane.set_content(@tileset_grid_pane)
-		@tileset_scroll_pane.set_content(@tileset_tile_pane)
+		@tileset_stack_pane = JavaFX::StackPane.new
+		@tileset_stack_pane.getChildren.addAll(@tileset_tile_pane, @tileset_select_pane)
+		# @tileset_scroll_pane.set_content(@tileset_select_pane)
+		@tileset_scroll_pane.setContent(@tileset_stack_pane)
 	end
 
 	#lookup the nodes in the scene and store them in instance variables (won't convert id to snake case!)
@@ -116,7 +104,7 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 	end
 
 	def create_gui
-		@stage = Java::javafx::stage::Stage.new
+		@stage = JavaFX::Stage.new
 		with(@stage, title: EDITOR_NAME, width: 800, height: 600) do
 			fxml 'editor-map.fxml'
 			#get_icons.add(image(resource_url(:images, $icon).to_s))
@@ -128,10 +116,6 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 	def self.editor_name
 		EDITOR_NAME
 	end
-
-
-
 end
-
 
 declare_plugin("Map Editor", MapEditor)

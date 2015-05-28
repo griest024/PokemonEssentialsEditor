@@ -17,7 +17,7 @@ resource_root(:images, File.join(File.dirname(__FILE__), "res", "img"), "res/img
 
 $plugins = {}
 $project = '../Pokemon-Virginia'
-$icon = 'pokeball.png'
+$icon = 'pkball.gif'
 
 
 #everything in these directories will be included
@@ -26,9 +26,9 @@ require_rel './lib' , './plugins'
 class PKMNEEditorApp < JRubyFX::Application
 
 	def start(stage)
+		stage.getIcons.add(Image.new("/res/img/#{$icon}"))
 		with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
 			fxml Editor
-			get_icons.set_all(Image.new("/res/img/#{$icon}"))
 			setX(50)
 			setY(30)
 			show
