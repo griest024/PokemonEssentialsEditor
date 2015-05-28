@@ -88,14 +88,14 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 			e.id == tileset_id if e
 		end
 		@tileset = result[0]
-		@tileset_grid_pane = GridPane.new
-		@tileset_grid_pane.set_grid_lines_visible(true)
-		set_node_size(@tileset_grid_pane, @tileset.get_width, @tileset.get_height + 32)
+		# @tileset_grid_pane = GridPane.new
+		# @tileset_grid_pane.set_grid_lines_visible(true)
+		# set_node_size(@tileset_grid_pane, @tileset.get_width, @tileset.get_height + 32)
 		@tileset_tile_pane = TilePane.new
 		set_node_size(@tileset_tile_pane, @tileset.get_width, @tileset.get_height + 32)
 		@tileset_tile_pane.set_pref_columns(8)
 		@tileset.each_image_index do |e,i|
-			@tileset_grid_pane.add(ImageView.new(e), i%8, i/8)
+			# @tileset_grid_pane.add(ImageView.new(e), i%8, i/8)
 			@tileset_tile_pane.get_children.add(ImageView.new(e))
 		end
 		# @tileset_scroll_pane.set_content(@tileset_grid_pane)

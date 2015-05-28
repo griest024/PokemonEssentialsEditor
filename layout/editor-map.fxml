@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
@@ -23,7 +24,11 @@
    <center>
       <ScrollPane fx:id="map_scroll_pane" pannable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <content>
-            <StackPane fx:id="map_stack_pane" alignment="TOP_LEFT" prefHeight="150.0" prefWidth="200.0" />
+            <Group>
+               <children>
+                  <StackPane fx:id="map_stack_pane" alignment="TOP_LEFT" prefHeight="150.0" prefWidth="200.0" />
+               </children>
+            </Group>
          </content>
       </ScrollPane>
    </center>
