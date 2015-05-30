@@ -1,4 +1,5 @@
 
+
 module Kernel
 
 	def simple_type?(data)
@@ -36,7 +37,7 @@ module RPG
 
 	class Tileset
 
-		attr_accessor(:images, :autotiles, :image)
+		attr_accessor(:images, :image, :autotiles)
 
 		def get_width
 			load_images if !@image
@@ -49,13 +50,37 @@ module RPG
 		end
 
 		def load_images
+			scroll = JavaFX::ScrollPane.new
+			pane = JavaFX::TilePane.new
+			pane.setPrefColumns(6)
 			@images = []
-			@autotile_names.unshift("").map! { |s| s == "" ? "blank" : s }
+			@autotiles = []
+			@autotile_names.unshift("").map! { |s| s == "" ? "autotile_blank" : s }
 			# blank = Image.new(resource_url(:images, "blank.png").to_s)
 			@autotile_names.each do |e|
-				img = JavaFX::Image.new(resource_url(:images, "#{e}.png").to_s)
-				reader = img.get_pixel_reader
-				@images << JavaFX::WritableImage.new(reader, 0, 0, 32, 32)
+				autotile = []
+				img = JavaFX::Image.new("/res/img/#{e}.png")
+				reader = img.getPixelReader
+				if img.getHeight == 128
+					8.times do |y|
+						6.times do |x|
+							img = JavaFX::WritableImage.new(reader, x*16, y*16, 16, 16)
+							pane.add(JavaFX::ImageView.new(img))
+							autotile << img
+						end
+					end
+					$autotile_def.each do |a|
+						tile = JavaFX::WritableImage.new(32, 32)
+						writer = tile.getPixelWriter
+						writer.setPixels(0, 0, 16, 16, autotile[a[0]].getPixelReader, 0, 0)
+						writer.setPixels(16, 0, 16, 16, autotile[a[1]].getPixelReader, 0, 0)
+						writer.setPixels(0, 16, 16, 16, autotile[a[2]].getPixelReader, 0, 0)
+						writer.setPixels(16, 16, 16, 16, autotile[a[3]].getPixelReader, 0, 0)
+						@autotiles << tile
+					end
+				else
+					48.times {@autotiles << JavaFX::WritableImage.new(reader, 0, 0, 32, 32)}
+				end
 				# i = 0
 				# row = (img.get_height/32).to_i
 				# col = (img.get_width/32).to_i
@@ -75,6 +100,10 @@ module RPG
 				# 	end
 				# end
 			end
+			scroll.setContent(pane)
+			stage = JavaFX::Stage.new
+			stage.setScene(JavaFX::Scene.new(scroll))
+			# stage.show
 			@image = JavaFX::Image.new(resource_url(:images, "#{tileset_name}.png").to_s)
 			reader = @image.get_pixel_reader
 			(@image.get_height/32).to_i.times do |y|
@@ -86,7 +115,7 @@ module RPG
 
 		def get_image(id = 0)
 			load_images if @images.empty?
-			id < 384 ? @images[(id / 48).to_i] : @images[id - 376]
+			id < 384 ? @autotiles[id] : @images[id - 384]
 		end
 
 		def each_image_index
