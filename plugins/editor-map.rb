@@ -26,11 +26,12 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 	end
 
 	def bind_properties
+		#zoom slider
 		@map_stack_pane.scaleXProperty.bind(@map_scale_slider.value_property)
 		@map_stack_pane.scaleYProperty.bind(@map_scale_slider.value_property)
+		#layer visibility buttons
 		3.times do |n|
-			prop = instance_variable_get("@layer#{n+1}_button").selectedProperty
-			prop.bindBidirectional(instance_variable_get("@layer#{n+1}").visibleProperty)
+			instance_variable_get("@layer#{n+1}_button").selectedProperty.bindBidirectional(instance_variable_get("@layer#{n+1}").visibleProperty)
 		end
 	end
 
@@ -40,12 +41,18 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 	end
 
 	def add_event_handlers
+		#tileset selection
 		handler = JavaFX::EventHandler.new
+		handler.instance_variable_set("@effect", JavaFX::InnerShadow.new)
+		#click event
 		def handler.handle(mouse_clicked_event)
-			mouse_clicked_event.getTarget.setImage(JavaFX::Image.new("/res/img/select.png"))
+			@node.setEffect(nil) if @node
+			@node = mouse_clicked_event.getTarget
+			@node.setEffect(@effect)
 		end
-		@tileset_select_pane.setOnMouseClicked(handler)
+		@tileset_tile_pane.setOnMouseClicked(handler)
 		@map_stack_pane.setOnMouseClicked(handler)
+		#drag event
 	end
 
 	def build_map
@@ -72,28 +79,13 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 			e.id == tileset_id if e
 		end
 		@tileset = result[0]
-		@tileset_select_pane = JavaFX::TilePane.new
-		@autotile_tile_pane = JavaFX::TilePane.new
-		# @tileset_select_pane.set_grid_lines_visible(true)
-		set_node_size(@tileset_select_pane, @tileset.get_width, @tileset.get_height + 32)
 		@tileset_tile_pane = JavaFX::TilePane.new
-		set_node_size(@tileset_tile_pane, @tileset.get_width, @tileset.get_height + 32)
+		set_node_size(@tileset_tile_pane, @tileset.get_width, @tileset.get_height)
 		@tileset_tile_pane.set_pref_columns(8)
-		blank = JavaFX::Image.new("/res/img/blank.png")
 		@tileset.each_image_index do |e,i|
-			img = JavaFX::ImageView.new(blank)
-			img.setPickOnBounds(true)
-			@tileset_select_pane.add(img)
-			@tileset_tile_pane.get_children.add(JavaFX::ImageView.new(e))
+			@tileset_tile_pane.getChildren.add(JavaFX::ImageView.new(e))
 		end
-		@tileset.autotiles.each do |e|
-			@autotile_tile_pane.add(JavaFX::ImageView.new(e))
-		end
-		@tileset_stack_pane = JavaFX::StackPane.new
-		@tileset_stack_pane.getChildren.addAll(@tileset_tile_pane, @tileset_select_pane)
-		# @tileset_scroll_pane.set_content(@tileset_select_pane)
-		@tileset_scroll_pane.setContent(@tileset_stack_pane)
-		@autotile_scroll_pane.setContent(@autotile_tile_pane)
+		@tileset_scroll_pane.setContent(@tileset_tile_pane)
 	end
 
 	#lookup the nodes in the scene and store them in instance variables (won't convert id to snake case!)
@@ -113,8 +105,8 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 		@stage = JavaFX::Stage.new
 		with(@stage, title: EDITOR_NAME, width: 800, height: 600) do
 			fxml 'editor-map.fxml'
-			# init_owner(PKMNEEditorApp.get_main_window)
 			icons.add($icon)
+			setMaximized(true)
 			show
 		end
 	end

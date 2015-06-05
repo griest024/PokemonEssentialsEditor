@@ -5,7 +5,7 @@ require 'jrubyfx'
 require 'require_all'
 
 
-puts "\n***************************Pokemon Essentials Editor****************************\n\n"
+puts "\n***************************Pokemon Essentials Editor****************************"
 
 
 #make program output in real time so errors visible in VR.
@@ -23,9 +23,6 @@ require_rel './lib' , './plugins'
 
 $icon = JavaFX::Image.new("/res/img/pkball.gif")
 
-
-
-
 class PKMNEEditorApp < JRubyFX::Application
 
 	def start(stage)
@@ -41,7 +38,7 @@ class PKMNEEditorApp < JRubyFX::Application
 
 	def stop
 		super
-		puts "\n********************************************************************************\n\n"
+		puts "\n********************************************************************************"
 	end
 
 	def self.get_main_window

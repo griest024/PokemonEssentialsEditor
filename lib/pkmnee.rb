@@ -2,13 +2,15 @@
 
 module Kernel
 
+
+
 	def simple_type?(data)
 		simple_types = [Fixnum, String, FalseClass, TrueClass]
 		simple_types.include?(data.class)
 	end
 
 	def simple_type(data)
-		simple_type?(data) ? "#{data}" : "#{data.class}"
+		simple_type?(data) ? "#{data}" : "#{data.class}, ID: #{data.object_id}"
 	end
 
 	def load_yaml(filename)
@@ -21,10 +23,10 @@ module Kernel
 	end
 
 	def set_node_size(node, width, height)
-		node.set_min_width(width)
-		node.set_max_width(width)
-		node.set_min_height(height)
-		node.set_max_height(height)
+		node.setMinWidth(width)
+		node.setMaxWidth(width)
+		node.setMinHeight(height)
+		node.setMaxHeight(height)
 	end
 
 	def declare_plugin(plugin_name, plugin_class)
@@ -56,7 +58,6 @@ module RPG
 			@images = []
 			@autotiles = []
 			@autotile_names.unshift("").map! { |s| s == "" ? "autotile_blank" : s }
-			# blank = Image.new(resource_url(:images, "blank.png").to_s)
 			@autotile_names.each do |e|
 				autotile = []
 				img = JavaFX::Image.new("/res/img/#{e}.png")
@@ -81,29 +82,7 @@ module RPG
 				else
 					48.times {@autotiles << JavaFX::WritableImage.new(reader, 0, 0, 32, 32)}
 				end
-				# i = 0
-				# row = (img.get_height/32).to_i
-				# col = (img.get_width/32).to_i
-				# puts e
-				# puts "row #{row}"
-				# puts "col #{col}"
-				# row.times do |y|
-				# 	col.times do |x|
-				# 		@autotiles << WritableImage.new(reader,x*32,y*32,32,32)
-				# 		i += 1
-				# 	end
-				# end
-				# puts "num #{i} size #{@autotiles.size}"
-				# if i < 47
-				# 	(47 - i).times do |n|
-				# 		@autotiles << blank
-				# 	end
-				# end
 			end
-			scroll.setContent(pane)
-			stage = JavaFX::Stage.new
-			stage.setScene(JavaFX::Scene.new(scroll))
-			# stage.show
 			@image = JavaFX::Image.new(resource_url(:images, "#{tileset_name}.png").to_s)
 			reader = @image.get_pixel_reader
 			(@image.get_height/32).to_i.times do |y|
