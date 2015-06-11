@@ -5,18 +5,31 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 	EDITOR_NAME = "Map Editor"
 
 	def initialize
+		p self
 		create_gui
+		p self
 		@scene = @stage.get_scene
-		get_nodes("autotile_scroll_pane", "data_tree_view", "tileset_scroll_pane", "map_stack_pane", "map_scale_slider", "map_scroll_pane")
+		get_nodes("info", "autotile_scroll_pane", "data_tree_view", "tileset_scroll_pane", "map_stack_pane", "map_scale_slider", "map_scroll_pane", "tab_pane")
 		load_map("077")
-		get_nodes("layer1_button", "layer2_button", "layer3_button")
+		@layer_buttons = get_nodes("layer1_button", "layer2_button", "layer3_button")
 		connect_controllers
 		setup_gui
-		#PKMNEEditor::DataTree.new(@map, @data_tree_view)
+		@info.setText("Loading...Done")
 	end
 
 	def setup_gui
 		(@map_scroll_pane.get_children.select { |e| e.is_a?(JavaFX::ScrollBar) }).each { |e| e.setBlockIncrement(32) }
+		# make_tabs
+	end
+
+	def make_tabs
+		@tabs = []
+		# create tool table
+		3.times do |n|
+			tab = JavaFX::FXMLLoader.load(getClass.getResource('/layout/map-tool-tab.fxml'))
+			@tab_pane.getTabs.add(tab)
+			@tabs << tab
+		end
 	end
 
 	def connect_controllers
@@ -31,7 +44,7 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 		@map_stack_pane.scaleYProperty.bind(@map_scale_slider.value_property)
 		#layer visibility buttons
 		3.times do |n|
-			instance_variable_get("@layer#{n+1}_button").selectedProperty.bindBidirectional(instance_variable_get("@layer#{n+1}").visibleProperty)
+			@layer_buttons[n].selectedProperty.bindBidirectional(@layers[n].visibleProperty)
 		end
 	end
 
@@ -53,25 +66,29 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 		@tileset_tile_pane.setOnMouseClicked(handler)
 		@map_stack_pane.setOnMouseClicked(handler)
 		#drag event
+
 	end
 
 	def build_map
 		@map_table = @map["root"].data
+		@layers = []
 		xsize = @map_table.xsize
 		ysize = @map_table.ysize
 		3.times do |n|
-			instance_variable_set("@layer#{n+1}", JavaFX::TilePane.new)
-			instance_variable_get("@layer#{n+1}")
-			set_node_size(instance_variable_get("@layer#{n+1}"), xsize*32, ysize*32)
+			layer = JavaFX::TilePane.new
+			layer.setFocusTraversable(true)
+			set_node_size(layer, xsize*32, ysize*32)
 			ysize.times do |y|
 				xsize.times do |x|
 					img = JavaFX::ImageView.new(@tileset.get_image(@map_table[x, y, n]))
-					instance_variable_get("@layer#{n+1}").add(img)
+					layer.add(img)
 				end
 			end
-			@map_stack_pane.get_children.add(instance_variable_get("@layer#{n+1}"))
+			@map_stack_pane.get_children.add(layer)
+			@layers << layer
 		end
 		set_node_size(@map_stack_pane, @map_table.xsize*32, @map_table.ysize*32)
+		# @map_stack_pane.setPickOnBounds(false)
 	end
 
 	def load_tileset(tileset_id)
@@ -90,9 +107,13 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 
 	#lookup the nodes in the scene and store them in instance variables (won't convert id to snake case!)
 	def get_nodes(*fx_ids)
+		ans = []
 		fx_ids.each do |e|
-			instance_variable_set("@#{e}", @scene.lookup("##{e}"))
+			n = @scene.lookup("##{e}")
+			instance_variable_set("@#{e}", n)
+			ans << n
 		end
+		ans
 	end
 
 	def load_map(map_id)

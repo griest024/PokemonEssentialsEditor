@@ -1,8 +1,23 @@
 
+class Fixnum
+
+	def to_ai(col, row)
+		(col % self) + (row / self)
+	end
+
+	def to_gc(size)
+		
+	end
+
+	def to_gr(size)
+		
+	end
+
+end
 
 module Kernel
 
-
+	
 
 	def simple_type?(data)
 		simple_types = [Fixnum, String, FalseClass, TrueClass]

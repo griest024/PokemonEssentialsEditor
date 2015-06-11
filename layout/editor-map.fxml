@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -7,16 +9,21 @@
 
 <BorderPane fx:id="border_pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <ToolBar fx:id="toolbar" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <ToolBar fx:id="toolbar" prefHeight="40.0" prefWidth="200.0">
          <items>
-            <ToggleButton fx:id="layer1_button" mnemonicParsing="false" text="Layer 1" />
-            <ToggleButton fx:id="layer2_button" mnemonicParsing="false" text="Layer 2" />
-            <ToggleButton fx:id="layer3_button" mnemonicParsing="false" text="Layer 3" />
             <Slider fx:id="map_scale_slider" blockIncrement="0.25" majorTickUnit="0.25" max="1.0" min="0.25" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" />
+            <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />
+            <HBox alignment="CENTER" focusTraversable="true" prefHeight="0.0" prefWidth="200.0" spacing="5.0">
+               <children>
+                  <ToggleButton fx:id="layer1_button" mnemonicParsing="false" text="Layer 1" />
+                  <ToggleButton fx:id="layer2_button" mnemonicParsing="false" text="Layer 2" />
+                  <ToggleButton fx:id="layer3_button" mnemonicParsing="false" text="Layer 3" />
+               </children>
+            </HBox>
          </items></ToolBar>
    </top>
    <bottom>
-      <Label text="Label" BorderPane.alignment="CENTER" />
+      <Label fx:id="info" text="Label" BorderPane.alignment="CENTER" />
    </bottom>
    <left>
       <ScrollPane fx:id="tileset_scroll_pane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefViewportWidth="256.0" prefWidth="274.0" BorderPane.alignment="CENTER" />
@@ -33,6 +40,6 @@
       </ScrollPane>
    </center>
    <right>
-      <ScrollPane fx:id="autotile_scroll_pane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <TabPane fx:id="tab_pane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER" />
    </right>
 </BorderPane>
