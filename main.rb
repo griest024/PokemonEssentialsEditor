@@ -31,6 +31,7 @@ class PKMNEEditorApp < JRubyFX::Application
 			setX(50)
 			setY(30)
 			icons.add($icon)
+			setMaximized(true)
 			show
 		end
 		@@window = stage.get_scene.get_window

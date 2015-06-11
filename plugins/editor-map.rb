@@ -1,17 +1,15 @@
 
 class MapEditor < Java::javafx.scene.layout.BorderPane
 	#include PKMNEEditor
+	include JRubyFX::Controller
 
 	EDITOR_NAME = "Map Editor"
 
+	fxml 'editor-map.fxml'
+
 	def initialize
-		p self
-		create_gui
-		p self
-		@scene = @stage.get_scene
-		get_nodes("info", "autotile_scroll_pane", "data_tree_view", "tileset_scroll_pane", "map_stack_pane", "map_scale_slider", "map_scroll_pane", "tab_pane")
 		load_map("077")
-		@layer_buttons = get_nodes("layer1_button", "layer2_button", "layer3_button")
+		@layer_buttons = [@layer1_button, @layer2_button, @layer3_button]
 		connect_controllers
 		setup_gui
 		@info.setText("Loading...Done")
@@ -120,16 +118,6 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 		@map = load_yaml("Map#{map_id}")
 		load_tileset(@map["root"].tileset_id)
 		build_map
-	end
-
-	def create_gui
-		@stage = JavaFX::Stage.new
-		with(@stage, title: EDITOR_NAME, width: 800, height: 600) do
-			fxml 'editor-map.fxml'
-			icons.add($icon)
-			setMaximized(true)
-			show
-		end
 	end
 
 	def self.editor_name
