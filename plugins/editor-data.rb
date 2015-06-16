@@ -1,22 +1,40 @@
 
 require 'yaml'
 
-class DataEditor < Java::javafx.scene.layout.AnchorPane
-	#include PKMNEEPlugin
-	include JRubyFX::Controller
+module PKMNEE::Controller
+	class RawDataController < Java::javafx.scene.layout.AnchorPane
+		include JRubyFX::Controller
 
-	EDITOR_NAME = "Raw Data Viewer"
+		fxml 'editor-data.fxml'
 
-	fxml 'editor-data.fxml'
+		def initialize()
+			PKMNEE::DataTree.new(load_yaml("Map082"), @data_tree_view)
+		end
 
-	def initialize()
-		PKMNEEditor::DataTree.new(load_yaml("Map082"), @data_tree_view)
+		def get_node(fx_id)
+			instance_variable_set("@" + fx_id.to_s, @scene.lookup("##{fx_id}"))
+		end
+		
 	end
-
-	def get_node(fx_id)
-		instance_variable_set("@" + fx_id.to_s, @scene.lookup("##{fx_id}"))
-	end
-	
 end
 
-declare_plugin("View Raw Data", DataEditor)
+class RawDataPlugin < PKMNEE::Plugin
+
+	NAME = "Raw Data Editor"
+
+	def initialize
+		# @types[:default] = 
+	end
+
+	class << self
+
+		def name
+			NAME
+		end
+	end
+
+	def get_instance
+		
+	end
+end
+

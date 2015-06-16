@@ -1,9 +1,6 @@
 
 class MapEditor < Java::javafx.scene.layout.BorderPane
-	#include PKMNEEditor
 	include JRubyFX::Controller
-
-	EDITOR_NAME = "Map Editor"
 
 	fxml 'editor-map.fxml'
 
@@ -47,7 +44,7 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 	end
 
 	def format_slider_labels
-		map_scale_slider_formatter = PKMNEEditor::FractionFormatter.new
+		map_scale_slider_formatter = PKMNEE::Util::FractionFormatter.new
 		@map_scale_slider.set_label_formatter(map_scale_slider_formatter)
 	end
 
@@ -104,25 +101,37 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 	end
 
 	#lookup the nodes in the scene and store them in instance variables (won't convert id to snake case!)
-	def get_nodes(*fx_ids)
-		ans = []
-		fx_ids.each do |e|
-			n = @scene.lookup("##{e}")
-			instance_variable_set("@#{e}", n)
-			ans << n
-		end
-		ans
-	end
+	# def get_nodes(*fx_ids)
+	# 	ans = []
+	# 	fx_ids.each do |e|
+	# 		n = @scene.lookup("##{e}")
+	# 		instance_variable_set("@#{e}", n)
+	# 		ans << n
+	# 	end
+	# 	ans
+	# end
 
 	def load_map(map_id)
 		@map = load_yaml("Map#{map_id}")
 		load_tileset(@map["root"].tileset_id)
 		build_map
 	end
-
-	def self.editor_name
-		EDITOR_NAME
-	end
 end
 
-declare_plugin("Map Editor", MapEditor)
+class MapEditorPlugin < PKMNEE::Plugin
+
+	NAME = "Map Editor"
+
+	def initialize
+		super
+		types[:default] = MapEditor
+	end
+
+	class << self
+
+		def name
+			NAME
+		end
+	end
+	
+end

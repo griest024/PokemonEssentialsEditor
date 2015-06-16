@@ -1,23 +1,5 @@
 
-class Fixnum
-
-	def to_ai(col, row)
-		(col % self) + (row / self)
-	end
-
-	def to_gc(size)
-		
-	end
-
-	def to_gr(size)
-		
-	end
-
-end
-
 module Kernel
-
-	
 
 	def simple_type?(data)
 		simple_types = [Fixnum, String, FalseClass, TrueClass]
@@ -43,11 +25,6 @@ module Kernel
 		node.setMinHeight(height)
 		node.setMaxHeight(height)
 	end
-
-	def declare_plugin(plugin_name, plugin_class)
-		$plugins[plugin_name] = plugin_class
-	end
-
 end
 
 module RPG
@@ -67,9 +44,6 @@ module RPG
 		end
 
 		def load_images
-			scroll = JavaFX::ScrollPane.new
-			pane = JavaFX::TilePane.new
-			pane.setPrefColumns(6)
 			@images = []
 			@autotiles = []
 			@autotile_names.unshift("").map! { |s| s == "" ? "autotile_blank" : s }
@@ -81,7 +55,6 @@ module RPG
 					8.times do |y|
 						6.times do |x|
 							img = JavaFX::WritableImage.new(reader, x*16, y*16, 16, 16)
-							pane.add(JavaFX::ImageView.new(img))
 							autotile << img
 						end
 					end
@@ -125,7 +98,7 @@ module RPG
 
 		def get_tile(id)
 			load_images if @images.empty?
-			tile = PKMNEEditor::Tile.new
+			tile = PKMNEE::Tile.new
 			tile.image=(get_image(id))
 			tile.id=(id)
 			tile.passage=(@passages[id])
@@ -145,15 +118,110 @@ module RPG
 
 end
 
-module PKMNEEditor
+module PKMNEE
 
-	class FractionFormatter < Java::javafx.util.StringConverter
-		def toString(dbl)
-			dbl == 1 ? "1" : dbl.to_r.to_s
+	class Main < JRubyFX::Application
+
+		@plugins = []
+
+		def start(stage)
+			
+			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
+				fxml Editor
+				setX(50)
+				setY(30)
+				icons.add($icon)
+				setMaximized(true)
+				show
+			end
 		end
-		def fromString(str)
-			str.to_r.to_f
+
+		def stop
+			super
+			puts "\n********************************************************************************"
 		end
+
+		def self.load_plugins
+			@plugins.map! { |e| e.new }
+		end
+
+		def self.get_instance(i, type = :default, *controller_args)
+			@plugins[i].get_instance(type, *controller_args)
+ 		end
+
+ 		def self.names
+ 			@plugins.map { |p| p.class.name }
+ 		end
+
+ 		def self.each_name(&block)
+ 			self.names.each(block)
+ 		end
+
+ 		def self.num_plugins
+ 			@plugins.size
+ 		end
+
+		def self.declare_plugin(plugin_class)
+			plugin = plugin_class.new
+			plugin.id=(@plugins.size)
+			@plugins << plugin_class
+		end
+	end
+
+	class Plugin
+		
+		NAME = "DEFAULT"
+		attr_accessor(:id)
+		attr_reader(:instances,  :types)
+
+		# default_fxml=nil: specifies the optional default 
+		def initialize(default_fxml = nil)
+			@types = {}
+			@instances = []
+			add_type(:default, default_controller(default_fxml)) if default_fxml
+		end
+
+		class << self
+
+			def inherited(subclass)
+				PKMNEE::Main.declare_plugin(subclass)
+				raise NotImplementedError.new("You must define class constant NAME") if !subclass.constant_defined?(:NAME)
+			end
+
+			#OVERRIDE THIS METHOD IN YOUR SUBCLASS
+			def name
+				NAME
+			end	
+
+		end
+
+		def default_controller(fxml)
+			# ctrl 
+		end
+
+		#type: the type of instance to get
+		#*controller_args: optional args to pass to instance
+		def get_instance(type, *controller_args)
+			instances << ret = @types[type].new(*controller_args)
+			ret
+		end
+
+		
+	end
+
+	module Util
+
+		class FractionFormatter < Java::javafx.util.StringConverter
+
+			def toString(dbl)
+				dbl == 1 ? "1" : dbl.to_r.to_s
+			end
+
+			def fromString(str)
+				str.to_r.to_f
+			end
+		end
+
 	end
 
 	class Tile
@@ -213,6 +281,5 @@ module PKMNEEditor
 				end
 			end
 		end
-
 	end
 end

@@ -7,17 +7,18 @@ class Editor
 	fxml 'editor-main.fxml'	
 
 	def initialize
-		puts "Plugins loaded: #{$plugins}"
-		create_gui
+		PKMNEE::Main.load_plugins
+		puts "Plugins loaded: #{PKMNEE::Main.names}"
+		@plugin_select.get_items.set_all(PKMNEE::Main.names)
 	end
 
 	def open_plugin
 		puts "Opening #{@plugin_select.get_value}..."
-		plugin = $plugins[@plugin_select.get_value]
+		plugin = PKMNEE::Main.get_instance(@plugin_select.items.index(@plugin_select.get_value))
 		if true # open in tab pane
 			tab = JavaFX::Tab.new
 			tab.setText(@plugin_select.getValue)
-			tab.setContent(plugin.new)
+			tab.setContent(plugin)
 			@tab_pane.getTabs.add(tab)
 		else # open in new window (non-modal)
 			stage = JavaFX::Stage.new
@@ -32,9 +33,4 @@ class Editor
 		end
 	end
 
-	def create_gui
-		@plugin_select.get_items.set_all($plugins.keys)
-		
-	end
-	
 end
