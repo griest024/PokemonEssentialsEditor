@@ -12,9 +12,15 @@ module Bar
 end
 
 class Sandbox
-	include Bar
-	def self.a
-		"asdfadsf"
+
+	def initialize
+		@a = 1
+	end
+	
+	class Thing
+		def initialize
+			
+		end
 	end
 	
 	

@@ -100,17 +100,6 @@ class MapEditor < Java::javafx.scene.layout.BorderPane
 		@tileset_scroll_pane.setContent(@tileset_tile_pane)
 	end
 
-	#lookup the nodes in the scene and store them in instance variables (won't convert id to snake case!)
-	# def get_nodes(*fx_ids)
-	# 	ans = []
-	# 	fx_ids.each do |e|
-	# 		n = @scene.lookup("##{e}")
-	# 		instance_variable_set("@#{e}", n)
-	# 		ans << n
-	# 	end
-	# 	ans
-	# end
-
 	def load_map(map_id)
 		@map = load_yaml("Map#{map_id}")
 		load_tileset(@map["root"].tileset_id)
@@ -120,8 +109,6 @@ end
 
 class MapEditorPlugin < PKMNEE::Plugin
 
-	NAME = "Map Editor"
-
 	def initialize
 		super
 		types[:default] = MapEditor
@@ -130,7 +117,11 @@ class MapEditorPlugin < PKMNEE::Plugin
 	class << self
 
 		def name
-			NAME
+			"Map Editor"
+		end
+
+		def config
+			
 		end
 	end
 	

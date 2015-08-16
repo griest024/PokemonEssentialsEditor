@@ -120,12 +120,32 @@ end
 
 module PKMNEE
 
+	# class PluginManager
+		
+	# 	def initialize(plugins)
+	# 		@plugins = []
+	# 		@plugins = plugins
+	# 	end
+		
+	# 	def self.get_instance(i, type = :default, *controller_args)
+	# 		@plugins[i].get_instance(type, *controller_args)
+ # 		end
+
+ # 		def self.names
+ # 			@plugins.map { |p| p.class.name }
+ # 		end
+
+ # 		def self.num_plugins
+ # 			@plugins.size
+ # 		end
+
+	# end
+
 	class Main < JRubyFX::Application
 
 		@plugins = []
 
 		def start(stage)
-			
 			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
 				fxml Editor
 				setX(50)
@@ -142,15 +162,17 @@ module PKMNEE
 		end
 
 		def self.load_plugins
+			# @manager = PluginManager.new(@plugins)
 			@plugins.map! { |e| e.new }
+			@plugins.each_index { |i| @plugins[i].id= i }
 		end
 
-		def self.get_instance(i, type = :default, *controller_args)
-			@plugins[i].get_instance(type, *controller_args)
+		def self.names
+ 			@plugins.map { |p| p.class.name }
  		end
 
- 		def self.names
- 			@plugins.map { |p| p.class.name }
+ 		def self.get_instance(i, type = :default, *controller_args)
+			@plugins[i].get_instance(type, *controller_args)
  		end
 
  		def self.each_name(&block)
@@ -162,41 +184,37 @@ module PKMNEE
  		end
 
 		def self.declare_plugin(plugin_class)
-			plugin = plugin_class.new
-			plugin.id=(@plugins.size)
+			# plugin = plugin_class.new
+			# plugin.id=(@plugins.size)
 			@plugins << plugin_class
 		end
 	end
 
 	class Plugin
 		
-		NAME = "DEFAULT"
 		attr_accessor(:id)
 		attr_reader(:instances,  :types)
 
-		# default_fxml=nil: specifies the optional default 
-		def initialize(default_fxml = nil)
+		def initialize
 			@types = {}
 			@instances = []
-			add_type(:default, default_controller(default_fxml)) if default_fxml
 		end
 
 		class << self
 
 			def inherited(subclass)
 				PKMNEE::Main.declare_plugin(subclass)
-				raise NotImplementedError.new("You must define class constant NAME") if !subclass.constant_defined?(:NAME)
 			end
 
-			#OVERRIDE THIS METHOD IN YOUR SUBCLASS
 			def name
-				NAME
+				raise NotImplementedError.new("You must override self.name")
 			end	
 
-		end
+			# returns the settings controller for your plugin
+			def config
+				raise NotImplementedError.new("You must override self.config")
+			end
 
-		def default_controller(fxml)
-			# ctrl 
 		end
 
 		#type: the type of instance to get
