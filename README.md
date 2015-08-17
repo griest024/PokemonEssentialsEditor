@@ -6,16 +6,16 @@ TODO
 
 General:
 
-[] Add FileChooser
-[] Open plugin popup
+ [ ] Add FileChooser
+ [ ] Open plugin popup
 
 
 Plugins:
 
 	Map:
-	[] Make config 
-	[] multiple tile selection
+	 [ ] Make config 
+	 [ ] multiple tile selection
 
 	Raw Data:
-	[] Accordion file browser
-	[] make config
+	 [ ] Accordion file browser
+	 [ ] make config
