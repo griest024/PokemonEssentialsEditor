@@ -1,2 +1,21 @@
 # PokemonEssentialsEditor
-Alternative editor for PKMN Essentials RMXP project. Written in ruby with GTK2+ using Glade.
+Alternative editor for PKMN Essentials RMXP project. Written in ruby and uses JavaFX with JRubyFX.
+
+
+TODO
+
+General:
+
+[] Add FileChooser
+[] Open plugin popup
+
+
+Plugins:
+
+	Map:
+	[] Make config 
+	[] multiple tile selection
+
+	Raw Data:
+	[] Accordion file browser
+	[] make config
