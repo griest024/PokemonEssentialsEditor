@@ -146,6 +146,7 @@ module PKMNEE
 		@plugins = []
 
 		def start(stage)
+			@stage = stage
 			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
 				fxml Editor
 				setX(50)
@@ -155,6 +156,12 @@ module PKMNEE
 				show
 			end
 		end
+
+		#DELETE
+		def self.plugins
+			@plugins
+		end
+		#DELETE
 
 		def stop
 			super
@@ -190,46 +197,185 @@ module PKMNEE
 		end
 	end
 
-	class Plugin
-		
-		attr_accessor(:id)
-		attr_reader(:instances,  :types)
+	module Plugin
+		class Base
+			
+			attr_accessor(:id)
+			attr_reader(:instances,  :types, :handler)
 
-		def initialize
-			@types = {}
-			@instances = []
-		end
-
-		class << self
-
-			def inherited(subclass)
-				PKMNEE::Main.declare_plugin(subclass)
+			def initialize
+				@types = {}
+				@instances = []
+				@handler = FileHandler.new
 			end
 
-			def name
-				raise NotImplementedError.new("You must override self.name")
-			end	
+			class << self
 
-			# returns the settings controller for your plugin
+				def inherited(subclass)
+					PKMNEE::Main.declare_plugin(subclass)
+				end
+
+				def name
+					raise NotImplementedError.new("You must override self.name")
+				end
+
+				def author
+					raise NotImplementedError.new("You must override self.author")
+				end
+
+			end
+
+			def can_handle?(type)
+				@handler.can_handle?(type)
+			end
+
+			def description
+				"Author has not added a description. You're on your own."
+			end
+
+			# returns the default configuration screen
 			def config
-				raise NotImplementedError.new("You must override self.config")
+				JavaFX::Label.new("This plugin has no configurable options.")
 			end
 
-		end
+			#type: the type of instance to get
+			#*controller_args: optional args to pass to instance
+			def get_instance(type, *controller_args)
+				instances << ret = @types[type].new(*controller_args)
+				ret
+			end
 
-		#type: the type of instance to get
-		#*controller_args: optional args to pass to instance
-		def get_instance(type, *controller_args)
-			instances << ret = @types[type].new(*controller_args)
-			ret
-		end
+			def to_s
+				self.class.name
+			end
 
-		
+			# Needed so JavaFX can convert this object to a String
+			def toString
+				to_s
+			end
+
+			class Config
+				include JRubyFX::Controller
+
+				def initialize
+
+				end
+
+				# returns the selected type of instance to open, will pass to get_instance
+				def type
+					:default
+				end
+
+				# returns the configured args to pass to controller, will pass to get_instance
+				def args
+					
+				end
+			end
+
+			# specifies which files a plugin can open
+			class FileHandler
+
+				def initialize(*types)
+					@types = []
+					add_handle(*types)
+				end
+
+				def can_handle?(type)
+					@types.include?(type)
+				end
+
+				# specifies that the plugin can handle files of type
+				def add_handle(*type)
+					type.each { |e| @types << e }
+					@types
+				end
+
+				def scripts
+					add_handle(:Scripts)
+					self
+				end
+
+				def maps
+					add_handle(:Maps)
+					self
+				end
+
+				def skills
+					add_handle(:Skills)
+					self
+				end
+
+				def states
+					add_handle(:States)
+					self
+				end
+
+				def system
+					add_handle(:System)
+					self
+				end
+
+				def tilesets
+					add_handle(:Tilesets)
+					self
+				end
+
+				def troops
+					add_handle(:Troops)
+					self
+				end
+
+				def weapons
+					add_handle(:Weapons)
+					self
+				end
+
+				def animations
+					add_handle(:Animations)
+					self
+				end
+
+				def actors
+					add_handle(:Actors)
+					self
+				end
+
+				def armors
+					add_handle(:Armors)
+					self
+				end
+
+				def classes
+					add_handle(:Classes)
+					self
+				end
+
+				def common_events
+					add_handle(:CommonEvents)
+					self
+				end
+
+				def constants
+					add_handle(:Constants)
+					self
+				end
+
+				def enemies
+					add_handle(:Enemies)
+					self
+				end
+
+				def items
+					add_handle(:Items)
+					self
+				end
+			end
+		end
 	end
 
 	module Util
 
-		class FractionFormatter < Java::javafx.util.StringConverter
+		class FractionFormatter < JavaFX::StringConverter
 
 			def toString(dbl)
 				dbl == 1 ? "1" : dbl.to_r.to_s
@@ -240,6 +386,15 @@ module PKMNEE
 			end
 		end
 
+		#NOT USED
+		class PluginListCell < JavaFX::ListCell
+			
+			def update_item(item, empty)
+				super(item, empty)
+				setText(item.class.name) if item != null
+			end
+		end
+		#NOT USED
 	end
 
 	class Tile
@@ -254,15 +409,15 @@ module PKMNEE
 			@data = data
 			@tree_view = tree_view
 			@col1 = JavaFX::TreeTableColumn.new("Data")
-			@col1.set_cell_value_factory(lambda do |e| 
+			@col1.setCellValueFactory(lambda do |e| 
 				JavaFX::ReadOnlyStringWrapper.new(e.get_value.get_value[0]) 
 			end )
 			@col1.set_pref_width(200)
 			@col2 = JavaFX::TreeTableColumn.new("Value")
-			@col2.set_cell_value_factory(lambda do |e| 
+			@col2.setCellValueFactory(lambda do |e| 
 				JavaFX::ReadOnlyStringWrapper.new(e.get_value.get_value[1]) 
 			end )
-			@col2.set_pref_width(200)
+			@col2.setPrefWidth(200)
 			populate_tree_view
 		end
 
