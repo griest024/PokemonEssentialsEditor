@@ -17,6 +17,14 @@ module PKMNEE::Plugin
 				"griest"
 			end
 		end
+
+		class MapEditorPluginConfig < Config
+			def initialize(args)
+				
+			end
+			
+			
+		end
 		
 		class MapEditor < JavaFX::BorderPane
 			include JRubyFX::Controller

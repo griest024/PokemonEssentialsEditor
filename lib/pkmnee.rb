@@ -254,11 +254,33 @@ module PKMNEE
 				to_s
 			end
 
-			class Config
-				include JRubyFX::Controller
+			# Class that holds the configuration for opening an instance of your plugin
+			# 
+			class Config < JavaFX::VBox
 
-				def initialize
+				def initialize(plugin)
+					@settings = {}
+					@instances = plugin.types.keys
+					@instances.each { |e| @settings[k] = [JavaFX::TilePane.new] }
+					@anchor = JavaFX::AnchorPane.new
+					@list_view = JavaFX::ListView.new(JavaFX::FXCollections.observableArrayList(@instances))
+					@list_view.getSelectionModel.setSelectionMode(JavaFX::SelectionMode.SINGLE)
+					@list_view.getSelectionModel.selectedItemProperty.java_send(\
+						:addListener, [javafx.beans.value.ChangeListener], lambda do |ov,old,new|
+							@anchor.getChildren.setAll(@settings[new][0])
+						end)
+					getChildren.addAll(JavaFX::ScrollPane(@list_view), @anchor)
+				end
 
+				# adds a configurable setting
+				# types: :list a choicebox containing the list of options
+				#        :files a list of project files that your plugin can handle
+				#        :edit a textfield where the user enters a string
+				# instance: the type of instance that the setting will be added to
+				# settings will be returned from args in the order you add them
+				def add_setting(instance, name, type, *options)
+					@settings[instance] << set = SettingControl.new(name, type, *options)
+					@settings[instance][0].getChildren.add(set)
 				end
 
 				# returns the selected type of instance to open, will pass to get_instance
@@ -268,16 +290,48 @@ module PKMNEE
 
 				# returns the configured args to pass to controller, will pass to get_instance
 				def args
+					ans = []
+					@settings[@list_view.getSelectionModel.getSelectedItem].each do |e|
+						ans << e.get if e.is_a?(SettingControl)
+					end
+					ans
+				end
+
+				class SettingControl < JavaFX::HBox
+
+					def initialize(name, type, *options)
+						case type
+						when :list
+							@control = JavaFX::ChoiceBox.new(JavaFX::FXCollections.observableArrayList(*options))
+						when :edit
+							@control = JavaFX::TextField.new
+						when :files
+							@control = PKMNEE::Util::FileComboBox.new
+						else
+							puts "Not a proper type!"
+						end
+						getChildren.setAll(JavaFX::Label.new(name), @control)
+					end
 					
+					def get
+						@control.is_a?(JavaFX::TextField) ? @control.getCharacters.toString : @control.getSelectionModel.getSelectedItem
+					end
+				
 				end
 			end
 
-			# specifies which files a plugin can open
+			
+
+			# specifies which files a plugin can open, configure this class BEFORE Config
 			class FileHandler
 
 				def initialize(*types)
 					@types = []
 					add_handle(*types)
+				end
+
+				def handle_list
+					@types
 				end
 
 				def can_handle?(type)
@@ -384,6 +438,15 @@ module PKMNEE
 			def fromString(str)
 				str.to_r.to_f
 			end
+		end
+
+		class FileComboBox < JavaFX::ComboBox
+
+			def initialize(*filetypes)
+				
+			end
+			
+			
 		end
 
 		#NOT USED

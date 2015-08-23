@@ -41,6 +41,7 @@ class Editor
 					plugin = ov.getValue
 					@configs[plugin.to_s] = plugin.config if !@configs[plugin.to_s]
 					@config_pane.getChildren.setAll(@configs[plugin.to_s])
+					
 				end)
 		end
 

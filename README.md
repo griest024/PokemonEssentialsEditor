@@ -14,6 +14,8 @@ General:
 - [ ] Convert yaml data into native objects (tiles, maps, etc.)
 - [ ] Find a better way to get plugin list to plugin popup
 - [ ] General menu creation
+- [ ] FileComboBox
+- [ ] Redesign file scheme (namespace author names)
 
 
 Plugins:
