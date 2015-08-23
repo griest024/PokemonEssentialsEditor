@@ -2,7 +2,7 @@
 Alternative editor for PKMN Essentials RMXP project (http://pokemonessentials.wikia.com/wiki/Pok%C3%A9mon_Essentials_Wiki).
 Written in ruby and uses JavaFX with JRubyFX.
 
-	Copyright (C) <year>  <name of author>
+	Copyright (C) 2015 - Peter Lauck (griest)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,8 +20,10 @@ Written in ruby and uses JavaFX with JRubyFX.
 
 
 TODO
+====
 
-General:
+General
+-------
 
 - [ ] Add FileChooser
 - [x] Open plugin popup
@@ -36,12 +38,13 @@ General:
 - [ ] Import RMXP projects
 
 
-Plugins:
+Plugins
+-------
 
-- Map:
-- - [ ] Make config 
-- - [ ] multiple tile selection
+### Map:
+- [ ] Make config 
+- [ ] multiple tile selection
 
-- Raw Data:
-- - [ ] Accordion file browser
-- - [ ] make config
+### Raw Data:
+- [ ] Accordion file browser
+- [ ] make config
