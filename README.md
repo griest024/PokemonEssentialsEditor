@@ -1,5 +1,6 @@
 	
-	An editor for Pokemon Essentials ()
+Alternative editor for PKMN Essentials RMXP project (http://pokemonessentials.wikia.com/wiki/Pok%C3%A9mon_Essentials_Wiki).
+Written in ruby and uses JavaFX with JRubyFX.
 
 	Copyright (C) <year>  <name of author>
 
@@ -16,7 +17,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-Alternative editor for PKMN Essentials RMXP project. Written in ruby and uses JavaFX with JRubyFX.
 
 
 TODO
