@@ -229,6 +229,12 @@ module PKMNEE
 				@handler.can_handle?(type)
 			end
 
+			# An image preview of your app, probably a screenshot of you using it
+			def preview
+				
+			end
+
+			# returns a short description of your plugin
 			def description
 				"Author has not added a description. You're on your own."
 			end
