@@ -15,7 +15,7 @@
 
 require 'yaml'
 
-module PKMNEE::Plugin
+module Plugin
 	class RawDataPlugin < Base
 
 		def initialize

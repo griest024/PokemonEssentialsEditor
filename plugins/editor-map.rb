@@ -13,7 +13,7 @@
  #    You should have received a copy of the GNU General Public License
  #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-module PKMNEE::Plugin
+module Plugin
 	class MapEditorPlugin < Base
 
 		def initialize
@@ -33,12 +33,8 @@ module PKMNEE::Plugin
 			end
 		end
 
-		class MapEditorPluginConfig < Config
-			def initialize(args)
-				
-			end
-			
-			
+		def config
+			config = Config.new(self)
 		end
 		
 		class MapEditor < JavaFX::BorderPane
@@ -86,7 +82,7 @@ module PKMNEE::Plugin
 			end
 
 			def format_slider_labels
-				map_scale_slider_formatter = PKMNEE::Util::FractionFormatter.new
+				map_scale_slider_formatter = Util::FractionFormatter.new
 				@map_scale_slider.set_label_formatter(map_scale_slider_formatter)
 			end
 

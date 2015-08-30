@@ -13,36 +13,63 @@
  #    You should have received a copy of the GNU General Public License
  #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-module Kernel
 
-	def simple_type?(data)
-		simple_types = [Fixnum, String, FalseClass, TrueClass]
-		simple_types.include?(data.class)
-	end
+###############################################################################
 
-	def simple_type(data)
-		simple_type?(data) ? "#{data}" : "#{data.class}, ID: #{data.object_id}"
-	end
+# stores the RGSS autotile definition
+$autotile_def = [
+	[26, 27, 32, 33],
+	[4, 27, 32, 33],
+	[26, 5, 32, 33],
+	[4, 5, 32, 33],
+	[26, 27, 32, 11],
+	[4, 27, 32, 11],
+	[26, 5, 32, 11],
+	[4, 5, 32, 11],
+	[26, 27, 10, 33],
+	[4, 27, 10, 33],
+	[26, 5, 10, 33],
+	[4, 5, 10, 33],
+	[26, 27, 10, 11],
+	[4, 27, 10, 11],
+	[26, 5, 10, 11],
+	[4, 5, 10, 11],
+	[24, 27, 30, 33],
+	[24, 5, 30, 33],
+	[24, 27, 30, 11],
+	[24, 5, 30, 11],
+	[14, 15, 32, 33],
+	[14, 15, 32, 11],
+	[14, 15, 10, 33],
+	[14, 15, 10, 11],
+	[26, 29, 32, 35],
+	[26, 29, 10, 35],
+	[4, 29, 32, 35],
+	[4, 29, 10, 35],
+	[26, 27, 44, 45],
+	[4, 27, 44, 45],
+	[26, 5, 44, 45],
+	[4, 5, 44, 45],
+	[24, 29, 30, 35],
+	[14, 15, 44, 45],
+	[12, 13, 18, 19],
+	[12, 13, 18, 11],
+	[16, 17, 22, 23],
+	[16, 17, 10, 23],
+	[40, 41, 46, 47],
+	[4, 41, 46, 47],
+	[36, 37, 42, 43],
+	[36, 5, 42, 43],
+	[12, 17, 18, 23],
+	[12, 13, 42, 43],
+	[36, 41, 42, 47],
+	[22, 23, 46, 47],
+	[12, 17, 42, 47],
+	[0, 1, 6, 7]
+]
 
-	def load_yaml(filename)
-		parsed = begin
-  			YAML::load(File.open("#{$project}/src/Data/#{filename}.yaml"))
-		rescue ArgumentError => e
-  			puts "Could not parse YAML: #{e.message}"
-		end
-		parsed
-	end
-
-	def set_node_size(node, width, height)
-		node.setMinWidth(width)
-		node.setMaxWidth(width)
-		node.setMinHeight(height)
-		node.setMaxHeight(height)
-	end
-end
-
+# modifies the official RGSS API
 module RPG
-
 	class Tileset
 
 		attr_accessor(:images, :image, :autotiles)
@@ -211,273 +238,84 @@ module PKMNEE
 		end
 	end
 
-	module Plugin
-		class Base
-			
-			attr_accessor(:id)
-			attr_reader(:instances,  :types, :handler)
+	class Editor
+		include JRubyFX::Controller
 
-			def initialize
-				@types = {}
-				@instances = []
-				@handler = FileHandler.new
-			end
+		fxml 'editor-main.fxml'	
 
-			class << self
+		def initialize
+			Main.load_plugins
+			puts "Plugins loaded: #{Main.names}"
+		end
 
-				def inherited(subclass)
-					PKMNEE::Main.declare_plugin(subclass)
+		def open_plugin_select
+			stage = JavaFX::Stage.new
+			select = PluginSelectController.new(@tab_pane, stage)
+			with(stage, title: "Plugin Selection", width: 800, height: 600) do
+				icons.add($icon)
+				layout_scene(800, 600) do
+					select
 				end
+		      	show
+			end
+		end
 
-				def name
-					raise NotImplementedError.new("You must override self.name")
+		class PluginSelectController < JavaFX::VBox
+			include JRubyFX::Controller
+
+			fxml 'plugin-select.fxml'
+
+			def initialize(tab_pane, stage)
+				@tab_pane = tab_pane
+				@stage = stage
+				@configs = {}
+				setup_list_view
+			end
+
+			def setup_list_view
+				@plugin_list.setItems(JavaFX::FXCollections.observableArrayList(PKMNEE::Main.plugins))
+				@plugin_list.getSelectionModel.selectedItemProperty.java_send(\
+					:addListener, [javafx.beans.value.ChangeListener], lambda do |ov,old,new|
+						plugin = ov.getValue
+						@configs[plugin.to_s] = plugin.config if !@configs[plugin.to_s]
+						@config_pane.getChildren.setAll(@configs[plugin.to_s])
+						
+					end)
+			end
+
+			def open_plugin
+				plugin = @plugin_list.getSelectionModel.getSelectedItem
+				return if !plugin
+				config = @configs[plugin.to_s]
+				if !config.is_a?(JavaFX::Label)
+					args = config.args
+					type = config.type
+				else
+					args = []
+					type = :default
 				end
-
-				def author
-					raise NotImplementedError.new("You must override self.author")
-				end
-
-			end
-
-			def can_handle?(type)
-				@handler.can_handle?(type)
-			end
-
-			# An image preview of your app, probably a screenshot of you using it
-			def preview
-				
-			end
-
-			# returns a short description of your plugin
-			def description
-				"Author has not added a description. You're on your own."
-			end
-
-			# returns the default configuration screen
-			def config
-				JavaFX::Label.new("This plugin has no configurable options.")
-			end
-
-			#type: the type of instance to get
-			#*controller_args: optional args to pass to instance
-			def get_instance(type, *controller_args)
-				instances << ret = @types[type].new(*controller_args)
-				ret
-			end
-
-			def to_s
-				self.class.name
-			end
-
-			# Needed so JavaFX can convert this object to a String
-			def toString
-				to_s
-			end
-
-			# Class that holds the configuration for opening an instance of your plugin
-			# 
-			class Config < JavaFX::VBox
-
-				def initialize(plugin)
-					@settings = {}
-					@instances = plugin.types.keys
-					@instances.each { |e| @settings[k] = [JavaFX::TilePane.new] }
-					@anchor = JavaFX::AnchorPane.new
-					@list_view = JavaFX::ListView.new(JavaFX::FXCollections.observableArrayList(@instances))
-					@list_view.getSelectionModel.setSelectionMode(JavaFX::SelectionMode.SINGLE)
-					@list_view.getSelectionModel.selectedItemProperty.java_send(\
-						:addListener, [javafx.beans.value.ChangeListener], lambda do |ov,old,new|
-							@anchor.getChildren.setAll(@settings[new][0])
-						end)
-					getChildren.addAll(JavaFX::ScrollPane(@list_view), @anchor)
-				end
-
-				# adds a configurable setting
-				# types: :list a choicebox containing the list of options
-				#        :files a list of project files that your plugin can handle
-				#        :edit a textfield where the user enters a string
-				# instance: the type of instance that the setting will be added to
-				# settings will be returned from args in the order you add them
-				def add_setting(instance, name, type, *options)
-					@settings[instance] << set = SettingControl.new(name, type, *options)
-					@settings[instance][0].getChildren.add(set)
-				end
-
-				# returns the selected type of instance to open, will pass to get_instance
-				def type
-					:default
-				end
-
-				# returns the configured args to pass to controller, will pass to get_instance
-				def args
-					ans = []
-					@settings[@list_view.getSelectionModel.getSelectedItem].each do |e|
-						ans << e.get if e.is_a?(SettingControl)
+				puts "Opening #{plugin}..."
+				if @window_checkbox.isSelected # open in new window
+					stage = JavaFX::Stage.new
+					with(stage, title: plugin.to_s, width: 800, height: 600) do
+						icons.add($icon)
+						setMaximized(true)
+						layout_scene(800, 600) do
+			           		plugin.get_instance(type, *args)
+			       		end
+			       		show
 					end
-					ans
+				else # open in tab pane
+					tab = JavaFX::Tab.new
+					tab.setText(plugin.to_s)
+					tab.setContent(plugin.get_instance(type, *args))
+					@tab_pane.getTabs.add(tab)
+					@tab_pane.getSelectionModel.select(tab)
 				end
-
-				class SettingControl < JavaFX::HBox
-
-					def initialize(name, type, *options)
-						case type
-						when :list
-							@control = JavaFX::ChoiceBox.new(JavaFX::FXCollections.observableArrayList(*options))
-						when :edit
-							@control = JavaFX::TextField.new
-						when :files
-							@control = PKMNEE::Util::FileComboBox.new
-						else
-							puts "Not a proper type!"
-						end
-						getChildren.setAll(JavaFX::Label.new(name), @control)
-					end
-					
-					def get
-						@control.is_a?(JavaFX::TextField) ? @control.getCharacters.toString : @control.getSelectionModel.getSelectedItem
-					end
-				
-				end
-			end
-
-			
-
-			# specifies which files a plugin can open, configure this class BEFORE Config
-			class FileHandler
-
-				def initialize(*types)
-					@types = []
-					add_handle(*types)
-				end
-
-				def handle_list
-					@types
-				end
-
-				def can_handle?(type)
-					@types.include?(type)
-				end
-
-				# specifies that the plugin can handle files of type
-				def add_handle(*type)
-					type.each { |e| @types << e }
-					@types
-				end
-
-				def scripts
-					add_handle(:Scripts)
-					self
-				end
-
-				def maps
-					add_handle(:Maps)
-					self
-				end
-
-				def skills
-					add_handle(:Skills)
-					self
-				end
-
-				def states
-					add_handle(:States)
-					self
-				end
-
-				def system
-					add_handle(:System)
-					self
-				end
-
-				def tilesets
-					add_handle(:Tilesets)
-					self
-				end
-
-				def troops
-					add_handle(:Troops)
-					self
-				end
-
-				def weapons
-					add_handle(:Weapons)
-					self
-				end
-
-				def animations
-					add_handle(:Animations)
-					self
-				end
-
-				def actors
-					add_handle(:Actors)
-					self
-				end
-
-				def armors
-					add_handle(:Armors)
-					self
-				end
-
-				def classes
-					add_handle(:Classes)
-					self
-				end
-
-				def common_events
-					add_handle(:CommonEvents)
-					self
-				end
-
-				def constants
-					add_handle(:Constants)
-					self
-				end
-
-				def enemies
-					add_handle(:Enemies)
-					self
-				end
-
-				def items
-					add_handle(:Items)
-					self
-				end
-			end
-		end
-	end
-
-	module Util
-
-		class FractionFormatter < JavaFX::StringConverter
-
-			def toString(dbl)
-				dbl == 1 ? "1" : dbl.to_r.to_s
-			end
-
-			def fromString(str)
-				str.to_r.to_f
-			end
-		end
-
-		class FileComboBox < JavaFX::ComboBox
-
-			def initialize(*filetypes)
-				
+				@stage.close
 			end
 			
-			
 		end
-
-		#NOT USED
-		class PluginListCell < JavaFX::ListCell
-			
-			def update_item(item, empty)
-				super(item, empty)
-				setText(item.class.name) if item != null
-			end
-		end
-		#NOT USED
 	end
 
 	class Tile

@@ -25,10 +25,6 @@
                      </content>
                   </ScrollPane>
                   <TilePane focusTraversable="true" prefHeight="200.0" prefWidth="200.0" tileAlignment="TOP_LEFT" VBox.vgrow="SOMETIMES">
-                     <children>
-                        <Button fx:id="confirm_button" mnemonicParsing="false" onAction="#open_plugin" text="Open" />
-                        <CheckBox fx:id="window_checkbox" mnemonicParsing="false" prefHeight="25.0" prefWidth="160.0" text="Open in new window" />
-                     </children>
                      <padding>
                         <Insets top="5.0" />
                      </padding>
@@ -38,22 +34,11 @@
         <AnchorPane fx:id="config_pane" />
       </items>
     </SplitPane>
-    <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
-      <children>
-        <Label maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="Left status" HBox.hgrow="ALWAYS">
-          <font>
-            <Font size="11.0" fx:id="x3" />
-          </font>
-          <textFill>
-            <Color blue="0.625" green="0.625" red="0.625" fx:id="x4" />
-          </textFill>
-        </Label>
-        <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
-        <Label font="$x3" maxWidth="-1.0" text="Right status" textFill="$x4" HBox.hgrow="NEVER" />
-      </children>
-      <padding>
-        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-      </padding>
-    </HBox>
+      <ToolBar prefHeight="40.0" prefWidth="200.0">
+         <items>
+            <Button fx:id="confirm_button" mnemonicParsing="false" onAction="#open_plugin" text="Open" />
+            <CheckBox fx:id="window_checkbox" mnemonicParsing="false" prefHeight="25.0" prefWidth="160.0" text="Open in new window" />
+         </items>
+      </ToolBar>
   </children>
 </fx:root>

@@ -33,7 +33,7 @@ General
 - [ ] Find a better way to get plugin list to plugin popup
 - [ ] General menu creation
 - [ ] FileComboBox
-- [ ] Redesign file scheme (namespace author names)
+- [ ] Redesign file scheme (namespace author names) with autoload_all
 - [ ] PluginIdentity
 - [ ] Import RMXP projects
 
