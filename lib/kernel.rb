@@ -1,15 +1,15 @@
 module Kernel
 
-	def simple_type?(data)
-		simple_types = [Fixnum, String, FalseClass, TrueClass]
-		simple_types.include?(data.class)
+	def simpleType?(data)
+		simpleTypes = [Fixnum, String, FalseClass, TrueClass]
+		simpleTypes.include?(data.class)
 	end
 
-	def simple_type(data)
-		simple_type?(data) ? "#{data}" : "#{data.class}, ID: #{data.object_id}"
+	def simpleType(data)
+		simpleType?(data) ? "#{data}" : "#{data.class}, ID: #{data.object_id}"
 	end
 
-	def load_yaml(filename)
+	def loadYAML(filename)
 		parsed = begin
   			YAML::load(File.open("#{$project}/src/Data/#{filename}.yaml"))
 		rescue ArgumentError => e
@@ -18,7 +18,7 @@ module Kernel
 		parsed
 	end
 
-	def set_node_size(node, width, height)
+	def setNodeSize(node, width, height)
 		node.setMinWidth(width)
 		node.setMaxWidth(width)
 		node.setMinHeight(height)

@@ -13,41 +13,28 @@
  #    You should have received a copy of the GNU General Public License
  #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'yaml'
+module griest
 
-module Plugin
-	class RawDataPlugin < Base
+	module RawDataViewer
 
-		def initialize
-			super
-			@types[:default] = RawDataController
-		end
+		class RawDataPlugin < Plugin::Base
 
-		class << self
-
-			def name
-				"Raw Data Editor"
+			def initialize
+				super
+				@types[:default] = RawDataController
 			end
 
-			def author
-				"griest"
+			class << self
+
+				def name
+					"Raw Data Editor"
+				end
+
+				def author
+					"griest"
+				end
 			end
 		end
-
-		class RawDataController < JavaFX::AnchorPane
-			include JRubyFX::Controller
-
-			fxml 'editor-data.fxml'
-
-			def initialize()
-				PKMNEE::DataTree.new(load_yaml("Map082"), @data_tree_view)
-			end
-
-			def get_node(fx_id)
-				instance_variable_set("@" + fx_id.to_s, @scene.lookup("##{fx_id}"))
-			end		
-		end
-
 	end
 end
 

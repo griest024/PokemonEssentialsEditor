@@ -13,25 +13,32 @@
  #    You should have received a copy of the GNU General Public License
  #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#!/usr/bin/ruby
+module griest
 
-require 'java'
-require 'yaml'
-require 'require_all'
+	module MapEditor
 
+		class MapEditorPlugin < Plugin::Base
 
-puts "\n***************************Pokemon Essentials Editor****************************"
+			def initialize
+				super
+				types[:default] = MapEditor
+				handler.maps.tilesets
+			end
 
+			class << self
 
-#make program output in real time so errors visible in VR.
-STDOUT.sync = true
-STDERR.sync = true
+				def name
+					"Map Editor"
+				end
 
-$project = '../Pokemon Virginia'
+				def author
+					"griest"
+				end
+			end
 
-#everything in these directories will be included
-require_rel './lib' , './plugins'
-
-$icon = JavaFX::Image.new("/res/img/pkball.gif")
-
-# PKMNEE::Main.launch
+			def config
+				config = Config.new(self)
+			end
+		end
+	end
+end

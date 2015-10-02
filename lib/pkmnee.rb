@@ -1,18 +1,19 @@
- #    Copyright (C) 2015 - Peter Lauck (griest)
+=begin
+    Copyright (C) 2015 - Peter Lauck (griest)
 
- #    This program is free software: you can redistribute it and/or modify
- #    it under the terms of the GNU General Public License as published by
- #    the Free Software Foundation, either version 3 of the License, or
- #    (at your option) any later version.
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
- #    This program is distributed in the hope that it will be useful,
- #    but WITHOUT ANY WARRANTY; without even the implied warranty of
- #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- #    GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
- #    You should have received a copy of the GNU General Public License
- #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+=end
 
 ###############################################################################
 
@@ -74,17 +75,17 @@ module RPG
 
 		attr_accessor(:images, :image, :autotiles)
 
-		def get_width
-			load_images if !@image
-			@image.get_width
+		def getWidth
+			loadImages if !@image
+			@image.getWidth
 		end
 
-		def get_height
-			load_images if !@image
-			@image.get_height
+		def getHeight
+			loadImages if !@image
+			@image.getHeight
 		end
 
-		def load_images
+		def loadImages
 			@images = []
 			@autotiles = []
 			@autotile_names.unshift("").map! { |s| s == "" ? "autotile_blank" : s }
@@ -114,20 +115,20 @@ module RPG
 			end
 			@image = JavaFX::Image.new(resource_url(:images, "#{tileset_name}.png").to_s)
 			reader = @image.get_pixel_reader
-			(@image.get_height/32).to_i.times do |y|
+			(@image.getHeight/32).to_i.times do |y|
 				8.times do |x|
 					@images << JavaFX::WritableImage.new(reader,x*32,y*32,32,32)
 				end
 			end
 		end
 
-		def get_image(id = 0)
-			load_images if @images.empty?
+		def getImage(id = 0)
+			loadImages if @images.empty?
 			id < 384 ? @autotiles[id] : @images[id - 384]
 		end
 
-		def each_image_index
-			load_images if @images.empty?
+		def eachImageIndex
+			loadImages if @images.empty?
 			if block_given?
 				@images.each_index do |i|
 					yield(@images[i], i)
@@ -137,10 +138,10 @@ module RPG
 			end
 		end
 
-		def get_tile(id)
-			load_images if @images.empty?
+		def getTile(id)
+			loadImages if @images.empty?
 			tile = PKMNEE::Tile.new
-			tile.image=(get_image(id))
+			tile.image=(getImage(id))
 			tile.id=(id)
 			tile.passage=(@passages[id])
 			tile.priority=(@priorities[id])
@@ -148,10 +149,10 @@ module RPG
 			tile.tileset_id=(@id)
 		end
 
-		def each_tile
-			load_images if @images.empty?
+		def eachTile
+			loadImages if @images.empty?
 			@images.each_index do |i|
-				yield(get_tile(i))
+				yield(getTile(i))
 			end
 		end
 
@@ -168,21 +169,21 @@ module PKMNEE
 	# 		@plugins = plugins
 	# 	end
 		
-	# 	def self.get_instance(i, type = :default, *controller_args)
-	# 		@plugins[i].get_instance(type, *controller_args)
+	# 	def self.getInstance(i, type = :default, *controller_args)
+	# 		@plugins[i].getInstance(type, *controller_args)
  # 		end
 
  # 		def self.names
  # 			@plugins.map { |p| p.class.name }
  # 		end
 
- # 		def self.num_plugins
+ # 		def self.numPlugins
  # 			@plugins.size
  # 		end
 
 	# end
 
-	class Main < JRubyFX::Application
+	class Main < JavaFX::Application
 
 		@plugins = []
 
@@ -209,7 +210,7 @@ module PKMNEE
 			puts "\n********************************************************************************"
 		end
 
-		def self.load_plugins
+		def self.loadPlugins
 			# @manager = PluginManager.new(@plugins)
 			@plugins.map! { |e| e.new }
 			@plugins.each_index { |i| @plugins[i].id= i }
@@ -219,19 +220,19 @@ module PKMNEE
  			@plugins.map { |p| p.class.name }
  		end
 
- 		def self.get_instance(i, type = :default, *controller_args)
-			@plugins[i].get_instance(type, *controller_args)
+ 		def self.getInstance(i, type = :default, *controller_args)
+			@plugins[i].getInstance(type, *controller_args)
  		end
 
- 		def self.each_name(&block)
+ 		def self.eachName(&block)
  			self.names.each(block)
  		end
 
- 		def self.num_plugins
+ 		def self.numPlugins
  			@plugins.size
  		end
 
-		def self.declare_plugin(plugin_class)
+		def self.declarePlugin(plugin_class)
 			# plugin = plugin_class.new
 			# plugin.id=(@plugins.size)
 			@plugins << plugin_class
@@ -239,16 +240,15 @@ module PKMNEE
 	end
 
 	class Editor
-		include JRubyFX::Controller
-
-		fxml 'editor-main.fxml'	
+		include Plugin::Controller
 
 		def initialize
-			Main.load_plugins
+			loadFXML 'editor-main.fxml'
+			Main.loadPlugins
 			puts "Plugins loaded: #{Main.names}"
 		end
 
-		def open_plugin_select
+		def openPluginSelect
 			stage = JavaFX::Stage.new
 			select = PluginSelectController.new(@tab_pane, stage)
 			with(stage, title: "Plugin Selection", width: 800, height: 600) do
@@ -263,16 +263,16 @@ module PKMNEE
 		class PluginSelectController < JavaFX::VBox
 			include JRubyFX::Controller
 
-			fxml 'plugin-select.fxml'
+			loadFXML 'plugin-select.fxml'
 
 			def initialize(tab_pane, stage)
 				@tab_pane = tab_pane
 				@stage = stage
 				@configs = {}
-				setup_list_view
+				setupListView
 			end
 
-			def setup_list_view
+			def setupListView
 				@plugin_list.setItems(JavaFX::FXCollections.observableArrayList(PKMNEE::Main.plugins))
 				@plugin_list.getSelectionModel.selectedItemProperty.java_send(\
 					:addListener, [javafx.beans.value.ChangeListener], lambda do |ov,old,new|
@@ -283,7 +283,7 @@ module PKMNEE
 					end)
 			end
 
-			def open_plugin
+			def openPlugin
 				plugin = @plugin_list.getSelectionModel.getSelectedItem
 				return if !plugin
 				config = @configs[plugin.to_s]
@@ -301,14 +301,14 @@ module PKMNEE
 						icons.add($icon)
 						setMaximized(true)
 						layout_scene(800, 600) do
-			           		plugin.get_instance(type, *args)
+			           		plugin.getInstance(type, *args)
 			       		end
 			       		show
 					end
 				else # open in tab pane
 					tab = JavaFX::Tab.new
 					tab.setText(plugin.to_s)
-					tab.setContent(plugin.get_instance(type, *args))
+					tab.setContent(plugin.getInstance(type, *args))
 					@tab_pane.getTabs.add(tab)
 					@tab_pane.getSelectionModel.select(tab)
 				end
@@ -339,39 +339,39 @@ module PKMNEE
 				JavaFX::ReadOnlyStringWrapper.new(e.get_value.get_value[1]) 
 			end )
 			@col2.setPrefWidth(200)
-			populate_tree_view
+			populateTreeView
 		end
 
-		def populate_tree_view
-			recursive_append_children(@data)
-			@tree_view.get_columns.addAll(@col1, @col2)
-			@tree_view.set_show_root(true)
+		def populateTreeView
+			recursiveAppendChildren(@data)
+			@tree_view.getColumns.addAll(@col1, @col2)
+			@tree_view.setShowRoot(true)
 		end
 
-		def recursive_append_children(data, parent = nil)
+		def recursiveAppendChildren(data, parent = nil)
 			if !parent
-				item = JavaFX::TreeItem.new( ["@root", simple_type(data["root"])] )
-				item.set_expanded(true)
-				@tree_view.set_root(item)
-				recursive_append_children(data["root"], item)
+				item = JavaFX::TreeItem.new( ["@root", simpleType(data["root"])] )
+				item.setExpanded(true)
+				@tree_view.setRoot(item)
+				recursiveAppendChildren(data["root"], item)
 			elsif data.is_a?(Hash)
 				data.each do |k,v|
-					item = JavaFX::TreeItem.new( [k.to_s, simple_type(v)] )
-					parent.get_children.add(item)
-					recursive_append_children(v, item)
+					item = JavaFX::TreeItem.new( [k.to_s, simpleType(v)] )
+					parent.getChildren.add(item)
+					recursiveAppendChildren(v, item)
 				end
 			elsif data.is_a?(Array)
 				data.each_index do |i|
-					item = JavaFX::TreeItem.new( [i.to_s, simple_type(data[i])] )
-					parent.get_children.add(item)
-					recursive_append_children(data[i], item)
+					item = JavaFX::TreeItem.new( [i.to_s, simpleType(data[i])] )
+					parent.getChildren.add(item)
+					recursiveAppendChildren(data[i], item)
 				end
 			else
 				data.instance_variables.each do |e|
 					value = data.instance_variable_get(e)
-					item = JavaFX::TreeItem.new( [e.to_s, simple_type(value)] )
-					parent.get_children.add(item)
-					recursive_append_children(value, item)
+					item = JavaFX::TreeItem.new( [e.to_s, simpleType(value)] )
+					parent.getChildren.add(item)
+					recursiveAppendChildren(value, item)
 				end
 			end
 		end

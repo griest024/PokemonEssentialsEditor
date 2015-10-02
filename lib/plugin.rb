@@ -1,4 +1,12 @@
 module Plugin
+
+	module Controller
+
+		def loadFXML(fp)
+			loader = JavaFX::FXMLLoader.new()
+		end
+	end
+
 	class Base
 		
 		attr_accessor(:id)
@@ -13,7 +21,7 @@ module Plugin
 		class << self
 
 			def inherited(subclass)
-				PKMNEE::Main.declare_plugin(subclass)
+				PKMNEE::Main.declarePlugin(subclass)
 			end
 
 			def name
@@ -26,8 +34,10 @@ module Plugin
 
 		end
 
-		def can_handle?(type)
-			@handler.can_handle?(type)
+
+
+		def canHandle?(type)
+			@handler.canHandle?(type)
 		end
 
 		# An image preview of your app, probably a screenshot of you using it
@@ -47,7 +57,7 @@ module Plugin
 
 		#type: the type of instance to get
 		#*controller_args: optional args to pass to instance
-		def get_instance(type, *controller_args)
+		def getInstance(type, *controller_args)
 			instances << ret = @types[type].new(*controller_args)
 			ret
 		end
@@ -64,15 +74,18 @@ module Plugin
 		# Class that holds the configuration for opening an instance of your plugin
 		# 
 		class Config < JavaFX::TabPane
-			include JRubyFX::Controller
+			# include JRubyFX::Controller
 
 			def initialize(plugin)
+				super()
 				@settings = {}
 				@instances = plugin.types.keys
 				@instances.each do |e|
 					tp = JavaFX::TilePane.new
 					@settings[e] = [tp]
-					getTabs.add(Tab.new(e, tp))
+					tab = JavaFX::Tab.new(e.to_s)
+					tab.setContent(tp)
+					getTabs.add(tab)
 				end
 				# @anchor = JavaFX::AnchorPane.new
 				# @list_view = JavaFX::ListView.new(JavaFX::FXCollections.observableArrayList(@instances))
@@ -90,17 +103,17 @@ module Plugin
 			#        :edit a textfield where the user enters a string
 			# instance: the type of instance that the setting will be added to
 			# settings will be returned from args in the order you add them
-			def add_setting(instance, name, type, *options)
+			def addSetting(instance, name, type, *options)
 				@settings[instance] << set = SettingControl.new(name, type, *options)
 				@settings[instance][0].getChildren.add(set)
 			end
 
-			# returns the selected type of instance to open, will pass to get_instance
+			# returns the selected type of instance to open, will pass to getInstance
 			def type
 				getSelectionModel.getSelectedItem.getText
 			end
 
-			# returns the configured args to pass to controller, will pass to get_instance
+			# returns the configured args to pass to controller, will pass to getInstance
 			def args
 				ans = []
 				@settings[type].each do |e|
@@ -139,100 +152,100 @@ module Plugin
 
 			def initialize(*types)
 				@types = []
-				add_handle(*types)
+				addHandle(*types)
 			end
 
-			def handle_list
+			def handleList
 				@types
 			end
 
-			def can_handle?(type)
+			def canHandle?(type)
 				@types.include?(type)
 			end
 
 			# specifies that the plugin can handle files of type
-			def add_handle(*type)
+			def addHandle(*type)
 				type.each { |e| @types << e }
 				@types
 			end
 
 			def scripts
-				add_handle(:Scripts)
+				addHandle(:Scripts)
 				self
 			end
 
 			def maps
-				add_handle(:Maps)
+				addHandle(:Maps)
 				self
 			end
 
 			def skills
-				add_handle(:Skills)
+				addHandle(:Skills)
 				self
 			end
 
 			def states
-				add_handle(:States)
+				addHandle(:States)
 				self
 			end
 
 			def system
-				add_handle(:System)
+				addHandle(:System)
 				self
 			end
 
 			def tilesets
-				add_handle(:Tilesets)
+				addHandle(:Tilesets)
 				self
 			end
 
 			def troops
-				add_handle(:Troops)
+				addHandle(:Troops)
 				self
 			end
 
 			def weapons
-				add_handle(:Weapons)
+				addHandle(:Weapons)
 				self
 			end
 
 			def animations
-				add_handle(:Animations)
+				addHandle(:Animations)
 				self
 			end
 
 			def actors
-				add_handle(:Actors)
+				addHandle(:Actors)
 				self
 			end
 
 			def armors
-				add_handle(:Armors)
+				addHandle(:Armors)
 				self
 			end
 
 			def classes
-				add_handle(:Classes)
+				addHandle(:Classes)
 				self
 			end
 
 			def common_events
-				add_handle(:CommonEvents)
+				addHandle(:CommonEvents)
 				self
 			end
 
 			def constants
-				add_handle(:Constants)
+				addHandle(:Constants)
 				self
 			end
 
 			def enemies
-				add_handle(:Enemies)
+				addHandle(:Enemies)
 				self
 			end
 
 			def items
-				add_handle(:Items)
+				addHandle(:Items)
 				self
 			end
 		end

@@ -36,7 +36,7 @@
     </SplitPane>
       <ToolBar prefHeight="40.0" prefWidth="200.0">
          <items>
-            <Button fx:id="confirm_button" mnemonicParsing="false" onAction="#open_plugin" text="Open" />
+            <Button fx:id="confirm_button" mnemonicParsing="false" onAction="#openPlugin" text="Open" />
             <CheckBox fx:id="window_checkbox" mnemonicParsing="false" prefHeight="25.0" prefWidth="160.0" text="Open in new window" />
          </items>
       </ToolBar>
