@@ -2,15 +2,49 @@ module Plugin
 
 	module Controller
 
-		def loadFXML(fp)
-			loader = JavaFX::FXMLLoader.new()
+		def loadFXML(filename)
+			loader = JavaFX::FXMLLoader.new(self.getClass.getResource(self.layoutDir + filename + '.fxml'))
+			loader.setRoot(self)
+			loader.setController(self)
+			begin
+				loader.load
+			rescue JavaFX::LoadException
+				puts(e.getMessage + " Failed to load FXML")
+			end
+
 		end
+	end
+
+	class Screen < JavaFX::Stage
+
+
+		attr_accessor(:root)
+
+		def initialize(root, *properties)
+			if root.is_a?(JavaFX::Parent)
+				root= root
+			else
+				raise ArgumentError.new("Screen needs a JavaFX Parent as a root")
+			end
+			inflateContent if @root
+			setProperties(*properties)
+		end
+
+		def setProperties(*args)
+			args[0].each_pair { |k,v| send((k.to_s + "=").to_sym, v) }
+		end
+		
+		def inflateContent
+			@scene = JavaFX::Scene.new(@root)
+			setScene(@scene)
+		end
+		
 	end
 
 	class Base
 		
 		attr_accessor(:id)
-		attr_reader(:instances,  :types, :handler)
+		attr_reader(:instances, :types, :handler)
 
 		def initialize
 			@types = {}
@@ -73,28 +107,11 @@ module Plugin
 
 		# Class that holds the configuration for opening an instance of your plugin
 		# 
-		class Config < JavaFX::TabPane
-			# include JRubyFX::Controller
+		class Config
 
-			def initialize(plugin)
-				super()
-				@settings = {}
-				@instances = plugin.types.keys
-				@instances.each do |e|
-					tp = JavaFX::TilePane.new
-					@settings[e] = [tp]
-					tab = JavaFX::Tab.new(e.to_s)
-					tab.setContent(tp)
-					getTabs.add(tab)
-				end
-				# @anchor = JavaFX::AnchorPane.new
-				# @list_view = JavaFX::ListView.new(JavaFX::FXCollections.observableArrayList(@instances))
-				# @list_view.getSelectionModel.setSelectionMode(JavaFX::SelectionMode.SINGLE)
-				# @list_view.getSelectionModel.selectedItemProperty.java_send( \
-				# 	:addListener, [javafx.beans.value.ChangeListener], lambda do |ov,old,new|
-				# 		@anchor.getChildren.setAll(@settings[new][0])
-				# 	end)
-				# getTabs.addAll(@anchor)
+			def initialize(literal)
+				@settings = literal
+				
 			end
 
 			# adds a configurable setting

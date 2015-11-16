@@ -69,97 +69,6 @@ $autotile_def = [
 	[0, 1, 6, 7]
 ]
 
-# modifies the official RGSS API
-module RPG
-	class Tileset
-
-		attr_accessor(:images, :image, :autotiles)
-
-		def getWidth
-			loadImages if !@image
-			@image.getWidth
-		end
-
-		def getHeight
-			loadImages if !@image
-			@image.getHeight
-		end
-
-		def loadImages
-			@images = []
-			@autotiles = []
-			@autotile_names.unshift("").map! { |s| s == "" ? "autotile_blank" : s }
-			@autotile_names.each do |e|
-				autotile = []
-				img = JavaFX::Image.new("/res/img/#{e}.png")
-				reader = img.getPixelReader
-				if img.getHeight == 128
-					8.times do |y|
-						6.times do |x|
-							img = JavaFX::WritableImage.new(reader, x*16, y*16, 16, 16)
-							autotile << img
-						end
-					end
-					$autotile_def.each do |a|
-						tile = JavaFX::WritableImage.new(32, 32)
-						writer = tile.getPixelWriter
-						writer.setPixels(0, 0, 16, 16, autotile[a[0]].getPixelReader, 0, 0)
-						writer.setPixels(16, 0, 16, 16, autotile[a[1]].getPixelReader, 0, 0)
-						writer.setPixels(0, 16, 16, 16, autotile[a[2]].getPixelReader, 0, 0)
-						writer.setPixels(16, 16, 16, 16, autotile[a[3]].getPixelReader, 0, 0)
-						@autotiles << tile
-					end
-				else
-					48.times {@autotiles << JavaFX::WritableImage.new(reader, 0, 0, 32, 32)}
-				end
-			end
-			@image = JavaFX::Image.new(resource_url(:images, "#{tileset_name}.png").to_s)
-			reader = @image.get_pixel_reader
-			(@image.getHeight/32).to_i.times do |y|
-				8.times do |x|
-					@images << JavaFX::WritableImage.new(reader,x*32,y*32,32,32)
-				end
-			end
-		end
-
-		def getImage(id = 0)
-			loadImages if @images.empty?
-			id < 384 ? @autotiles[id] : @images[id - 384]
-		end
-
-		def eachImageIndex
-			loadImages if @images.empty?
-			if block_given?
-				@images.each_index do |i|
-					yield(@images[i], i)
-				end
-			else
-				return @images.each
-			end
-		end
-
-		def getTile(id)
-			loadImages if @images.empty?
-			tile = PKMNEE::Tile.new
-			tile.image=(getImage(id))
-			tile.id=(id)
-			tile.passage=(@passages[id])
-			tile.priority=(@priorities[id])
-			tile.terrain_tag=(@terrain_tags[id])
-			tile.tileset_id=(@id)
-		end
-
-		def eachTile
-			loadImages if @images.empty?
-			@images.each_index do |i|
-				yield(getTile(i))
-			end
-		end
-
-	end
-
-end
-
 module PKMNEE
 
 	# class PluginManager
@@ -185,18 +94,16 @@ module PKMNEE
 
 	class Main < JavaFX::Application
 
-		@plugins = []
+		
 
 		def start(stage)
 			@stage = stage
-			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
-				fxml Editor
-				setX(50)
-				setY(30)
-				icons.add($icon)
-				setMaximized(true)
-				show
-			end
+			@stage.setTitle("Pokemon Essentials Editor")
+			@stage.setX(50)
+			@stage.setY(30)
+			@stage.icons.add $icon
+			@stage.setMaximized(true)
+			@stage.show
 		end
 
 		#DELETE
@@ -237,6 +144,8 @@ module PKMNEE
 			# plugin.id=(@plugins.size)
 			@plugins << plugin_class
 		end
+
+		private attr_accessor(plugins)
 	end
 
 	class Editor
@@ -251,21 +160,19 @@ module PKMNEE
 		def openPluginSelect
 			stage = JavaFX::Stage.new
 			select = PluginSelectController.new(@tab_pane, stage)
-			with(stage, title: "Plugin Selection", width: 800, height: 600) do
-				icons.add($icon)
-				layout_scene(800, 600) do
-					select
-				end
-		      	show
-			end
+			stage.setWidth(800)
+			stage.setHeight(600)
+			stage.setTitle("Plugin Selection")
+			stage.icons.add($icon)
+			stage.setScene(JavaFX::Scene.new(select, 800, 600))
+			stage.show
 		end
 
 		class PluginSelectController < JavaFX::VBox
-			include JRubyFX::Controller
-
-			loadFXML 'plugin-select.fxml'
+			include Plugin::Controller
 
 			def initialize(tab_pane, stage)
+				loadFXML('plugin-select.fxml')
 				@tab_pane = tab_pane
 				@stage = stage
 				@configs = {}
@@ -297,14 +204,13 @@ module PKMNEE
 				puts "Opening #{plugin}..."
 				if @window_checkbox.isSelected # open in new window
 					stage = JavaFX::Stage.new
-					with(stage, title: plugin.to_s, width: 800, height: 600) do
-						icons.add($icon)
-						setMaximized(true)
-						layout_scene(800, 600) do
-			           		plugin.getInstance(type, *args)
-			       		end
-			       		show
-					end
+					stage.setTitle(plugin.to_s)
+					stage.setWidth(800)
+					stage.setHeight(600)
+					stage.icons.add($icon)
+					stage.setMaximized(true)
+					stage.setScene(plugin.getInstance(type, *args))
+					stage.show
 				else # open in tab pane
 					tab = JavaFX::Tab.new
 					tab.setText(plugin.to_s)

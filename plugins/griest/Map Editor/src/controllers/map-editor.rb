@@ -3,7 +3,7 @@ module griest
 	module MapEditor
 		
 		class MapEditor < JavaFX::BorderPane
-			include Controller
+			include PLugin::Controller
 
 			loadFXML 'editor-map.fxml'
 

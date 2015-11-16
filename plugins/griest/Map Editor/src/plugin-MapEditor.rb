@@ -13,32 +13,29 @@
  #    You should have received a copy of the GNU General Public License
  #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-module griest
+module griest::MapEditor
 
-	module MapEditor
+	class MapEditorPlugin < Plugin::Base
 
-		class MapEditorPlugin < Plugin::Base
+		def initialize
+			super
+			types[:default] = MapEditor
+			handler.maps.tilesets
+		end
 
-			def initialize
-				super
-				types[:default] = MapEditor
-				handler.maps.tilesets
+		class << self
+
+			def name
+				"Map Editor"
 			end
 
-			class << self
-
-				def name
-					"Map Editor"
-				end
-
-				def author
-					"griest"
-				end
+			def author
+				"griest"
 			end
+		end
 
-			def config
-				config = Config.new(self)
-			end
+		def config
+			config = Config.new(self)
 		end
 	end
 end
