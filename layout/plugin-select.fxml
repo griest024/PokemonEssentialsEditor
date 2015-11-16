@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<fx:root prefHeight="600.0" prefWidth="900.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <children>
+    <SplitPane dividerPositions="0.3" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+      <items>
+            <VBox focusTraversable="true" prefHeight="578.0" prefWidth="244.0">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" text="Plugin Selection" textAlignment="CENTER">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </Label>
+                  <ScrollPane VBox.vgrow="ALWAYS">
+                     <content>
+                        <ListView fx:id="plugin_list" />
+                     </content>
+                  </ScrollPane>
+                  <TilePane focusTraversable="true" prefHeight="200.0" prefWidth="200.0" tileAlignment="TOP_LEFT" VBox.vgrow="SOMETIMES">
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </TilePane>
+               </children>
+            </VBox>
+        <AnchorPane fx:id="config_pane" />
+      </items>
+    </SplitPane>
+      <ToolBar prefHeight="40.0" prefWidth="200.0">
+         <items>
+            <Button fx:id="confirm_button" mnemonicParsing="false" onAction="#open_plugin" text="Open" />
+            <CheckBox fx:id="window_checkbox" mnemonicParsing="false" prefHeight="25.0" prefWidth="160.0" text="Open in new window" />
+         </items>
+      </ToolBar>
+  </children>
+</fx:root>
