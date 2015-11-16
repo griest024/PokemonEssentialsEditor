@@ -33,9 +33,9 @@ module Plugin
 			end
 		end
 
-		def config
-			config = Config.new(self)
-		end
+		# def config
+		# 	config = Config.new(self)
+		# end
 		
 		class MapEditor < JavaFX::BorderPane
 			include JRubyFX::Controller
