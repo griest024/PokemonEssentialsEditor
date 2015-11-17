@@ -20,14 +20,8 @@ require 'jrubyfx'
 require 'require_all'
 
 
-<<<<<<< HEAD
-#make program output in real time so errors are visible
-=======
 puts "\n***************************Pokemon Essentials Editor****************************"
 
-
-#make program output in real time so errors visible in VR.
->>>>>>> develop-backup
 STDOUT.sync = true
 STDERR.sync = true
 
