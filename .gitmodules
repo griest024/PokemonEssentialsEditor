@@ -1,3 +1,6 @@
 [submodule "lib/engine"]
 	path = lib/engine
 	url = https://github.com/griest024/PKMNEngine
+[submodule "lib/importer"]
+	path = lib/importer
+	url = https://github.com/griest024/PKMNEssentialsPlugin
