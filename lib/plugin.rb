@@ -2,7 +2,7 @@ module Plugin
 	class Base
 		
 		attr_accessor(:id)
-		attr_reader(:instances,  :types, :handler)
+		attr_reader(:instances,  :types, :handler, :instance_params)
 
 		def initialize
 			@types = {}
@@ -63,8 +63,7 @@ module Plugin
 
 		# Class that holds the configuration for opening an instance of your plugin
 		# 
-		class Config < JavaFX::TabPane
-			include JRubyFX::Controller
+		class Parameters < JavaFX::TabPane
 
 			def initialize(plugin)
 				@settings = {}
