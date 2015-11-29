@@ -40,7 +40,7 @@ module Plugin
 			fxml 'editor-data.fxml'
 
 			def initialize()
-				PKMNEE::DataTree.new(load_yaml("Map082"), @data_tree_view)
+				PKMNEE::DataTree.new(loadYAML("Map082"), @data_tree_view)
 			end
 
 			def get_node(fx_id)

@@ -68,97 +68,6 @@ $autotile_def = [
 	[0, 1, 6, 7]
 ]
 
-# modifies the official RGSS API
-module RPG
-	class Tileset
-
-		attr_accessor(:images, :image, :autotiles)
-
-		def get_width
-			load_images if !@image
-			@image.get_width
-		end
-
-		def get_height
-			load_images if !@image
-			@image.get_height
-		end
-
-		def load_images
-			@images = []
-			@autotiles = []
-			@autotile_names.unshift("").map! { |s| s == "" ? "autotile_blank" : s }
-			@autotile_names.each do |e|
-				autotile = []
-				img = JavaFX::Image.new("/res/img/#{e}.png")
-				reader = img.getPixelReader
-				if img.getHeight == 128
-					8.times do |y|
-						6.times do |x|
-							img = JavaFX::WritableImage.new(reader, x*16, y*16, 16, 16)
-							autotile << img
-						end
-					end
-					$autotile_def.each do |a|
-						tile = JavaFX::WritableImage.new(32, 32)
-						writer = tile.getPixelWriter
-						writer.setPixels(0, 0, 16, 16, autotile[a[0]].getPixelReader, 0, 0)
-						writer.setPixels(16, 0, 16, 16, autotile[a[1]].getPixelReader, 0, 0)
-						writer.setPixels(0, 16, 16, 16, autotile[a[2]].getPixelReader, 0, 0)
-						writer.setPixels(16, 16, 16, 16, autotile[a[3]].getPixelReader, 0, 0)
-						@autotiles << tile
-					end
-				else
-					48.times {@autotiles << JavaFX::WritableImage.new(reader, 0, 0, 32, 32)}
-				end
-			end
-			@image = JavaFX::Image.new(resource_url(:images, "#{tileset_name}.png").to_s)
-			reader = @image.get_pixel_reader
-			(@image.get_height/32).to_i.times do |y|
-				8.times do |x|
-					@images << JavaFX::WritableImage.new(reader,x*32,y*32,32,32)
-				end
-			end
-		end
-
-		def get_image(id = 0)
-			load_images if @images.empty?
-			id < 384 ? @autotiles[id] : @images[id - 384]
-		end
-
-		def each_image_index
-			load_images if @images.empty?
-			if block_given?
-				@images.each_index do |i|
-					yield(@images[i], i)
-				end
-			else
-				return @images.each
-			end
-		end
-
-		def get_tile(id)
-			load_images if @images.empty?
-			tile = PKMNEE::Tile.new
-			tile.image=(get_image(id))
-			tile.id=(id)
-			tile.passage=(@passages[id])
-			tile.priority=(@priorities[id])
-			tile.terrain_tag=(@terrain_tags[id])
-			tile.tileset_id=(@id)
-		end
-
-		def each_tile
-			load_images if @images.empty?
-			@images.each_index do |i|
-				yield(get_tile(i))
-			end
-		end
-
-	end
-
-end
-
 module PKMNEE
 
 	# class PluginManager
@@ -248,7 +157,7 @@ module PKMNEE
 			puts "Plugins loaded: #{Main.names}"
 		end
 
-		def open_plugin_select
+		def openPluginSelect
 			stage = JavaFX::Stage.new
 			select = PluginSelectController.new(@tab_pane, stage)
 			with(stage, title: "Plugin Selection", width: 800, height: 600) do
@@ -269,10 +178,10 @@ module PKMNEE
 				@tab_pane = tab_pane
 				@stage = stage
 				@configs = {}
-				setup_list_view
+				setupListView
 			end
 
-			def setup_list_view
+			def setupListView
 				@plugin_list.setItems(JavaFX::FXCollections.observableArrayList(PKMNEE::Main.plugins))
 				@plugin_list.getSelectionModel.selectedItemProperty.java_send(\
 					:addListener, [javafx.beans.value.ChangeListener], lambda do |ov,old,new|
@@ -283,7 +192,7 @@ module PKMNEE
 					end)
 			end
 
-			def open_plugin
+			def openPlugin
 				plugin = @plugin_list.getSelectionModel.getSelectedItem
 				return if !plugin
 				config = @configs[plugin.to_s]
@@ -318,12 +227,6 @@ module PKMNEE
 		end
 	end
 
-	class Tile
-
-		attr_accessor(:image, :id, :passage, :priority, :terrain_tag, :tileset_id)
-		
-	end
-
 	class DataTree
 
 		def initialize(data, tree_view)
@@ -339,39 +242,39 @@ module PKMNEE
 				JavaFX::ReadOnlyStringWrapper.new(e.get_value.get_value[1]) 
 			end )
 			@col2.setPrefWidth(200)
-			populate_tree_view
+			populateTreeView
 		end
 
-		def populate_tree_view
-			recursive_append_children(@data)
+		def populateTreeView
+			recursiveAppendChildren(@data)
 			@tree_view.get_columns.addAll(@col1, @col2)
 			@tree_view.set_show_root(true)
 		end
 
-		def recursive_append_children(data, parent = nil)
+		def recursiveAppendChildren(data, parent = nil)
 			if !parent
-				item = JavaFX::TreeItem.new( ["@root", simple_type(data["root"])] )
-				item.set_expanded(true)
-				@tree_view.set_root(item)
-				recursive_append_children(data["root"], item)
+				item = JavaFX::TreeItem.new( ["@root", simpleType(data["root"])] )
+				item.setExpanded(true)
+				@tree_view.setRoot(item)
+				recursiveAppendChildren(data["root"], item)
 			elsif data.is_a?(Hash)
 				data.each do |k,v|
-					item = JavaFX::TreeItem.new( [k.to_s, simple_type(v)] )
+					item = JavaFX::TreeItem.new( [k.to_s, simpleType(v)] )
 					parent.get_children.add(item)
-					recursive_append_children(v, item)
+					recursiveAppendChildren(v, item)
 				end
 			elsif data.is_a?(Array)
 				data.each_index do |i|
-					item = JavaFX::TreeItem.new( [i.to_s, simple_type(data[i])] )
+					item = JavaFX::TreeItem.new( [i.to_s, simpleType(data[i])] )
 					parent.get_children.add(item)
-					recursive_append_children(data[i], item)
+					recursiveAppendChildren(data[i], item)
 				end
 			else
 				data.instance_variables.each do |e|
 					value = data.instance_variable_get(e)
-					item = JavaFX::TreeItem.new( [e.to_s, simple_type(value)] )
+					item = JavaFX::TreeItem.new( [e.to_s, simpleType(value)] )
 					parent.get_children.add(item)
-					recursive_append_children(value, item)
+					recursiveAppendChildren(value, item)
 				end
 			end
 		end

@@ -51,7 +51,7 @@
               </Menu>
             </menus>
           </MenuBar>
-            <Button fx:id="plugin_select" mnemonicParsing="false" onAction="#open_plugin_select" text="Plugin selection" />
+            <Button fx:id="plugin_select" mnemonicParsing="false" onAction="#openPluginSelect" text="Plugin selection" />
         </items>
       </ToolBar>
       <TabPane fx:id="tab_pane" prefHeight="1080.0" prefWidth="1920.0" />

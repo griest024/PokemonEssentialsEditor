@@ -125,7 +125,7 @@ module Plugin
 			end
 
 			def load_tileset(tileset_id)
-				result = load_yaml("Tilesets")["root"].select do |e|
+				result = loadYAML("Tilesets")["root"].select do |e|
 					e.id == tileset_id if e
 				end
 				@tileset = result[0]
@@ -139,7 +139,7 @@ module Plugin
 			end
 
 			def load_map(map_id)
-				@map = load_yaml("Map#{map_id}")
+				@map = loadYAML("Map#{map_id}")
 				load_tileset(@map["root"].tileset_id)
 				build_map
 			end

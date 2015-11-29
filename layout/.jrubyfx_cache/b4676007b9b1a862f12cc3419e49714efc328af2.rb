@@ -63,7 +63,7 @@ with(__local_fxml_controller) do
    __local_fx_id_setter.call("confirm_button", self)
    setMnemonicParsing(false)
    setText("Open")
-   setOnAction(EventHandlerWrapper.new(__local_fxml_controller, "open_plugin"))
+   setOnAction(EventHandlerWrapper.new(__local_fxml_controller, "openPlugin"))
   end)
   getItems.add(build(Java::JavafxSceneControl::CheckBox) do
    setId("window_checkbox")

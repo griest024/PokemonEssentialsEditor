@@ -125,7 +125,7 @@ build(Java::JavafxSceneLayout::VBox) do
    __local_fx_id_setter.call("plugin_select", self)
    setMnemonicParsing(false)
    setText("Plugin selection")
-   setOnAction(EventHandlerWrapper.new(__local_fxml_controller, "open_plugin_select"))
+   setOnAction(EventHandlerWrapper.new(__local_fxml_controller, "openPluginSelect"))
   end)
   setPrefHeight(40.0)
   setPrefWidth(200.0)

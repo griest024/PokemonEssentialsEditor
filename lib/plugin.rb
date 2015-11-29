@@ -1,4 +1,30 @@
 module Plugin
+
+	class Screen < JavaFX::Stage
+
+		attr_accessor(:root)
+
+		def initialize(root, *properties)
+			if root.is_a?(JavaFX::Parent)
+				root= root
+			else
+				raise ArgumentError.new("Screen needs a JavaFX Parent as a root")
+			end
+			inflateContent if @root
+			setProperties(*properties)
+		end
+
+		def setProperties(*args)
+			args[0].each_pair { |k,v| send((k.to_s + "=").to_sym, v) }
+		end
+		
+		def inflateContent
+			@scene = JavaFX::Scene.new(@root)
+			setScene(@scene)
+		end
+		
+	end
+
 	class Base
 		
 		attr_accessor(:id)
