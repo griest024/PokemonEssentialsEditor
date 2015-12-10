@@ -27,13 +27,12 @@ module Plugin
 
 	class Base
 		
-		attr_accessor(:id)
-		attr_reader(:instances,  :types, :handler, :instance_params)
+		attr_accessor(:id, :instances,  :editors, :handler, :instance_params)
 
 		def initialize
-			@types = {}
+			@editors = {}
 			@instances = []
-			@handler = FileHandler.new
+			@handler = DataHandler.new
 		end
 
 		class << self
@@ -56,7 +55,7 @@ module Plugin
 			@handler.can_handle?(type)
 		end
 
-		# An image preview of your app, probably a screenshot of you using it
+		# An image preview of your app, probably a screenshot of you testing it
 		def preview
 			
 		end
@@ -74,7 +73,7 @@ module Plugin
 		#type: the type of instance to get
 		#*controller_args: optional args to pass to instance
 		def get_instance(type, *controller_args)
-			instances << ret = @types[type].new(*controller_args)
+			instances << ret = editors[type].new(*controller_args)
 			ret
 		end
 
@@ -159,8 +158,8 @@ module Plugin
 
 		
 
-		# specifies which files a plugin can open, configure this class BEFORE Config
-		class FileHandler
+		# specifies which types a plugin can open, configure this class BEFORE Config
+		class DataHandler
 
 			def initialize(*types)
 				@types = []

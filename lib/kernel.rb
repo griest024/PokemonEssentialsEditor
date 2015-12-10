@@ -29,7 +29,7 @@ module Kernel
 		args.map! { |e| caller[0].to_s + e if e.is_a?(String) }
 	end
 
-	def typeCheck(args = {}, detailed? = false)
+	def typeCheck(args = {})
 		puts "typeCheck start"
 		# detailed? ? msg = "Expected #{v}, you gave #{k.class}."
 		raise ArgumentError.new("Pass params and types in as keys and values, respectively.") if !args.is_a?(Hash)
