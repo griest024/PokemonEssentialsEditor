@@ -29,14 +29,12 @@ module Kernel
 		args.map! { |e| caller[0].to_s + e if e.is_a?(String) }
 	end
 
+	# Raises ArgumentError if keys are not of 
 	def typeCheck(args = {})
-		puts "typeCheck start"
-		# detailed? ? msg = "Expected #{v}, you gave #{k.class}."
-		raise ArgumentError.new("Pass params and types in as keys and values, respectively.") if !args.is_a?(Hash)
-		puts "typeCheck: got the hash"
+		raise ArgumentError.new("Pass objects and types in as keys and values, respectively.") unless args.is_a?(Hash)
 		args.each_pair do |k,v|
-			raise ArgumentError.new("Values should be type Class") if !v.is_a?(Class)
-			raise ArgumentError.new("Expected #{v}, #{caller[0]} gave #{k.class}") if !k.is_a?(v)
+			v = [v] unless v.is_a?(Array)
+			raise ArgumentError.new("Expected #{v}, got #{k.class}") unless v.include?(k)
 		end
 	end
 end

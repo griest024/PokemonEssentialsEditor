@@ -183,8 +183,7 @@ module PKMNEE
 
 			def setupListView
 				@plugin_list.setItems(JavaFX::FXCollections.observableArrayList(PKMNEE::Main.plugins))
-				@plugin_list.getSelectionModel.selectedItemProperty.java_send(\
-					:addListener, [javafx.beans.value.ChangeListener], lambda do |ov,old,new|
+				@plugin_list.getSelectionModel.selectedItemProperty.java_send(:addListener, [javafx.beans.value.ChangeListener], lambda do |ov,old,new|
 						plugin = ov.getValue
 						@configs[plugin.to_s] = plugin.config if !@configs[plugin.to_s]
 						@config_pane.getChildren.setAll(@configs[plugin.to_s])

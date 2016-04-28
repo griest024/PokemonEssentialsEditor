@@ -27,7 +27,7 @@ module Plugin
 
 	class Base
 		
-		attr_accessor(:id, :instances,  :editors, :handler, :instance_params)
+		attr_accessor :id, :instances, :editors, :handler, :instance_params
 
 		def initialize
 			@editors = {}
@@ -52,7 +52,7 @@ module Plugin
 		end
 
 		def can_handle?(type)
-			@handler.can_handle?(type)
+			handler.can_handle?(type)
 		end
 
 		# An image preview of your app, probably a screenshot of you testing it
@@ -85,180 +85,249 @@ module Plugin
 		def toString
 			to_s
 		end
+	end
 
-		# Class that holds the configuration for opening an instance of your plugin
-		# 
-		class Parameters < JavaFX::TabPane
+	# Class that holds the configuration for opening an instance of your plugin
+	# 
+	class Parameters
+		include JRubyFX::Displayable
 
-			def initialize(plugin)
-				@settings = {}
-				@instances = plugin.types.keys
-				@instances.each do |e|
-					tp = JavaFX::TilePane.new
-					@settings[e] = [tp]
-					getTabs.add(Tab.new(e, tp))
-				end
-				# @anchor = JavaFX::AnchorPane.new
-				# @list_view = JavaFX::ListView.new(JavaFX::FXCollections.observableArrayList(@instances))
-				# @list_view.getSelectionModel.setSelectionMode(JavaFX::SelectionMode.SINGLE)
-				# @list_view.getSelectionModel.selectedItemProperty.java_send( \
-				# 	:addListener, [javafx.beans.value.ChangeListener], lambda do |ov,old,new|
-				# 		@anchor.getChildren.setAll(@settings[new][0])
-				# 	end)
-				# getTabs.addAll(@anchor)
-			end
+		class Setting
+			include JRubyFX::Displayable
 
-			# adds a configurable setting
-			# types: :list a choicebox containing the list of options
-			#        :files a list of project files that your plugin can handle
-			#        :edit a textfield where the user enters a string
-			# instance: the type of instance that the setting will be added to
-			# settings will be returned from args in the order you add them
-			def add_setting(instance, name, type, *options)
-				@settings[instance] << set = SettingControl.new(name, type, *options)
-				@settings[instance][0].getChildren.add(set)
-			end
+			class List < Setting
 
-			# returns the selected type of instance to open, will pass to get_instance
-			def type
-				getSelectionModel.getSelectedItem.getText
-			end
+				class StringConverter < JavaFX::StringConverter
 
-			# returns the configured args to pass to controller, will pass to get_instance
-			def args
-				ans = []
-				@settings[type].each do |e|
-					ans << e.get if e.is_a?(SettingControl)
-				end
-				ans
-			end
+					private_attr_accessor :options
 
-			class SettingControl < JavaFX::VBox
-
-				def initialize(name, type, *options)
-					case type
-					when :list
-						@control = JavaFX::ChoiceBox.new(JavaFX::FXCollections.observableArrayList(*options))
-					when :edit
-						@control = JavaFX::TextField.new
-					when :files
-						@control = Util::FileComboBox.new
-					else
-						puts "Not a proper type of control!"
+					def initialize(options_hash)
+						super()
+						options= options_hash
 					end
-					getChildren.setAll(JavaFX::Label.new(name), @control)
+					
+					def toString(obj)
+						options[obj]
+					end
+
+					def fromString(str)
+						options.key(str)
+					end
+				end
+
+				private_attr_accessor :options, :name, :select
+
+				# literal - keys are the internal symbols that your plugin recognizes, values 
+				# 	are the string that contains readable representation of the option
+				def initialize(setting_name, literal = {})
+					typeCheck(literal => Hash)
+					options = literal
+					name= setting_name
+					select= JavaFX::ComboBox.new(JavaFX::FXCollections.observableArrayList(options.keys))
+					select.setConverter(StringConverter.new(options))
+					ctrl= JavaFX::VBox.new(JavaFX::Label.new(setting_name), select)
+				end
+
+				def addOption(option, display_string)
+					typeCheck(display_string => String)
+					options << option
+					display_strings << display_string
+					updateControl
+				end
+
+				def add(option, display_string)
+					addOption(option, display_string)
+				end
+
+				def get
+					p ctrl.getSelectionModel.getSelectedItem
+				end
+
+				def set(literal = {})
+					typeCheck(literal => Hash)
+					options= literal
+					updateControl
+				end
+
+				def updateControl
+					select.getItems.setAll(options.keys)
+				end
+				
+			end
+
+			class Edit < Setting
+
+				private_attr_accessor :field, :edit
+
+				def initialize(name, default = nil)
+					field= default
 				end
 				
 				def get
-					@control.is_a?(JavaFX::TextField) ? @control.getCharacters.toString : @control.getSelectionModel.getSelectedItem
+					edit.getText
 				end
-			
+			end
+
+			class Data < Setting
+
+				def initialize(name, *datatypes)
+					
+				end
+			end
+
+			class Boolean < Setting
+				def initialize(name, default = false)
+					
+				end
+				
+				
+			end
+
+			$setting_types = {:list => List, :edit => Edit, :data => Data, :bool => Boolean}
+
+			def initialize
+				
+			end
+
+			def self.get(type, name, arg)
+				$setting_types[type].new(name, arg)
 			end
 		end
 
-		
+		private_attr_accessor :settings
 
-		# specifies which types a plugin can open, configure this class BEFORE Config
-		class DataHandler
+		def initialize(literal = {})
+			typeCheck(literal => Hash)
+			settings= literal
+		end
 
-			def initialize(*types)
-				@types = []
-				add_handle(*types)
+		# adds a configurable setting
+		# types: :list a choicebox containing the list of options
+		#        :files a list of project files that your plugin can handle
+		#        :edit a textfield where the user enters a string
+		# settings will be returned from args in the order you add them
+		def add_setting(type, name, *options)
+			@settings[instance] << set = SettingControl.new(name, type, *options)
+			@settings[instance][0].getChildren.add(set)
+		end
+
+		# returns the selected type of instance to open, will pass to get_instance
+		def type
+			getSelectionModel.getSelectedItem.getText
+		end
+
+		# returns the configured args to pass to controller, will pass to get_instance
+		def args
+			ans = []
+			@settings[type].each do |e|
+				ans << e.get if e.is_a?(Setting)
 			end
+			ans
+		end
+	end
 
-			def handle_list
-				@types
-			end
+	
 
-			def can_handle?(type)
-				@types.include?(type)
-			end
+	# specifies which types a plugin can open, configure this class BEFORE Config
+	class DataHandler
 
-			# specifies that the plugin can handle files of type
-			def add_handle(*type)
-				type.each { |e| @types << e }
-				@types
-			end
+		def initialize(*types)
+			@types = []
+			add_handle(*types)
+		end
 
-			def scripts
-				add_handle(:Scripts)
-				self
-			end
+		def handle_list
+			@types
+		end
 
-			def maps
-				add_handle(:Maps)
-				self
-			end
+		def can_handle?(type)
+			@types.include?(type)
+		end
 
-			def skills
-				add_handle(:Skills)
-				self
-			end
+		# specifies that the plugin can handle files of type
+		def add_handle(*type)
+			type.each { |e| @types << e }
+			@types
+		end
 
-			def states
-				add_handle(:States)
-				self
-			end
+		def scripts
+			add_handle(:Scripts)
+			self
+		end
 
-			def system
-				add_handle(:System)
-				self
-			end
+		def maps
+			add_handle(:Maps)
+			self
+		end
 
-			def tilesets
-				add_handle(:Tilesets)
-				self
-			end
+		def skills
+			add_handle(:Skills)
+			self
+		end
 
-			def troops
-				add_handle(:Troops)
-				self
-			end
+		def states
+			add_handle(:States)
+			self
+		end
 
-			def weapons
-				add_handle(:Weapons)
-				self
-			end
+		def system
+			add_handle(:System)
+			self
+		end
 
-			def animations
-				add_handle(:Animations)
-				self
-			end
+		def tilesets
+			add_handle(:Tilesets)
+			self
+		end
 
-			def actors
-				add_handle(:Actors)
-				self
-			end
+		def troops
+			add_handle(:Troops)
+			self
+		end
 
-			def armors
-				add_handle(:Armors)
-				self
-			end
+		def weapons
+			add_handle(:Weapons)
+			self
+		end
 
-			def classes
-				add_handle(:Classes)
-				self
-			end
+		def animations
+			add_handle(:Animations)
+			self
+		end
 
-			def common_events
-				add_handle(:CommonEvents)
-				self
-			end
+		def actors
+			add_handle(:Actors)
+			self
+		end
 
-			def constants
-				add_handle(:Constants)
-				self
-			end
+		def armors
+			add_handle(:Armors)
+			self
+		end
 
-			def enemies
-				add_handle(:Enemies)
-				self
-			end
+		def classes
+			add_handle(:Classes)
+			self
+		end
 
-			def items
-				add_handle(:Items)
-				self
-			end
+		def common_events
+			add_handle(:CommonEvents)
+			self
+		end
+
+		def constants
+			add_handle(:Constants)
+			self
+		end
+
+		def enemies
+			add_handle(:Enemies)
+			self
+		end
+
+		def items
+			add_handle(:Items)
+			self
 		end
 	end
 end

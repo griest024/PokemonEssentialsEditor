@@ -18,7 +18,7 @@ module Plugin
 
 		def initialize
 			super
-			types[:default] = MapEditor
+			editors[:default] = MapEditor
 			handler.maps.tilesets
 		end
 
@@ -33,29 +33,29 @@ module Plugin
 			end
 		end
 
-		# def config
-		# 	config = Config.new(self)
-		# end
+		def config
+			config = Config.new(self)
+		end
 		
 		class MapEditor < JavaFX::BorderPane
 			include JRubyFX::Controller
 
 			fxml 'editor-map.fxml'
 
-			def initialize
-				load_map("077")
+			def initialize(map_id)
+				loadMap(map_id)
 				@layer_buttons = [@layer1_button, @layer2_button, @layer3_button]
-				connect_controllers
-				setup_gui
+				connectControllers
+				setupGUI
 				@info.setText("Loading...Done")
 			end
 
-			def setup_gui
+			def setupGUI
 				(@map_scroll_pane.get_children.select { |e| e.is_a?(JavaFX::ScrollBar) }).each { |e| e.setBlockIncrement(32) }
-				# make_tabs
+				# makeTabs
 			end
 
-			def make_tabs
+			def makeTabs
 				@tabs = []
 				# create tool table
 				3.times do |n|
@@ -65,13 +65,13 @@ module Plugin
 				end
 			end
 
-			def connect_controllers
-				add_event_handlers
-				bind_properties
-				format_slider_labels
+			def connectControllers
+				addEventHandlers
+				bindProperties
+				formatSliderLabels
 			end
 
-			def bind_properties
+			def bindProperties
 				#zoom slider
 				@map_stack_pane.scaleXProperty.bind(@map_scale_slider.value_property)
 				@map_stack_pane.scaleYProperty.bind(@map_scale_slider.value_property)
@@ -81,12 +81,12 @@ module Plugin
 				end
 			end
 
-			def format_slider_labels
+			def formatSliderLabels
 				map_scale_slider_formatter = Util::FractionFormatter.new
 				@map_scale_slider.set_label_formatter(map_scale_slider_formatter)
 			end
 
-			def add_event_handlers
+			def addEventHandlers
 				#tileset selection
 				handler = JavaFX::EventHandler.new
 				handler.instance_variable_set("@effect", JavaFX::InnerShadow.new)
@@ -102,7 +102,7 @@ module Plugin
 
 			end
 
-			def build_map
+			def buildMap
 				@map_table = @map["root"].data
 				@layers = []
 				xsize = @map_table.xsize
@@ -124,7 +124,7 @@ module Plugin
 				# @map_stack_pane.setPickOnBounds(false)
 			end
 
-			def load_tileset(tileset_id)
+			def loadTileset(tileset_id)
 				result = loadYAML("Tilesets")["root"].select do |e|
 					e.id == tileset_id if e
 				end
@@ -138,10 +138,10 @@ module Plugin
 				@tileset_scroll_pane.setContent(@tileset_tile_pane)
 			end
 
-			def load_map(map_id)
-				@map = loadYAML("Map#{map_id}")
-				load_tileset(@map["root"].tileset_id)
-				build_map
+			def loadMap(map_id)
+				@map = loadYAML("Map#{map_id.to_s}")
+				loadTileset(@map["root"].tileset_id)
+				buildMap
 			end
 		end
 	end

@@ -20,7 +20,7 @@ module Plugin
 
 		def initialize
 			super
-			@types[:default] = RawDataController
+			editors[:default] = RawDataController
 		end
 
 		class << self
