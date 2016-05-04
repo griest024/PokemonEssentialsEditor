@@ -1,0 +1,1926 @@
+---
+root: !ruby/object:RPG::Map
+  bgm: !ruby/object:RPG::AudioFile
+    volume: 80
+    name: 021-Field04
+    pitch: 100
+  tileset_id: 3
+  events:
+    1: !ruby/object:RPG::Event
+      pages:
+      - !ruby/object:RPG::Event::Page
+        move_type: 0
+        list:
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - !ruby/object:RPG::AudioFile
+            volume: 80
+            name: Exit Door
+            pitch: 100
+          indent: 0
+          code: 250
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - !ruby/object:Tone
+            red: -255.0
+            green: -255.0
+            blue: -255.0
+            gray: 0.0
+          - 6
+          indent: 0
+          code: 223
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 8
+          indent: 0
+          code: 106
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 0
+          - 23
+          - 28
+          - 10
+          - 0
+          - 1
+          indent: 0
+          code: 201
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - !ruby/object:Tone
+            red: 0.0
+            green: 0.0
+            blue: 0.0
+            gray: 0.0
+          - 6
+          indent: 0
+          code: 223
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 0
+          code: 0
+        condition: !ruby/object:RPG::Event::Page::Condition
+          switch2_valid: false
+          self_switch_ch: A
+          switch1_id: 1
+          switch1_valid: false
+          variable_value: 0
+          self_switch_valid: false
+          variable_id: 1
+          variable_valid: false
+          switch2_id: 1
+        direction_fix: false
+        move_route: !ruby/object:RPG::MoveRoute
+          list:
+          - !ruby/object:RPG::MoveCommand
+            parameters: []
+            code: 0
+          skippable: false
+          repeat: true
+        trigger: 1
+        step_anime: false
+        move_frequency: 3
+        graphic: !ruby/object:RPG::Event::Page::Graphic
+          opacity: 255
+          character_name: ''
+          pattern: 0
+          tile_id: 0
+          direction: 2
+          blend_type: 0
+          character_hue: 0
+        always_on_top: false
+        walk_anime: true
+        move_speed: 3
+        through: false
+      name: Exit
+      y: 8
+      x: 4
+      id: 1
+    2: !ruby/object:RPG::Event
+      pages:
+      - !ruby/object:RPG::Event::Page
+        move_type: 0
+        list:
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - pbPokeCenterPC
+          indent: 0
+          code: 355
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 0
+          code: 0
+        condition: !ruby/object:RPG::Event::Page::Condition
+          switch2_valid: false
+          self_switch_ch: A
+          switch1_id: 1
+          switch1_valid: false
+          variable_value: 0
+          self_switch_valid: false
+          variable_id: 1
+          variable_valid: false
+          switch2_id: 1
+        direction_fix: false
+        move_route: !ruby/object:RPG::MoveRoute
+          list:
+          - !ruby/object:RPG::MoveCommand
+            parameters: []
+            code: 0
+          skippable: false
+          repeat: true
+        trigger: 0
+        step_anime: false
+        move_frequency: 3
+        graphic: !ruby/object:RPG::Event::Page::Graphic
+          opacity: 255
+          character_name: ''
+          pattern: 0
+          tile_id: 0
+          direction: 2
+          blend_type: 0
+          character_hue: 0
+        always_on_top: false
+        walk_anime: true
+        move_speed: 3
+        through: false
+      name: PC
+      y: 1
+      x: 5
+      id: 2
+    3: !ruby/object:RPG::Event
+      pages:
+      - !ruby/object:RPG::Event::Page
+        move_type: 0
+        list:
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 12
+          - Kernel.pbEggGenerated?
+          indent: 0
+          code: 111
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - "\\rAh, there you are!  My husband was looking for "
+          indent: 1
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - you.
+          indent: 1
+          code: 401
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 1
+          code: 115
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 1
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 0
+          code: 412
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - A
+          - 1
+          indent: 0
+          code: 123
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 12
+          - Kernel.pbDayCareDeposited==0
+          indent: 0
+          code: 111
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - !binary |-
+            XHJJJ20gdGhlIERheS1DYXJlIExhZHkuICBXZSBjYW4gcmFpc2UgUG9rw6lt
+            b24gZm9yIA==
+          indent: 1
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - you.
+          indent: 1
+          code: 401
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - !binary |-
+            XHJXb3VsZCB5b3UgbGlrZSB1cyB0byByYWlzZSB5b3VyIFBva8OpbW9uPw==
+          indent: 1
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - - 'Yes'
+            - 'No'
+          - 2
+          indent: 1
+          code: 102
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 0
+          - 'Yes'
+          indent: 1
+          code: 402
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 12
+          - "$Trainer.pokemonCount<=1"
+          indent: 2
+          code: 111
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - !binary |-
+            XHJPaD8gIEJ1dCB5b3Ugb25seSBoYXZlIG9uZSBQb2vDqW1vbiB3aXRoIHlv
+            dS4=
+          indent: 3
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - !binary |-
+            XHJZb3UgY2FuJ3QgZ28gb2ZmIHdpdGhvdXQgYSBQb2vDqW1vbi4gIENvbWUg
+            YmFjayA=
+          indent: 3
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - another time.
+          indent: 3
+          code: 401
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 3
+          code: 115
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 3
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 2
+          code: 412
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - !binary |-
+            XHJXaGljaCBQb2vDqW1vbiBzaG91bGQgd2UgcmFpc2UgZm9yIHlvdT8=
+          indent: 2
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - pbChooseNonEggPokemon(1,3)
+          indent: 2
+          code: 355
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 1
+          - 1
+          - 0
+          - 0
+          - 4
+          indent: 2
+          code: 111
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - "\\rOh, fine, then.\\nCome again."
+          indent: 3
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 3
+          code: 115
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 3
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 2
+          code: 412
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 12
+          - "!pbCheckAble(pbGet(1))"
+          indent: 2
+          code: 111
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - !binary |-
+            XHJJZiB5b3UgbGVhdmUgbWUgdGhhdCBQb2vDqW1vbiwgd2hhdCBhcmUgeW91
+            IGdvbm5hIA==
+          indent: 3
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - battle with?
+          indent: 3
+          code: 401
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - "\\rCome back another time."
+          indent: 3
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 3
+          code: 115
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 3
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 2
+          code: 412
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - pbDayCareDeposit(pbGet(1))
+          indent: 2
+          code: 355
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - "\\rFine, we'll raise your \\v[3] for a while."
+          indent: 2
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - "\\rCome back for it later."
+          indent: 2
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - RaiseAnother
+          indent: 2
+          code: 118
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - !binary |-
+            XHJXZSBjYW4gcmFpc2UgdHdvIG9mIHlvdXIgUG9rw6ltb24uICBXb3VsZCB5
+            b3UgbGlrZSA=
+          indent: 2
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - us to raise another?
+          indent: 2
+          code: 401
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - - 'Yes'
+            - 'No'
+          - 2
+          indent: 2
+          code: 102
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 0
+          - 'Yes'
+          indent: 2
+          code: 402
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 12
+          - "$Trainer.pokemonCount<=1"
+          indent: 3
+          code: 111
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - !binary |-
+            XHJPaD8gIEJ1dCB5b3Ugb25seSBoYXZlIG9uZSBQb2vDqW1vbiB3aXRoIHlv
+            dS4=
+          indent: 4
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - !binary |-
+            XHJZb3UgY2FuJ3QgZ28gb2ZmIHdpdGhvdXQgYSBQb2vDqW1vbi4gIENvbWUg
+            YmFjayA=
+          indent: 4
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - another time.
+          indent: 4
+          code: 401
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 4
+          code: 115
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 4
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 3
+          code: 412
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - !binary |-
+            XHJXaGljaCBQb2vDqW1vbiBzaG91bGQgd2UgcmFpc2UgZm9yIHlvdT8=
+          indent: 3
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - pbChooseNonEggPokemon(1,3)
+          indent: 3
+          code: 355
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 1
+          - 1
+          - 0
+          - 0
+          - 4
+          indent: 3
+          code: 111
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - "\\rVery good.  Come again."
+          indent: 4
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 4
+          code: 115
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 4
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 3
+          code: 412
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 12
+          - "!pbCheckAble(pbGet(1))"
+          indent: 3
+          code: 111
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - !binary |-
+            XHJJZiB5b3UgbGVhdmUgbWUgdGhhdCBQb2vDqW1vbiwgd2hhdCBhcmUgeW91
+            IGdvbm5hIA==
+          indent: 4
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - battle with?
+          indent: 4
+          code: 401
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - "\\rCome back another time."
+          indent: 4
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 4
+          code: 115
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 4
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 3
+          code: 412
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - pbDayCareDeposit(pbGet(1))
+          indent: 3
+          code: 355
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - "\\rFine, we'll raise your \\v[3] for a while."
+          indent: 3
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - "\\rCome back for it later."
+          indent: 3
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 3
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 1
+          - 'No'
+          indent: 2
+          code: 402
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 2
+          - A
+          - 0
+          indent: 3
+          code: 111
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - TakeBack
+          indent: 4
+          code: 119
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 4
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 3
+          code: 411
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - "\\rVery good.  Come again."
+          indent: 4
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 4
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 3
+          code: 412
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 3
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 2
+          code: 404
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 2
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 1
+          - 'No'
+          indent: 1
+          code: 402
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - "\\rOh, fine, then.\\nCome again."
+          indent: 2
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 2
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 1
+          code: 404
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 1
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 0
+          code: 411
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - "\\rAh, it's you!  Good to see you.  Now, about your "
+          indent: 1
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - !binary |-
+            UG9rw6ltb24uLi4=
+          indent: 1
+          code: 401
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 12
+          - pbDayCareGetLevelGain(0,3,4) && $game_variables[4]>0
+          indent: 1
+          code: 111
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - "\\rBy level, your \\v[3] has grown by about \\v[4]."
+          indent: 2
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 2
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 1
+          code: 412
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 12
+          - pbDayCareGetLevelGain(1,3,4) && $game_variables[4]>0
+          indent: 1
+          code: 111
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - "\\rBy level, your \\v[3] has grown by about \\v[4]."
+          indent: 2
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 2
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 1
+          code: 412
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 12
+          - Kernel.pbDayCareDeposited==1
+          indent: 1
+          code: 111
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - A
+          - 0
+          indent: 2
+          code: 123
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - RaiseAnother
+          indent: 2
+          code: 119
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 2
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 1
+          code: 411
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - TakeBack
+          indent: 2
+          code: 118
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - !binary |-
+            XHJEbyB5b3Ugd2FudCB5b3VyIFBva8OpbW9uIGJhY2s/
+          indent: 2
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - - 'Yes'
+            - 'No'
+          - 2
+          indent: 2
+          code: 102
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 0
+          - 'Yes'
+          indent: 2
+          code: 402
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - TakeBackChosen
+          indent: 3
+          code: 118
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 12
+          - "$Trainer.party.length>=6"
+          indent: 3
+          code: 111
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - !binary |-
+            XHJZb3VyIFBva8OpbW9uIHRlYW0gaXMgZnVsbC4gIE1ha2Ugcm9vbSwgdGhl
+            biBjb21lIA==
+          indent: 4
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - see me.
+          indent: 4
+          code: 401
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 4
+          code: 115
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 4
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 3
+          code: 412
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - pbDayCareChoose(
+          indent: 3
+          code: 355
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - _I("Which one do you want back?"),1)
+          indent: 3
+          code: 655
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 1
+          - 1
+          - 0
+          - 0
+          - 4
+          indent: 3
+          code: 111
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - "\\rVery good.  Come again."
+          indent: 4
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 4
+          code: 115
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 4
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 3
+          code: 412
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - pbDayCareGetDeposited(pbGet(1),3,4)
+          indent: 3
+          code: 355
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - "\\G\\rIf you want your \\v[3] back, it will cost $\\v[4]."
+          indent: 3
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - - 'Yes'
+            - 'No'
+          - 2
+          indent: 3
+          code: 102
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 0
+          - 'Yes'
+          indent: 3
+          code: 402
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 5
+          - 5
+          - 0
+          - 7
+          - 2
+          indent: 4
+          code: 122
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 1
+          - 5
+          - 1
+          - 4
+          - 4
+          indent: 4
+          code: 111
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - "\\G\\rYou don't have enough money..."
+          indent: 5
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 5
+          code: 115
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 5
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 4
+          code: 412
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 1
+          - 1
+          - 4
+          indent: 4
+          code: 125
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - pbDayCareWithdraw(pbGet(1))
+          indent: 4
+          code: 355
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - !binary |-
+            XEdcckV4Y2VsbGVudFxuSGVyZSdzIHlvdXIgUG9rw6ltb24u
+          indent: 4
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - "\\PN took \\v[3] back from the Day-Care Lady."
+          indent: 4
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 12
+          - Kernel.pbDayCareDeposited==1
+          indent: 4
+          code: 111
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - "\\rDo you want to take back the other one, too?"
+          indent: 5
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - - 'Yes'
+            - 'No'
+          - 2
+          indent: 5
+          code: 102
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 0
+          - 'Yes'
+          indent: 5
+          code: 402
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - TakeBackChosen
+          indent: 6
+          code: 119
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 6
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 1
+          - 'No'
+          indent: 5
+          code: 402
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - "\\rVery good.  Come again."
+          indent: 6
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 6
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 5
+          code: 404
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 5
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 4
+          code: 411
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - "\\rVery good.  Come again."
+          indent: 5
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 5
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 4
+          code: 412
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 4
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 1
+          - 'No'
+          indent: 3
+          code: 402
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - "\\rVery good.  Come again."
+          indent: 4
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 4
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 3
+          code: 404
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 3
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - 1
+          - 'No'
+          indent: 2
+          code: 402
+        - !ruby/object:RPG::EventCommand
+          parameters:
+          - "\\rVery good.  Come again."
+          indent: 3
+          code: 101
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 3
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 2
+          code: 404
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 2
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 1
+          code: 412
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 1
+          code: 0
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 0
+          code: 412
+        - !ruby/object:RPG::EventCommand
+          parameters: []
+          indent: 0
+          code: 0
+        condition: !ruby/object:RPG::Event::Page::Condition
+          switch2_valid: false
+          self_switch_ch: A
+          switch1_id: 1
+          switch1_valid: false
+          variable_value: 0
+          self_switch_valid: false
+          variable_id: 1
+          variable_valid: false
+          switch2_id: 1
+        direction_fix: false
+        move_route: !ruby/object:RPG::MoveRoute
+          list:
+          - !ruby/object:RPG::MoveCommand
+            parameters: []
+            code: 0
+          skippable: false
+          repeat: true
+        trigger: 0
+        step_anime: false
+        move_frequency: 3
+        graphic: !ruby/object:RPG::Event::Page::Graphic
+          opacity: 255
+          character_name: NPC 11
+          pattern: 0
+          tile_id: 0
+          direction: 2
+          blend_type: 0
+          character_hue: 0
+        always_on_top: false
+        walk_anime: true
+        move_speed: 3
+        through: false
+      name: Day Care Lady
+      y: 4
+      x: 4
+      id: 3
+  bgs: !ruby/object:RPG::AudioFile
+    volume: 80
+    name: ''
+    pitch: 100
+  autoplay_bgm: true
+  data: !ruby/object:Table
+    dim: 3
+    zsize: 3
+    ysize: 15
+    xsize: 20
+    data:
+    - 432
+    - 433
+    - 433
+    - 433
+    - 433
+    - 433
+    - 433
+    - 433
+    - 433
+    - 433
+    - 433
+    - 434
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 440
+    - 441
+    - 441
+    - 441
+    - 441
+    - 441
+    - 441
+    - 441
+    - 441
+    - 441
+    - 441
+    - 442
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 1037
+    - 1045
+    - 1045
+    - 1045
+    - 1077
+    - 1069
+    - 1071
+    - 1077
+    - 1077
+    - 1077
+    - 1077
+    - 1063
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 1055
+    - 1054
+    - 1054
+    - 1054
+    - 1060
+    - 1192
+    - 1193
+    - 1193
+    - 1193
+    - 1193
+    - 1194
+    - 1060
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 1069
+    - 1060
+    - 1060
+    - 1060
+    - 1060
+    - 1200
+    - 1201
+    - 1201
+    - 1201
+    - 1201
+    - 1202
+    - 1060
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 1069
+    - 1060
+    - 1060
+    - 1060
+    - 1060
+    - 1200
+    - 1201
+    - 1201
+    - 1201
+    - 1201
+    - 1202
+    - 1060
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 1069
+    - 1060
+    - 1060
+    - 1060
+    - 1060
+    - 1208
+    - 1209
+    - 1209
+    - 1209
+    - 1209
+    - 1210
+    - 1060
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 1069
+    - 1060
+    - 1060
+    - 1060
+    - 1060
+    - 1060
+    - 1060
+    - 1060
+    - 1060
+    - 1060
+    - 1060
+    - 1060
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 542
+    - 0
+    - 389
+    - 390
+    - 391
+    - 0
+    - 1693
+    - 0
+    - 0
+    - 1493
+    - 1493
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 397
+    - 398
+    - 399
+    - 2162
+    - 1701
+    - 0
+    - 0
+    - 1501
+    - 1501
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 448
+    - 0
+    - 0
+    - 0
+    - 2170
+    - 1709
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 450
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 2177
+    - 2177
+    - 2177
+    - 2177
+    - 2178
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 1756
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 1671
+    - 2131
+    - 2133
+    - 1671
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 1764
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 1671
+    - 2139
+    - 2141
+    - 1671
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 1756
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 1756
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 1764
+    - 0
+    - 0
+    - 1245
+    - 1246
+    - 1247
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 1764
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 1253
+    - 1254
+    - 1255
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+  autoplay_bgs: false
+  height: 15
+  encounter_step: 30
+  width: 20
+  encounter_list: []

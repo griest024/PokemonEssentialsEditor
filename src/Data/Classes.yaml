@@ -1,0 +1,26 @@
+---
+root:
+- 
+- !ruby/object:RPG::Class
+  name: ''
+  armor_set: []
+  learnings: []
+  weapon_set: []
+  state_ranks: !ruby/object:Table
+    dim: 1
+    zsize: 1
+    ysize: 1
+    xsize: 2
+    data:
+    - 0
+    - 3
+  position: 0
+  id: 1
+  element_ranks: !ruby/object:Table
+    dim: 1
+    zsize: 1
+    ysize: 1
+    xsize: 2
+    data:
+    - 0
+    - 3

@@ -1,0 +1,21 @@
+---
+root:
+- 
+- !ruby/object:RPG::Weapon
+  animation1_id: 0
+  int_plus: 0
+  name: ''
+  icon_name: ''
+  mdef: 0
+  minus_state_set: []
+  price: 0
+  agi_plus: 0
+  pdef: 0
+  plus_state_set: []
+  dex_plus: 0
+  atk: 0
+  element_set: []
+  animation2_id: 0
+  id: 1
+  description: ''
+  str_plus: 0

@@ -1,0 +1,32 @@
+---
+root:
+- 
+- !ruby/object:RPG::Skill
+  animation1_id: 0
+  int_f: 100
+  name: ''
+  icon_name: ''
+  eva_f: 0
+  minus_state_set: []
+  common_event_id: 0
+  mdef_f: 100
+  occasion: 1
+  agi_f: 0
+  atk_f: 0
+  plus_state_set: []
+  menu_se: !ruby/object:RPG::AudioFile
+    volume: 80
+    name: ''
+    pitch: 100
+  pdef_f: 0
+  scope: 0
+  dex_f: 0
+  power: 0
+  element_set: []
+  animation2_id: 0
+  hit: 100
+  id: 1
+  description: ''
+  str_f: 0
+  sp_cost: 0
+  variance: 15
