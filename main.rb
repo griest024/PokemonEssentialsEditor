@@ -30,8 +30,9 @@ resource_root(:images, File.join(File.dirname(__FILE__), "res", "img"), "res/img
 
 $project = '../Pokemon Virginia'
 
+require_relative 'lib'
 #everything in these directories will be included
-require_rel './lib' , './plugins'
+require_rel './plugins'
 
 $icon = JavaFX::Image.new("/res/img/pkball.gif")
 
