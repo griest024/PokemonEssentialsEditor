@@ -1,0 +1,5 @@
+module PKMNEE::Strings
+
+
+
+end

@@ -16,6 +16,31 @@
 
 ###############################################################################
 
+$data
+
+$data_types = {
+	Game => :game,
+	Pokemon => :pokemon,
+	Species => :species,
+	Item => :item,
+	Move => :move,
+	Player => :player,
+	Map => :map,
+	Bag => :bag,
+	PC => :pc,
+	Ability => :ability,
+	Map => :map,
+	Tile => :tile,
+	Tileset => :tileset,
+	Trainer => :trainer,
+	Nature => :nature,
+	Status => :status,
+	Sprite => :sprite,
+	Music => :music,
+	Type => :type,
+
+}
+
 # stores the RGSS autotile definition
 $autotile_def = [
 	[26, 27, 32, 33],
@@ -93,7 +118,7 @@ module PKMNEE
 
 	class Main < JRubyFX::Application
 
-		@plugins = []
+		private_attr_accessor :plugins
 
 		def start(stage)
 			@stage = stage
@@ -119,8 +144,6 @@ module PKMNEE
 		end
 
 		def self.load_plugins
-			# @manager = PluginManager.new(@plugins)
-			@plugins.map! { |e| e.new }
 			@plugins.each_index { |i| @plugins[i].id= i }
 		end
 
@@ -137,7 +160,7 @@ module PKMNEE
  		end
 
  		def self.num_plugins
- 			@plugins.size
+ 			plugins.size
  		end
 
 		def self.declare_plugin(plugin_class)

@@ -114,10 +114,32 @@ module ScopedAttrAccessor
   end
 end
 
+# This module defines class  attribute accessors
+# Each method only takes one variable name (without the @@) and an optional value
+# Getters and setters are defined at class level
+module ClassAttrAccessor
+	def class_attr_accessor(name, value = nil)
+		name = name.to_sym
+		self.class_variable_set("@@#{name}".to_sym, value)
+		self.define_singleton_method(name) { self.class_variable_get("@@#{name}".to_sym)}
+		self.define_singleton_method("#{name}=".to_sym) { |v| self.class_variable_set("@@#{name}".to_sym, v) }
+	end
+	def class_attr_writer(name, value = nil)
+		name = name.to_sym
+		self.class_variable_set("@@#{name}".to_sym, value)
+		self.define_singleton_method("#{name}=".to_sym) { |v| self.class_variable_set("@@#{name}".to_sym, v) }
+	end
+	def class_attr_reader(name, value = nil)
+		name = name.to_sym
+		self.class_variable_set("@@#{name}".to_sym, value)
+		self.define_singleton_method(name) { self.class_variable_get("@@#{name}".to_sym)}
+	end
+end
+
 # monkey-patching object, because I can
 class Object
   extend ScopedAttrAccessor
-
+  extend ClassAttrAccessor
   private
   	# monkey patch method_missing to look for camelCase versions of snake_case methods
 	def method_missing(id, *args, &block)

@@ -1,3 +1,5 @@
+require 'yaml'
+
 move_funtion_codes = {002 => :hurtUserQuarter}
 $stat_order = [:hp, :attack, :defense, :speed, :special_attack, :special_defense]
 
@@ -81,4 +83,8 @@ ary.each do |e|
 	species[sp.id] = sp
 end
 
-p species[:charmander].ev_yield
+Dir.mkdir("data") unless File.exists?("data")
+Dir.mkdir("data/species") unless File.exists?("data/species")
+species.each do |id, sp|
+	File.open("data/species/#{id}.yaml", "w") { |file| file.write sp.to_yaml }
+end
