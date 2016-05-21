@@ -163,10 +163,11 @@ module PKMNEE
  			plugins.size
  		end
 
-		def self.declare_plugin(plugin_class)
+		def self.declare_plugin(plugin)
 			# plugin = plugin_class.new
 			# plugin.id=(@plugins.size)
-			@plugins << plugin_class
+			@plugins << plugin
+			plugin.init
 		end
 	end
 

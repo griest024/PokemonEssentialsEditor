@@ -36,55 +36,69 @@ module PKMNEE::Plugin
 		class << self
 
 			def inherited(subclass)
+				class << subclass
+					attr_accessor :id, :instances, :editors, :handler, :instance_params
+					def new
+						
+					end
+					
+					def init
+						@instances = []
+						@editors = {}
+						@handler = DataHandler.new
+					end
+
+					def name
+						raise NotImplementedError.new("You must override self.name")
+					end
+
+					def author
+						raise NotImplementedError.new("You must override self.author")
+					end
+
+					def canHandle?(type)
+						@handler.canHandle?(type)
+					end
+
+					def canOpen?(type)
+						canHandle?(type)
+					end
+
+					# An image preview of your app, probably a screenshot of you testing it
+					def preview
+						
+					end
+
+					# returns a short description of your plugin
+					def description
+						"Author has not added a description. You're on your own."
+					end
+
+					#type: the type of instance to get
+					#*controller_args: optional args to pass to instance
+					def getInstance(type, *controller_args)
+						instances << ret = editors[type].new(*controller_args)
+						ret
+					end
+
+					def to_s
+						name
+					end
+
+					# Needed so JavaFX can convert this object to a String
+					def toString
+						to_s
+					end
+				end
 				PKMNEE::Main.declare_plugin(subclass)
 			end
 
-			def name
-				raise NotImplementedError.new("You must override self.name")
-			end
-
-			def author
-				raise NotImplementedError.new("You must override self.author")
-			end
-
-			def canHandle?(type)
-				handler.canHandle?(type)
-			end
-
-			def canOpen?(type)
-				canHandle?(type)
-			end
-
-			# An image preview of your app, probably a screenshot of you testing it
-			def preview
-				
-			end
-
-			# returns a short description of your plugin
-			def description
-				"Author has not added a description. You're on your own."
-			end
+			
 
 			# returns the default configuration screen
 			# def config
 			# 	JavaFX::Label.new("This plugin has no configurable options.")
 			# end
-
-			#type: the type of instance to get
-			#*controller_args: optional args to pass to instance
-			def getInstance(type, *controller_args)
-				instances << ret = editors[type].new(*controller_args)
-				ret
-			end
-
-			def to_s
-				name
-			end
-
-			# Needed so JavaFX can convert this object to a String
-			def toString
-				to_s
-			end
 
 		end	
 	end
