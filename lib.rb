@@ -1,5 +1,6 @@
 require_relative 'lib/java_namespacing'
 require_relative 'lib/kernel'
+require_relative 'lib/javafx_mod'
 require_relative 'lib/util'
 require_relative 'lib/pkmnee'
 require_relative 'lib/plugin'

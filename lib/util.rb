@@ -1,3 +1,4 @@
+
 module Util
 
 	class NamedLabel < JavaFX::HBox

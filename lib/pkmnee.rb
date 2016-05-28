@@ -124,8 +124,10 @@ module PKMNEE
 		@plugins = []
 
 		def start(stage)
-			puts "\n***************************Pokemon Essentials Editor****************************"
+			puts "\n***************************Pokemon Essentials Editor****************************\n\n"
 			self.class.initPlugins
+			PKMNEE::Import.items
+			PKMNEE::Import.species
 			@stage = stage
 			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
 				fxml Editor
@@ -135,8 +137,6 @@ module PKMNEE
 				setMaximized(true)
 				show
 			end
-			PKMNEE::Import.items
-			PKMNEE::Import.species
 		end
 
 		def stop
@@ -194,6 +194,8 @@ module PKMNEE
 		def initialize
 			Main.loadPlugins
 			puts "Plugins loaded: #{Main.names}"
+			@splitpane.bindHeightToScene
+			@data_hbox.getChildren.add(PKMNEE::Plugin::RawData.new)
 		end
 
 		def openPluginSelect

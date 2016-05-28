@@ -21,7 +21,7 @@ module PKMNEE::Plugin
 		class << self
 
 			def init
-				@handler = DataHandler.new(RawDataController).handleAll
+				@handler = DataHandler.new(RawDataView).handleAll
 				@name = "Raw Data Viewer"
 				@author = "griest"
 				@description = "Allows you to view the attributes of all the data associated with your game"
@@ -29,10 +29,7 @@ module PKMNEE::Plugin
 
 		end
 
-		class RawDataController < JavaFX::VBox
-			# include JRubyFX::Controller
-
-			# fxml 'editor-data.fxml'
+		class RawDataView < JavaFX::VBox
 
 			def initialize(data = nil)
 				super()
