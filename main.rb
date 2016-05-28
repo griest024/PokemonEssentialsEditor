@@ -20,8 +20,6 @@ require 'jrubyfx'
 require 'require_all'
 
 
-puts "\n***************************Pokemon Essentials Editor****************************"
-
 STDOUT.sync = true
 STDERR.sync = true
 
@@ -32,9 +30,8 @@ $project = '../Pokemon Virginia'
 
 require_relative 'lib'
 #everything in these directories will be included
-require_rel './plugins'
+require_rel 'plugins'
 
 $icon = JavaFX::Image.new("/res/img/pkball.gif")
-
 
 PKMNEE::Main.launch

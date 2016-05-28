@@ -1,7 +1,7 @@
 module Kernel
 
 	def simpleType?(data)
-		simpleTypes = [Fixnum, String, FalseClass, TrueClass]
+		simpleTypes = [Fixnum, String, FalseClass, TrueClass, Symbol]
 		simpleTypes.include?(data.class)
 	end
 

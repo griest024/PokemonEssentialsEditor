@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.geometry.*?>
@@ -10,28 +11,32 @@
 
 <fx:root prefHeight="600.0" prefWidth="900.0" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <children>
-    <SplitPane dividerPositions="0.3" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+    <SplitPane fx:id="splitpane" dividerPositions="0.5" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <items>
-            <VBox focusTraversable="true" prefHeight="578.0" prefWidth="244.0">
+            <VBox fx:id="plugin_select_vbox" focusTraversable="true">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" text="Plugin Selection" textAlignment="CENTER">
+                  <Label fx:id="plugin_select_label" alignment="CENTER" contentDisplay="CENTER" text="Plugin Selection" textAlignment="CENTER">
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
                   </Label>
-                  <ScrollPane VBox.vgrow="ALWAYS">
+                  <ScrollPane fx:id="plugin_select_scrollpane" fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="336.0" prefWidth="504.0" VBox.vgrow="ALWAYS">
                      <content>
-                        <ListView fx:id="plugin_list" />
-                     </content>
-                  </ScrollPane>
-                  <TilePane focusTraversable="true" prefHeight="200.0" prefWidth="200.0" tileAlignment="TOP_LEFT" VBox.vgrow="SOMETIMES">
-                     <padding>
-                        <Insets top="5.0" />
-                     </padding>
-                  </TilePane>
+                        <ListView fx:id="plugin_list" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="560.0" prefWidth="377.0" />
+                     </content></ScrollPane>
                </children>
             </VBox>
-        <AnchorPane fx:id="config_pane" />
+            <VBox fx:id="preview_vbox" fillWidth="false">
+               <children>
+                  <ImageView fx:id="preview_imageview" pickOnBounds="true" preserveRatio="true">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <viewport>
+                        <Rectangle2D />
+                     </viewport></ImageView>
+               </children>
+            </VBox>
       </items>
     </SplitPane>
       <ToolBar prefHeight="40.0" prefWidth="200.0">

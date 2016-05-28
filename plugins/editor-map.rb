@@ -13,36 +13,25 @@
  #    You should have received a copy of the GNU General Public License
  #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-module Plugin
-	class MapEditorPlugin < Base
-
-		def initialize
-			super
-			editors[:default] = MapEditor
-			handler.maps.tilesets
-		end
+module PKMNEE::Plugin
+	class MapEditor < Base
 
 		class << self
 
-			def name
-				"Map Editor"
+			def init
+				@name = "Map Editor"
+				@author = "griest"
+				@description = "You can edit maps, tilesets, tiles, and the world map with this plugin."
+				@handler = DataHandler.new(MapEditorController)
 			end
-
-			def author
-				"griest"
-			end
-		end
-
-		def config
-			config = Config.new(self)
 		end
 		
-		class MapEditor < JavaFX::BorderPane
+		class MapEditorController < JavaFX::BorderPane
 			include JRubyFX::Controller
 
 			fxml 'editor-map.fxml'
 
-			def initialize(map_id)
+			def initialize(data = nil)
 				loadMap(map_id)
 				@layer_buttons = [@layer1_button, @layer2_button, @layer3_button]
 				connectControllers
@@ -89,7 +78,7 @@ module Plugin
 			def addEventHandlers
 				#tileset selection
 				handler = JavaFX::EventHandler.new
-				handler.instance_variable_set("@effect", JavaFX::InnerShadow.new)
+				handler.instance_variable_set(:@effect, JavaFX::InnerShadow.new)
 				#click event
 				def handler.handle(mouse_clicked_event)
 					@node.setEffect(nil) if @node

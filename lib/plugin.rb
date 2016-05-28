@@ -2,7 +2,7 @@ module PKMNEE::Plugin
 
 	class Screen < JavaFX::Stage
 
-		attr_accessor(:root)
+		attr_accessor :root
 
 		def initialize(root, *properties)
 			if root.is_a?(JavaFX::Parent)
@@ -25,64 +25,57 @@ module PKMNEE::Plugin
 		
 	end
 
-	class Base
-		
-		class_attr_accessor :id
-		class_attr_accessor :instances, []
-		class_attr_accessor :editors, {}
-		class_attr_accessor :handler, DataHandler.new
-		class_attr_accessor :instance_params 
+	class Base 
 
 		class << self
 
 			def inherited(subclass)
 				class << subclass
-					attr_accessor :id, :instances, :editors, :handler, :instance_params
-					def new
-						
+
+					attr_accessor :id
+					attr_reader :instances, :handler, :author, :description, :preview, :name
+
+					def new(data = nil)
+						if open?(data)
+							return open(data)
+						else
+							puts "#{name} is unable to open #{data.class}"
+						end
 					end
-					
-					def init
+
+					def initPlugin
 						@instances = []
-						@editors = {}
 						@handler = DataHandler.new
+						@name = "Who the hell knows"
+						@author = "Author has chosen to remain anonymous. Yeah you're cool. /s"
+						@description = "Is it not self-explanatory?"
+						@preview = JavaFX::Image.new("res/img/preview_default.jpg")
+						self.init
+						self
 					end
 
-					def name
-						raise NotImplementedError.new("You must override self.name")
+					def canHandle?(data)
+						@handler.canHandle?(data)
 					end
 
-					def author
-						raise NotImplementedError.new("You must override self.author")
+					def canOpen?(data)
+						canHandle?(data)
 					end
 
-					def canHandle?(type)
-						@handler.canHandle?(type)
-					end
-
-					def canOpen?(type)
-						canHandle?(type)
-					end
-
-					# An image preview of your app, probably a screenshot of you testing it
-					def preview
-						
-					end
-
-					# returns a short description of your plugin
-					def description
-						"Author has not added a description. You're on your own."
+					def open?(data)
+						canHandle?(data)
 					end
 
 					#type: the type of instance to get
 					#*controller_args: optional args to pass to instance
-					def getInstance(type, *controller_args)
-						instances << ret = editors[type].new(*controller_args)
-						ret
+					def open(data = nil)
+						puts "Opening #{self}"
+						@instances << ctrl = @handler.get(data).new(data)
+						ctrl
 					end
 
 					def to_s
-						name
+						@name
 					end
 
 					# Needed so JavaFX can convert this object to a String
@@ -90,16 +83,8 @@ module PKMNEE::Plugin
 						to_s
 					end
 				end
-				PKMNEE::Main.declare_plugin(subclass)
+				PKMNEE::Main.declarePlugin(subclass)
 			end
-
-			
-
-			# returns the default configuration screen
-			# def config
-			# 	JavaFX::Label.new("This plugin has no configurable options.")
-			# end
-
 		end	
 	end
 
@@ -247,36 +232,61 @@ module PKMNEE::Plugin
 	# specifies which types a plugin can open
 	class DataHandler
 
-		attr_accessor :types
+		attr_accessor :handles
+		attr_accessor :universal
 
 		# define helper methods for handling data types
-		$data_types.each_value { |e| define_method(e) { addHandle(e) } }
+		# $data_classes.each { |e| define_method(e.to_sym) { |controller| addHandle(controller, e.to_sym) } }
 
-		def initialize(*types)
-			types = []
-			addHandle(*types)
+		def initialize(default = nil)
+			@universal = false
+			@handles = {nil: default}
+			@handles.default = default
+		end
+
+		def default=(value)
+			@handles[:nil] = value
+		end
+
+		def getController(data)
+			@handles[data.to_sym]
+		end
+
+		def handle(data)
+			getController(data)
+		end
+
+		def universal?
+			@universal
+		end
+
+		def handleAll
+			@universal = true
+			self
+		end
+
+		def get(data)
+			getController(data)
 		end
 
 		def handleList
-			types
+			@handles.keys
 		end
 
 		# returns true if this handler can handle the specified data type
-		# can take either a :symbol or a Class
-		def canHandle?(type)
-			if type.is_a?(Class)
-				return types.include?($data_types[type])
-			elsif type.is_a?(Symbol)	
-				types.include?(type)
-			else
-				puts "Warning: Pass DataHandler#canHandle? a symbol or Class. Read the docs you fool."
-			end
+		# can take either a Symbol or a Class
+		def canHandle?(data)
+			@handles.keys.include?(data.to_sym) || @universal
 		end
 
 		# specifies that the plugin can handle files of type
-		def addHandle(*type)
-			type.each { |e| types << e }
-			types
+		def addHandle(controller, *types)
+			types.each { |e| @handles[e.to_sym] = controller }
+			self
+		end
+
+		def set(controller, *types)
+			addHandle(controller, *types)
 		end
 
 		# def scripts

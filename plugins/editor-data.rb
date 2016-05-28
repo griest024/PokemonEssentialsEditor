@@ -15,39 +15,42 @@
 
 require 'yaml'
 
-module Plugin
-	class RawDataPlugin < Base
-
-		def initialize
-			super
-			editors[:default] = RawDataController
-		end
+module PKMNEE::Plugin
+	class RawData < Base
 
 		class << self
 
-			def name
-				"Raw Data Editor"
+			def init
+				@handler = DataHandler.new(RawDataController).handleAll
+				@name = "Raw Data Viewer"
+				@author = "griest"
+				@description = "Allows you to view the attributes of all the data associated with your game"
 			end
 
-			def author
-				"griest"
-			end
 		end
 
-		class RawDataController < JavaFX::AnchorPane
-			include JRubyFX::Controller
+		class RawDataController < JavaFX::VBox
+			# include JRubyFX::Controller
 
-			fxml 'editor-data.fxml'
+			# fxml 'editor-data.fxml'
 
-			def initialize()
-				PKMNEE::DataTree.new(loadYAML("Map082"), @data_tree_view)
+			def initialize(data = nil)
+				super()
+				# setMinHeight(self.class::USE_PREF_SIZE)
+				setMaxHeight(Java::Double::MAX_VALUE)
+				# setPrefHeight(1000)
+				if data # load a discrete set of data
+					getChildren.add(PKMNEE::DataTree.new(data))
+				else # load everything
+					@accordion = JavaFX::Accordion.new
+					$data.each do |k,v| 
+						@accordion.getPanes.add(JavaFX::TitledPane.new(k.to_s, PKMNEE::DataTree.new(v)))
+					end
+					@accordion.setMaxHeight(Java::Double::MAX_VALUE)
+					getChildren.add(@accordion)
+				end
 			end
-
-			def get_node(fx_id)
-				instance_variable_set("@" + fx_id.to_s, @scene.lookup("##{fx_id}"))
-			end		
 		end
-
 	end
 end
 

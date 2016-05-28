@@ -1,5 +1,71 @@
 module Util
 
+	class NamedLabel < JavaFX::HBox
+
+		def initialize(name, default = "")
+			super(5, @name_label = JavaFX::Label.new, JavaFX::Separator.new(JavaFX::Orientation::VERTICAL), @text_label = JavaFX::Label.new)
+			@name = JavaFX::SimpleStringProperty.new
+			@name.setValue(name.to_s)
+			@text = JavaFX::SimpleStringProperty.new
+			@text.setValue(text.to_s)
+			@name_label.textProperty.bindBidirectional(@name)	
+			@text_label.textProperty.bindBidirectional(@text)
+			@text_label.setWrapText(true)
+			@name_label.setMinSize(JavaFX::Label::USE_PREF_SIZE, JavaFX::Label::USE_PREF_SIZE)
+		end
+
+		def name
+			@name.get
+		end
+		
+		def name=(value)
+			@name.set(value)
+		end
+
+		def text
+			@text.get
+		end
+
+		def text=(value)
+			@text.set(value)
+		end
+
+		def setWrapText(bool)
+			@text_label.setWrapText(bool)
+		end
+	end
+
+	class DataSet
+		attr_accessor :data_class
+		attr_accessor :data
+		
+		def initialize(klass, *data)
+			@data = {}
+			@data_class = klass
+			addData(*data)
+		end
+
+		def addData(*data)
+			data.each { |e| e.is_a?(@data_class) ? @data[e.id] = e : puts("This DataSet can only contain data of class #{@data_class}") }
+		end
+		
+		def class
+			@data_class
+		end
+
+		def to_sym
+			@data_class.to_sym
+		end
+
+		def inspect
+			"DataSet<#{@data_class}>, size: #{@data.size}"
+		end
+
+		def to_s
+			@data_class.to_s
+		end
+	end
+
 	class FractionFormatter < JavaFX::StringConverter
 
 		def toString(dbl)
@@ -57,6 +123,12 @@ module JRubyFX::Displayable
 
 	def ctrl=(value)
 		control= value
+	end
+end
+
+class NilClass
+	def to_sym
+		:nil
 	end
 end
 
@@ -140,8 +212,12 @@ end
 class Object
   extend ScopedAttrAccessor
   extend ClassAttrAccessor
+  def toString
+  	self.to_s
+  end
   private
   	# monkey patch method_missing to look for camelCase versions of snake_case methods
+  	# broken ATM
 	def method_missing(id, *args, &block)
 		ary = id.id2name.split("_")
 		camel = ary.delete_at(0).downcase
@@ -149,6 +225,7 @@ class Object
 		ary.each { |e| camel.concat(e) }
 		camel = camel.to_sym
 		if self.respond_to?(camel)
+			puts "#{self} recieving camelCase method #{camel} with args #{args}"
 			self.send(camel, *args, &block)
 		else
 			super
