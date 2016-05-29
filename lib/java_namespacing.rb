@@ -1,3 +1,16 @@
+
+module TiwulFX
+	include_package "com.panemu.tiwulfx.common"
+	include_package "com.panemu.tiwulfx.control"
+	include_package "com.panemu.tiwulfx.control.behavior"
+	include_package "com.panemu.tiwulfx.control.sidemenu"
+	include_package "com.panemu.tiwulfx.control.skin"
+	include_package "com.panemu.tiwulfx.dialog"
+	include_package "com.panemu.tiwulfx.form"
+	include_package "com.panemu.tiwulfx.table"
+end
+
+
 #namspaces Java and JavaFX packages into modules
 module JavaFX
 	include_package "javafx.animation"

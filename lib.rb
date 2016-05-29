@@ -1,3 +1,4 @@
+require_relative 'lib/tiwulfx.jar'
 require_relative 'lib/java_namespacing'
 require_relative 'lib/kernel'
 require_relative 'lib/javafx_mod'
