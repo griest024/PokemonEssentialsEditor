@@ -1,6 +1,3 @@
 [submodule "lib/PKMNEngine"]
 	path = lib/PKMNEngine
 	url = https://github.com/griest024/PKMNEngine
-[submodule "OpenRGSS"]
-	path = OpenRGSS
-	url = https://github.com/griest024/OpenRGSS

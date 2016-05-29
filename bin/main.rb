@@ -16,8 +16,7 @@
 #!/usr/bin/ruby
 
 require 'java'
-# require 'jrubyfx'
-require_relative 'lib/jrubyfx'
+require 'jrubyfx'
 require 'require_all'
 
 
@@ -34,5 +33,7 @@ require_relative 'lib'
 require_rel 'plugins'
 
 $icon = JavaFX::Image.new("/res/img/pkball.gif")
+
+puts "hello"
 
 PKMNEE::Main.launch
