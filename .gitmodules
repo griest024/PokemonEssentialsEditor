@@ -1,7 +1,6 @@
 [submodule "lib/PKMNEngine"]
 	path = lib/PKMNEngine
 	url = https://github.com/griest024/PKMNEngine
-
 [submodule "lib/jrubyfx"]
 	path = lib/jrubyfx
 	url = https://github.com/jruby/jrubyfx
