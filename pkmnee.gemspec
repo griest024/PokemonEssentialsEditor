@@ -7,6 +7,7 @@ Gem::Specification.new do |s|
 	s.email						= "griest024@gmail.com"
 	s.homepage					= "https://github.com/griest024/PokemonEssentialsEditor"
 	s.bindir					= 'bin'
+	s.require_paths				= ['lib', 'plugins']
 	s.executables				<< 'main.rb'
 	s.add_runtime_dependency	'jrubyfx'
 	s.add_runtime_dependency	'require_all'

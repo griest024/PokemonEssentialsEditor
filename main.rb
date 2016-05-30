@@ -16,8 +16,8 @@
 #!/usr/bin/ruby
 
 require 'java'
-# require 'jrubyfx'
-require_relative 'lib/jrubyfx'
+require 'jrubyfx'
+# require_relative 'lib/jrubyfx'
 require 'require_all'
 
 
@@ -29,7 +29,7 @@ resource_root(:images, File.join(File.dirname(__FILE__), "res", "img"), "res/img
 
 $project = '../Pokemon Virginia'
 
-require_relative 'lib'
+require_relative 'lib/lib'
 #everything in these directories will be included
 require_rel 'plugins'
 
