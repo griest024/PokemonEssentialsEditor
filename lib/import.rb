@@ -18,6 +18,36 @@ module PKMN
 			end
 		end
 	end
+
+	module Type
+
+		class Base
+			include DataClass
+
+			attr_accessor :id
+			attr_accessor :name
+			attr_accessor :class
+			attr_accessor :effects
+
+			def initialize(id, name, type_class, effects = {})
+				@id = id
+				@name = name
+				@class = type_class
+				@effects = effects
+			end
+			
+			def addEffect(id, effect)
+				@effect[id] = effect
+			end
+		end
+
+		# helper to create new types, mainly used by PKMNEE::Import
+		def self.new(id, name, type_class, weaknesses, resistances, immunities)
+			type = Base.new(id, name, type_class)
+			{little: resistances, very: weaknesses, no: immunities}.each { |effect, types| types.each { |e| type.addEffect(e, effect) } }
+		end
+	end
+
 	module Item
 
 		class Base
