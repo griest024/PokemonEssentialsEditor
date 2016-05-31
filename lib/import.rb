@@ -241,8 +241,8 @@ module PKMNEE
 				sp.catch_rate= e.scan(/^Rareness=(.*)$/)[0][0].to_i
 				sp.happiness= e.scan(/^Happiness=(.*)$/)[0][0].to_i
 				sp.hatch_steps = e.scan(/^StepsToHatch=(.*)$/)[0][0].to_i
-				sp.height= e.scan(/^Height=(.*)$/)[0][0].to_i
-				sp.weight= e.scan(/^Weight=(.*)$/)[0][0].to_i
+				sp.height= e.scan(/^Height=(.*)$/)[0][0].to_f
+				sp.weight= e.scan(/^Weight=(.*)$/)[0][0].to_f
 				sp.kind= e.scan(/^Kind=(.*)$/)[0][0]
 				sp.description= e.scan(/^Pokedex=(.*)$/)[0][0]
 				species[sp.id] = sp

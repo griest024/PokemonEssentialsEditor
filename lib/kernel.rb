@@ -1,8 +1,10 @@
 module Kernel
 
 	def simpleType?(data)
-		simpleTypes = [Fixnum, String, FalseClass, TrueClass, Symbol]
-		simpleTypes.include?(data.class)
+		is_class = false
+		simpleTypes = [Numeric, String, FalseClass, TrueClass, Symbol]
+		simpleTypes.each { |type| is_class ||= data.is_a?(type) }
+		is_class
 	end
 
 	def simpleType(data)
