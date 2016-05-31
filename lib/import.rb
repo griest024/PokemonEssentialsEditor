@@ -224,11 +224,11 @@ module PKMNEE
 			ary.each do |e|
 				sp = Species.new
 				sp.number= e.scan(/^\[(\d*)\]$/)[0][0]
-				sp.id= e.scan(/^InternalName=(.*)$/)[0][0].downcase.to_sym
+				sp.id= e.scan(/^InternalName=(.*)$/)[0][0].to_id
 				sp.name= e.scan(/^Name=(.*)$/)[0][0]
-				sp.type1= e.scan(/^Type1=(.*)$/)[0][0].downcase.to_sym
+				sp.type1= e.scan(/^Type1=(.*)$/)[0][0].to_id
 				type = e.scan(/^Type2=(.*)$/)[0]
-				sp.type2= type[0].downcase.to_sym if type
+				sp.type2= type[0].to_id if type
 				st = e.scan(/^BaseStats=(.*)$/)[0][0].split(",")
 				ev = e.scan(/^EffortPoints=(.*)$/)[0][0].split(",")
 				sp.stats= {}
@@ -284,10 +284,10 @@ module PKMNEE
 				else
 					PKMN::Item::Base.new
 				end
-				item.id = temp[0].downcase.to_sym
+				item.id = temp[0].to_id
 				item.name = temp[1]
 				item.plural_name = temp[2]
-				item.price = temp[4]
+				item.price = temp[4].to_i
 				item.description = desc
 				items[item.id] = item
 			end
