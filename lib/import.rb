@@ -44,7 +44,9 @@ module PKMN
 		# helper to create new types, mainly used by PKMNEE::Import
 		def self.new(id, name, type_class, weaknesses, resistances, immunities)
 			type = Base.new(id, name, type_class)
+			# take the defensive effectiveness of the type and add it to the type
 			{little: resistances, very: weaknesses, no: immunities}.each { |effect, types| types.each { |e| type.addEffect(e.to_id, effect) } }
+			type # return type
 		end
 	end
 
@@ -193,9 +195,39 @@ end
 module PKMNEE
 	module Import
 
-		$project_dir = "C:/Users/Peter/PokemonEssentialsEditor/src"
+		$project_dir = Dir.home + "/PokemonEssentialsEditor/src"
 		move_funtion_codes = {002 => :hurtUserQuarter}
 		$stat_order = [:hp, :attack, :defense, :speed, :special_attack, :special_defense]
+
+		def self.types
+			ary = []
+			str = ""
+			types = {}
+
+			file = File.open("#{$project_dir}/PBS/types.txt", "r")
+			file.pos= 3
+			# parse file, adding each section to an array
+			file.each_line do |l|
+				if l.match(/^\[\d*\]/) # checks if line begins section, i.e. [4]
+					ary << str
+					str = l
+				else
+					str = str + l
+				end
+			end
+			ary.delete_at(0)
+
+			ary.each do |e|
+				id = e.scan(/^InternalName=(.*)$/)[0][0].to_id
+				# name = e.scan(/^Name=(.*)$/)[0][0]
+				# type_class = (e.scan(/^IsSpecialType=true/).empty? ? :physical : :special)
+				# weaknesses = e.scan(/^Weaknesses=(.*)/)[0][0].split(',')
+				# resistances = e.scan(/^Resistances=(.*)/)[0][0].split(',')
+				# immunities = e.scan(/^Immunities/)[0][0].split(',')
+				# type = PKMN::Type.new(id, name, type_class, weaknesses, resistances, immunities)
+				# types[type.id] = type
+			end
+		end
 
 ############################################## SPECIES #############################################
 
@@ -242,7 +274,7 @@ module PKMNEE
 			pokemon.pos= 3
 			# parse file, adding each section to an array
 			pokemon.each_line do |l|
-				if l.match(/^\[\d*\]$/) # checks if line begins section, i.e. [4]
+				if l.match(/^\[\d*\]/) # checks if line begins section, i.e. [4]
 					ary << str
 					str = l
 				else
