@@ -44,7 +44,7 @@ module PKMN
 		# helper to create new types, mainly used by PKMNEE::Import
 		def self.new(id, name, type_class, weaknesses, resistances, immunities)
 			type = Base.new(id, name, type_class)
-			{little: resistances, very: weaknesses, no: immunities}.each { |effect, types| types.each { |e| type.addEffect(e, effect) } }
+			{little: resistances, very: weaknesses, no: immunities}.each { |effect, types| types.each { |e| type.addEffect(e.to_id, effect) } }
 		end
 	end
 
