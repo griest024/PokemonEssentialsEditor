@@ -126,8 +126,7 @@ module PKMNEE
 		def start(stage)
 			puts "\n***************************Pokemon Essentials Editor****************************\n\n"
 			self.class.initPlugins
-			PKMNEE::Import.items
-			PKMNEE::Import.types
+			PKMNEE::Import.all
 			@stage = stage
 			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
 				fxml Editor
@@ -284,6 +283,7 @@ module PKMNEE
 				JavaFX::ReadOnlyStringWrapper.new(e.get_value.get_value[1]) 
 			end )
 			@col2.setPrefWidth(1200)
+			setColumnResizePolicy(JavaFX::TreeTableView::CONSTRAINED_RESIZE_POLICY)
 			if @data.is_a?(Util::DataSet) # collection of data objects
 				root = JavaFX::TreeItem.new([@data.to_s, @data.inspect])
 				root.setExpanded(true)

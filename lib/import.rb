@@ -1,6 +1,7 @@
 require 'yaml'
 module PKMN
 
+	# extend this so you can use klass.is_a? PKMN::DataClass
 	module DataClass
 
 		module InstanceMethods
@@ -9,7 +10,7 @@ module PKMN
 				self.instance_variable_get(:@type)
 			end
 		end
-		
+
 		def self.extended(klass)
 			$data_classes << klass
 			klass.instance_variable_set(:@type, klass.to_s.downcase.to_sym)
@@ -22,7 +23,7 @@ module PKMN
 	module Type
 
 		class Base
-			include DataClass
+			extend PKMN::DataClass
 
 			attr_accessor :id
 			attr_accessor :name
@@ -37,7 +38,7 @@ module PKMN
 			end
 			
 			def addEffect(id, effect)
-				@effect[id] = effect
+				@effects[id] = effect
 			end
 		end
 
@@ -219,14 +220,18 @@ module PKMNEE
 
 			ary.each do |e|
 				id = e.scan(/^InternalName=(.*)$/)[0][0].to_id
-				# name = e.scan(/^Name=(.*)$/)[0][0]
-				# type_class = (e.scan(/^IsSpecialType=true/).empty? ? :physical : :special)
-				# weaknesses = e.scan(/^Weaknesses=(.*)/)[0][0].split(',')
-				# resistances = e.scan(/^Resistances=(.*)/)[0][0].split(',')
-				# immunities = e.scan(/^Immunities/)[0][0].split(',')
-				# type = PKMN::Type.new(id, name, type_class, weaknesses, resistances, immunities)
-				# types[type.id] = type
+				name = e.scan(/^Name=(.*)$/)[0][0]
+				type_class = (e.scan(/^IsSpecialType=true$/).empty? ? :physical : :special)
+				weaknesses = e.scan(/^Weaknesses=(.*)$/)
+				weaknesses = weaknesses[0][0].split(',') unless weaknesses.empty?
+				resistances = e.scan(/^Resistances=(.*)$/)
+				resistances = resistances[0][0].split(',') unless resistances.empty?
+				immunities = e.scan(/^Immunities=(.*)/)
+				immunities = immunities[0][0].split(',') unless immunities.empty?
+				type = PKMN::Type.new(id, name, type_class, weaknesses, resistances, immunities)
+				types[type.id] = type
 			end
+			$data[:types] = Util::DataSet.new(PKMN::Type::Base, *(types.values))
 		end
 
 ############################################## SPECIES #############################################
@@ -364,6 +369,12 @@ module PKMNEE
 			# items.each do |id, item|
 			# 	File.open("data/items/#{id}.yaml", "w") { |file| file.write item.to_yaml }
 			# end
+		end
+
+		def self.all
+			self.types
+			self.species
+			self.items
 		end
 	end
 end

@@ -35,6 +35,4 @@ require_rel 'plugins'
 
 $icon = JavaFX::Image.new("/res/img/pkball.gif")
 
-PKMNEE::Import.types
-
-# PKMNEE::Main.launch
+PKMNEE::Main.launch
