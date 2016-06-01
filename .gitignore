@@ -1,4 +1,3 @@
 src/*
-lib/data/*
 jruby/*
 gem/fxmlloader/.gitignore

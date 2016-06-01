@@ -71,7 +71,7 @@ module PKMNEE::Plugin
 			end
 
 			def formatSliderLabels
-				map_scale_slider_formatter = Util::FractionFormatter.new
+				map_scale_slider_formatter = PKMNEE::Util::FractionFormatter.new
 				@map_scale_slider.set_label_formatter(map_scale_slider_formatter)
 			end
 

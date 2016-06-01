@@ -15,26 +15,29 @@
 
 #!/usr/bin/ruby
 
+# load gems
 require 'java'
 require 'jrubyfx'
-# require_relative 'lib/jrubyfx'
 require 'require_all'
-
 
 STDOUT.sync = true
 STDERR.sync = true
 
+$root_dir = File.expand_path(File.dirname(__FILE__))
+
+# init module so declaring submodules is quicker
+module PKMNEE
+end
+
+# load library
+require_relative 'lib/lib'
+
+#load plugins
+require_rel 'plugins'
+
 fxml_root(File.dirname(__FILE__) + '/layout')
 resource_root(:images, File.join(File.dirname(__FILE__), "res", "img"), "res/img")
 
-$root_dir = File.expand_path(File.dirname(__FILE__))
-
-require_relative 'lib/lib'
-#everything in these directories will be included
-require_rel 'plugins'
-
 $icon = JavaFX::Image.new("/res/img/pkball.gif")
 
-PKMNEE::Import.maps
-
-# PKMNEE::Main.launch
+PKMNEE::Main.launch
