@@ -22,7 +22,7 @@ module PKMNEE::Plugin
 
 			def init
 				@handler = DataHandler.new(RawDataView).handleAll
-				@name = "Raw Data Viewer"
+				@name = "Raw Data"
 				@author = "griest"
 				@description = "Allows you to view the attributes of all the data associated with your game"
 			end

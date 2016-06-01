@@ -1,4 +1,3 @@
-require 'yaml'
 require_relative 'pkmn'
 require_relative 'items'
 require_relative 'maps'

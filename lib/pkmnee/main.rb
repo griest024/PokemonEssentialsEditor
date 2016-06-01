@@ -74,7 +74,7 @@ module PKMNEE
 		def start(stage)
 			puts "\n***************************Pokemon Essentials Editor****************************\n\n"
 			self.class.initPlugins
-			PKMNEE::Import.all
+			# PKMNEE::Import.all
 			@stage = stage
 			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
 				fxml Editor
@@ -147,17 +147,17 @@ module PKMNEE
 
 		def openPluginSelect
 			stage = JavaFX::Stage.new
-			select = PluginSelectController.new(@tab_pane, stage) # initialize it up here so @tab_pane is in scope
+			select = PluginSelect.new(@tab_pane, stage) # initialize it up here so @tab_pane is in scope
 			with(stage, title: "Plugin Selection", width: 800, height: 600) do
 				icons.add($icon)
 				layout_scene(800, 600) do
 					select
 				end
-		      	show
+		      show
 			end
 		end
 
-		class PluginSelectController < JavaFX::VBox
+		class PluginSelect < JavaFX::VBox
 			include JRubyFX::Controller
 
 			fxml 'plugin-select.fxml'
@@ -169,10 +169,6 @@ module PKMNEE
 				@preview_vbox.getChildren.add(@data_label = PKMNEE::Control::NamedLabel.new("Data types this plugin can open"))
 				@data_label.setWrapText(true)
 				@description_label.setWrapText(true)
-				setupListView
-			end
-
-			def setupListView
 				@plugin_list.setItems(JavaFX::FXCollections.observableArrayList(PKMNEE::Main.plugins))
 				@plugin_list.getSelectionModel.selectedItemProperty.java_send(:addListener, [javafx.beans.value.ChangeListener], lambda do |ov,old,new|
 						plugin = ov.getValue

@@ -19,6 +19,7 @@
 require 'java'
 require 'jrubyfx'
 require 'require_all'
+require 'yaml'
 
 STDOUT.sync = true
 STDERR.sync = true
