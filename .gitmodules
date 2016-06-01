@@ -7,3 +7,6 @@
 [submodule "lib/fxmlloader"]
 	path = lib/fxmlloader
 	url = https://github.com/byteit101/JRubyFX-FXMLLoader
+[submodule "lib/rmxp-plugin"]
+	path = lib/rmxp-plugin
+	url = https://github.com/darmes/rmxp-plugin-system
