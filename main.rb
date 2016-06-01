@@ -27,7 +27,7 @@ STDERR.sync = true
 fxml_root(File.dirname(__FILE__) + '/layout')
 resource_root(:images, File.join(File.dirname(__FILE__), "res", "img"), "res/img")
 
-$project = '../Pokemon Virginia'
+$root_dir = File.expand_path(File.dirname(__FILE__))
 
 require_relative 'lib/lib'
 #everything in these directories will be included
@@ -35,4 +35,6 @@ require_rel 'plugins'
 
 $icon = JavaFX::Image.new("/res/img/pkball.gif")
 
-PKMNEE::Main.launch
+PKMNEE::Import.maps
+
+# PKMNEE::Main.launch

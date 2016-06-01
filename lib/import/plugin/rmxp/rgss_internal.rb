@@ -43,7 +43,7 @@ class Table
     t.data = s[20, items * 2].unpack("S#{items}")
     t
   end
-  attr_accessor(:xsize, :ysize, :zsize, :data, :dim)
+  attr_accessor(:xsize, :ysize, :zsize, :data)
 end
 
 class Color

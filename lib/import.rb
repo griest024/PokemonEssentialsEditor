@@ -1,4 +1,5 @@
 require 'yaml'
+
 module PKMN
 
 	# extend this so you can use klass.is_a? PKMN::DataClass
@@ -199,6 +200,12 @@ module PKMNEE
 		$project_dir = Dir.home + "/PokemonEssentialsEditor/src"
 		move_funtion_codes = {002 => :hurtUserQuarter}
 		$stat_order = [:hp, :attack, :defense, :speed, :special_attack, :special_defense]
+
+		def self.maps
+			require_relative 'import/plugin/export.rb'
+		end
+
+############################################ TYPES #################################################
 
 		def self.types
 			ary = []
