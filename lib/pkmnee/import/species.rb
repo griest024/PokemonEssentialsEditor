@@ -44,7 +44,6 @@ module PKMNEE::Import
 			sp.description= e.scan(/^Pokedex=(.*)$/)[0][0]
 			species[sp.id] = sp
 		end
-		$data[:species] = PKMNEE::Util::DataSet.new(Species, *(species.values))
-	end
-	
+		$data[:species] = PKMNEE::Util::DataSet.new(PKMN::Species::Base, *(species.values))
+	end	
 end
