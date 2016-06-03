@@ -46,6 +46,10 @@ module PKMN
 
 		attr_accessor :id # The symbol by which the tile is referred to internally - Symbol
 		attr_accessor :image # The appearance of the tile - Image
+		attr_accessor :passage
+		attr_accessor :priority
+		attr_accessor :terrain_tag
+
 	end
 
 	class Weather
@@ -60,6 +64,19 @@ module PKMN
 		attr_accessor :image
 		attr_accessor :autotiles
 		attr_accessor :tiles
+		attr_accessor :name
+		attr_accessor :tileset_name
+		attr_accessor :autotile_names
+		attr_accessor :panorama_name
+		attr_accessor :panorama_hue
+		attr_accessor :fog_name
+		attr_accessor :fog_hue
+		attr_accessor :fog_opacity
+		attr_accessor :fog_blend_type
+		attr_accessor :fog_zoom
+		attr_accessor :fog_sx
+		attr_accessor :fog_sy
+		attr_accessor :battleback_name
 
 		def getWidth
 			loadImages if !@image
@@ -99,7 +116,7 @@ module PKMN
 					48.times {@autotiles << JavaFX::WritableImage.new(reader, 0, 0, 32, 32)}
 				end
 			end
-			@image = JavaFX::Image.new(resource_url(:images, "#{tileset_name}.png").to_s)
+			# @image = JavaFX::Image.new(resource_url(:images, "#{tileset_name}.png").to_s)
 			reader = @image.get_pixel_reader
 			(@image.getHeight/32).to_i.times do |y|
 				8.times do |x|

@@ -31,8 +31,8 @@ module PKMNEE::Plugin
 
 			fxml 'editor-map.fxml'
 
-			def initialize(data = nil)
-				loadMap(map_id)
+			def initialize(map = nil)
+				@map = map
 				@layer_buttons = [@layer1_button, @layer2_button, @layer3_button]
 				connectControllers
 				setupGUI
