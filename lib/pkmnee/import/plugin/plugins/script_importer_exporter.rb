@@ -23,8 +23,8 @@ class ScriptImporterExporter < PluginBase
 
   def on_start
     # Set up the directory paths
-    $INPUT_DIR  = $PROJECT_DIR + '/' + $SCRIPTS_DIR + '/'
-    $OUTPUT_DIR = $PROJECT_DIR + '/' + $DATA_DIR + '/'
+    $INPUT_DIR  = $rmxp_dir + '/' + $SCRIPTS_DIR + '/'
+    $OUTPUT_DIR = $rmxp_dir + '/' + $DATA_DIR + '/'
     
     print_separator(true)
     puts "  RGSS Script Import"
@@ -121,8 +121,8 @@ class ScriptImporterExporter < PluginBase
 
   def on_exit    
     # Set up the directory paths
-    $INPUT_DIR  = $PROJECT_DIR + '/' + $DATA_DIR + '/'
-    $OUTPUT_DIR = $PROJECT_DIR + '/' + $SCRIPTS_DIR + '/'
+    $INPUT_DIR  = $rmxp_dir + '/' + $DATA_DIR + '/'
+    $OUTPUT_DIR = $rmxp_dir + '/' + $SCRIPTS_DIR + '/'
     
     print_separator(true)
     puts "  RGSS Script Export"

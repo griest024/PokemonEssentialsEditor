@@ -2,7 +2,7 @@ module PKMNEE::Import
 
 	def self.items
 		items = {}
-		item_file = File.open("#{$project_dir}/PBS/items.txt", "r")
+		item_file = File.open("#{$rmxp_dir}/PBS/items.txt", "r")
 		item_file.pos= 3
 		# parse file, adding each section to an array
 		item_file.each_line do |line|

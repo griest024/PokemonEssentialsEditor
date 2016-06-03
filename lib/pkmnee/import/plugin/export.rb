@@ -10,14 +10,14 @@
 
 # Setup the project directory from the command-line argument
 OS_VERSION = `ver`.strip
-$PROJECT_DIR = $project_dir
+# $rmxp_dir = $rmxp_dir
 if OS_VERSION.index( "Windows XP" )
-  $PROJECT_DIR = String.new( $PROJECT_DIR )
+  $rmxp_dir = String.new( $rmxp_dir )
 elsif OS_VERSION.index( "Windows" )
-  $PROJECT_DIR = String.new( $PROJECT_DIR ).gsub! "/", "\\"
+  $rmxp_dir = String.new( $rmxp_dir ).gsub! "/", "\\"
 end
 
-puts "project directory: #{$PROJECT_DIR}"
+puts "project directory: #{$rmxp_dir}"
 
 $DATA_TYPE = "rxdata"
 $RE_EXPORT = true
@@ -54,7 +54,7 @@ end
 #             SCRIPT
 #######################################
 
-["export", "export/data", "export/scripts"].each { |e| Dir.mkdir("#{$project_dir}/#{e}") unless File.exists?("#{$project_dir}/#{e}") }
+["export", "export/data", "export/scripts"].each { |e| Dir.mkdir("#{$rmxp_dir}/#{e}") unless File.exists?("#{$rmxp_dir}/#{e}") }
 
 # Get the list of plugins in the plugin directory
 plugins = Dir.entries( "#{$plugin_root}/plugins" )

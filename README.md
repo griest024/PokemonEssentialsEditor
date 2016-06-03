@@ -27,7 +27,7 @@ General
 
 - [x] TRANSITION TO JAVAFX 8
 
-
+- [ ] Readables
 - [ ] Access control, change certain plugin/controller functionality to protected
 - [ ] Add FileChooser
 - [x] Open plugin popup

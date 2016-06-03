@@ -25,8 +25,8 @@ class DataImporterExporter < PluginBase
 
   def on_start
     # Set up the directory paths
-    $INPUT_DIR  = $PROJECT_DIR + '/' + $YAML_DIR + '/'
-    $OUTPUT_DIR = $PROJECT_DIR + '/' + $DATA_DIR + '/'
+    $INPUT_DIR  = $rmxp_dir + '/' + $YAML_DIR + '/'
+    $OUTPUT_DIR = $rmxp_dir + '/' + $DATA_DIR + '/'
 
     print_separator(true)
     puts "  RMXP Data Import"
@@ -112,8 +112,8 @@ class DataImporterExporter < PluginBase
 
   def on_exit
 	  # Set up the directory paths
-    $INPUT_DIR  = $PROJECT_DIR + '/' + $DATA_DIR + '/'
-    $OUTPUT_DIR = $PROJECT_DIR + '/' + $YAML_DIR   + '/'
+    $INPUT_DIR  = $rmxp_dir + '/' + $DATA_DIR + '/'
+    $OUTPUT_DIR = $rmxp_dir + '/' + $YAML_DIR   + '/'
  
     print_separator(true)
     puts "  Data Export"

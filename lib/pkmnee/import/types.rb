@@ -5,7 +5,7 @@ module PKMNEE::Import
 		str = ""
 		types = {}
 
-		file = File.open("#{$project_dir}/PBS/types.txt", "r")
+		file = File.open("#{$rmxp_dir}/PBS/types.txt", "r")
 		file.pos= 3
 		# parse file, adding each section to an array
 		file.each_line do |l|

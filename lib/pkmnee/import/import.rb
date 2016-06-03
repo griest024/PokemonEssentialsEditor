@@ -11,13 +11,15 @@ module PKMNEE
 		$stat_order = [:hp, :attack, :defense, :speed, :special_attack, :special_defense]
 
 		def self.rxdata
-			require_relative 'plugin/export.rb'
+			require_relative 'plugin/export.rb' # change this to PKMNEE::Import::Plugin.export once rxdata plugin is namespaced
 		end
 
 		def self.all
-			self.types
-			self.species
-			self.items
+			rxdata
+			maps
+			types
+			species
+			items
 			# Dir.mkdir("data") unless File.exists?("data")
 			# Dir.mkdir("data/species") unless File.exists?("data/species")
 			# species.each do |id, sp|

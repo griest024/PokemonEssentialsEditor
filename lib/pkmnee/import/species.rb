@@ -5,7 +5,7 @@ module PKMNEE::Import
 		str = ""
 		species = {}
 
-		pokemon = File.open("#{$project_dir}/PBS/pokemon.txt", "r")
+		pokemon = File.open("#{$rmxp_dir}/PBS/pokemon.txt", "r")
 		pokemon.pos= 3
 		# parse file, adding each section to an array
 		pokemon.each_line do |l|

@@ -118,7 +118,7 @@ end
 #   filename: The name of the data file.
 #----------------------------------------------------------------------------
 def data_file_exported?(filename)
-  exported_filename = $PROJECT_DIR + '/' + $YAML_DIR + '/' + File.basename(filename, File.extname(filename)) + ".yaml"
+  exported_filename = $rmxp_dir + '/' + $YAML_DIR + '/' + File.basename(filename, File.extname(filename)) + ".yaml"
   return File.exist?( exported_filename )
 end
 
@@ -127,7 +127,7 @@ end
 #   directory: The directory to dump the system tile into.
 #----------------------------------------------------------------------------
 def dump_startup_time
-  File.open( $PROJECT_DIR + '/' + $TIME_LOG_FILE, "w+" ) do |outfile|
+  File.open( $rmxp_dir + '/' + $TIME_LOG_FILE, "w+" ) do |outfile|
     Marshal.dump( Time.now, outfile )
   end
 end
@@ -138,11 +138,11 @@ end
 #----------------------------------------------------------------------------
 def load_startup_time(delete_file = false)
   t = nil
-  if File.exist?( $PROJECT_DIR + '/' + $TIME_LOG_FILE )
-    File.open( $PROJECT_DIR + '/' + $TIME_LOG_FILE, "r+" ) do |infile|
+  if File.exist?( $rmxp_dir + '/' + $TIME_LOG_FILE )
+    File.open( $rmxp_dir + '/' + $TIME_LOG_FILE, "r+" ) do |infile|
       t = Marshal.load( infile )
     end
-    if delete_file then File.delete( $PROJECT_DIR + '/' + $TIME_LOG_FILE ) end
+    if delete_file then File.delete( $rmxp_dir + '/' + $TIME_LOG_FILE ) end
   end
   t
 end

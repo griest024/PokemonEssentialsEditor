@@ -13,11 +13,15 @@ module Kernel
 
 	def loadYAML(filename)
 		parsed = begin
-  			YAML::load(File.open("#{$project}/src/Data/#{filename}.yaml"))
+  			YAML::load(File.open("#{$root_dir}/#{filename}.yaml"))
 		rescue ArgumentError => e
   			puts "Could not parse YAML: #{e.message}"
 		end
 		parsed
+	end
+
+	def loadYAMLData(filename)
+		loadYAML("#{$rmxp_dir}/export/Data/#{filename}.yaml")
 	end
 
 	def set_node_size(node, width, height)

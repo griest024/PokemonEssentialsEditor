@@ -20,9 +20,12 @@ require 'java'
 require 'jrubyfx'
 require 'require_all'
 require 'yaml'
+require 'psych'
 
 STDOUT.sync = true
 STDERR.sync = true
+
+$stderr = StringIO.new
 
 $root_dir = File.expand_path(File.dirname(__FILE__))
 
