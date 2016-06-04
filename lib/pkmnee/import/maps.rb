@@ -57,7 +57,7 @@ module PKMNEE::Import
 			tileset.images = images
 			tilesets[tileset.id] = tileset
 		end
-		folder = "#{$project_dir}/data/tilesets"
+		folder = "#{$project_dir}/data/tileset"
 		Dir.mkdir(folder) unless File.exists?(folder)
 		tilesets.each do |id, ts|
 			File.open("#{folder}/#{id}.yaml", "w") { |file| file.write ts.to_yaml }
@@ -72,7 +72,7 @@ module PKMNEE::Import
 		map_info = Psych.load_file("#{$rmxp_dir}/export/Data/MapInfos.yaml")["root"]
 		(Dir["#{$rmxp_dir}/export/Data/Map*.yaml"].select { |file| file.match(/\d*.yaml$/) }).each do |path|
 			path.scan(/Map(\d*).yaml$/) do |num| # get the map number
-				map = PKMN::Map::Base.new
+				map = PKMN::Map::Map.new
 				rmxp = Psych.load_file(path)["root"]
 				map.id = map_info[num[0].to_i].name.to_id # extract the id from the map info using the map num we got
 				map.width = rmxp.width
@@ -82,7 +82,7 @@ module PKMNEE::Import
 				maps[map.id] = map
 			end
 		end
-		folder = "#{$project_dir}/data/maps"
+		folder = "#{$project_dir}/data/map"
 		Dir.mkdir(folder) unless File.exists?(folder)
 		maps.each do |id, map|
 			File.open("#{folder}/#{id}.yaml", "w") { |file| file.write map.to_yaml }

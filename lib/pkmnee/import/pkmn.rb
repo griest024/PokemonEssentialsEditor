@@ -11,17 +11,20 @@ module PKMN
 		end
 
 		def self.extended(klass)
-			$data_classes << klass
-			klass.instance_variable_set(:@type, klass.to_s.to_id)
+			id = klass.to_s.scan(/::(\w*)$/)[0][0].snake_case.to_id
+			$data_classes[id] = klass
+			klass.instance_variable_set(:@type, id)
 			class << klass
 				include DataClass::InstanceMethods
+
+				attr_accessor :type
 			end
 		end
 	end
 
 	module PKMN::Map
 
-	class Base
+	class Map
 		extend PKMN::DataClass
 
 		attr_accessor :id # The symbol by which the map is referred to internally - Symbol
@@ -162,7 +165,9 @@ end
 
 	module Species
 
-		class Base
+		class Species
+			extend PKMN::DataClass
+			
 			attr_accessor :id # The symbol by which the species is referred to internally - Symbol
 			attr_accessor :stats # The stat weights for the species, keys must match Game.stats - Hash(stat: Number)
 			attr_accessor :sprite # The appearance of the pokemon ingame - Sprite
@@ -200,7 +205,7 @@ end
 
 	module Type
 
-		class Base
+		class Type
 			extend PKMN::DataClass
 
 			attr_accessor :id
@@ -222,7 +227,7 @@ end
 
 		# helper to create new types, mainly used by PKMNEE::Import
 		def self.new(id, name, type_class, weaknesses, resistances, immunities)
-			type = Base.new(id, name, type_class)
+			type = Type.new(id, name, type_class)
 			# take the defensive effectiveness of the type and add it to the type
 			{little: resistances, very: weaknesses, no: immunities}.each { |effect, types| types.each { |e| type.addEffect(e.to_id, effect) } }
 			type # return type
@@ -231,7 +236,7 @@ end
 
 	module Item
 
-		class Base
+		class Item
 			extend PKMN::DataClass
 
 			attr_accessor :id
@@ -295,14 +300,14 @@ end
 			end
 			
 		end
-		class Item < Base
-			def initialize(id = nil, name = "", plural_name = "")
-				super(id, name, plural_name)
-			end
+		# class Item < Base
+		# 	def initialize(id = nil, name = "", plural_name = "")
+		# 		super(id, name, plural_name)
+		# 	end
 					
-		end
+		# end
 
-		class Medicine < Base
+		class Medicine < Item
 
 			def initialize(id = nil, name = "", plural_name = "")
 				super(id, name, plural_name)
@@ -312,7 +317,8 @@ end
 			
 		end
 
-		class Ball < Base
+		class Ball < Item
+
 			def initialize(id = nil, name = "", plural_name = "")
 				super(id, name, plural_name)
 				canUse(:battle)
@@ -321,7 +327,7 @@ end
 			
 		end
 
-		class TM < Base
+		class TM < Item
 			attr_accessor :move # the move that this TM teaches
 			def initialize(id = nil, name = "", plural_name = "")
 				super(id, name, plural_name)
@@ -330,16 +336,17 @@ end
 					
 		end
 
-		class TM < Base
-			attr_accessor :move # the move that this TM teaches
+		class HM < Item
+			attr_accessor :move # the move that this HM teaches
 			def initialize(id = nil, name = "", plural_name = "")
 				super(id, name, plural_name)
 				canUse(:overworld, :pokemon)
+				@permenant = true
 			end
 					
 		end
 
-		class Berry < Base # maybe subclass Medicine?
+		class Berry < Item # maybe subclass Medicine?
 			def initialize(id = nil, name = "", plural_name = "")
 				super(id, name, plural_name)
 				canUse(:overworld, :pokemon, :battle)
@@ -347,7 +354,7 @@ end
 					
 		end
 
-		class Mail < Base
+		class Mail < Item
 			def initialize(id = nil, name = "", plural_name = "")
 				super(id, name, plural_name)
 				canUse(:overworld)
@@ -355,7 +362,7 @@ end
 					
 		end
 
-		class Battle < Base
+		class Battle < Item
 			def initialize(id = nil, name = "", plural_name = "")
 				super(id, name, plural_name)
 				canUse(:battle, :pokemon)
@@ -363,9 +370,10 @@ end
 					
 		end
 
-		class KeyItem < Base
+		class KeyItem < Item
 			def initialize(id = nil, name = "", plural_name = "")
 				super(id, name, plural_name)
+				@permenant
 			end
 					
 		end

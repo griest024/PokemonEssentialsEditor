@@ -28,8 +28,6 @@ module PKMNEE::Import
 				PKMN::Item::Battle.new
 			when 8 # Key item
 				PKMN::Item::KeyItem.new
-			else
-				PKMN::Item::Base.new
 			end
 			item.id = temp[0].to_id
 			item.name = temp[1]
@@ -38,7 +36,7 @@ module PKMNEE::Import
 			item.description = desc
 			items[item.id] = item
 		end
-		folder = "#{$project_dir}/data/items"
+		folder = "#{$project_dir}/data/item"
 		Dir.mkdir(folder) unless File.exists?(folder)
 		items.each do |id, item|
 			File.open("#{folder}/#{id}.yaml", "w") { |file| file.write item.to_yaml }

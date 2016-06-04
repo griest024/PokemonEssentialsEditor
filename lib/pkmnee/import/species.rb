@@ -19,7 +19,7 @@ module PKMNEE::Import
 		ary.delete_at(0)
 
 		ary.each do |e|
-			sp = PKMN::Species::Base.new
+			sp = PKMN::Species::Species.new
 			sp.number= e.scan(/^\[(\d*)\]$/)[0][0]
 			sp.id= e.scan(/^InternalName=(.*)$/)[0][0].to_id
 			sp.name= e.scan(/^Name=(.*)$/)[0][0]
