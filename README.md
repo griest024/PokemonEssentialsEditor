@@ -77,4 +77,4 @@ Plugins
 ### Raw Data:
 - [x] Accordion file browser
 - [ ] make config
-- [ ] add children to DataTree dynamically
+- [x] add children to DataTree dynamically
