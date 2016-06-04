@@ -1,6 +1,8 @@
+require_relative 'data_tree_item'
+
 module PKMNEE::Control
 
-	class DataTree < JavaFX::TreeTableView
+	class DataTreeView < JavaFX::TreeTableView
 
 		def initialize(data)
 			super()
@@ -10,25 +12,27 @@ module PKMNEE::Control
 			@data = data
 			@col1 = JavaFX::TreeTableColumn.new("Name")
 			@col1.setCellValueFactory(lambda do |e| 
-				JavaFX::ReadOnlyStringWrapper.new(e.get_value.get_value[0]) 
+				JavaFX::ReadOnlyStringWrapper.new(e.getValue.getValue[0]) 
 			end )
 			@col1.setPrefWidth(200)
 			@col2 = JavaFX::TreeTableColumn.new("Value")
 			@col2.setCellValueFactory(lambda do |e| 
-				JavaFX::ReadOnlyStringWrapper.new(e.get_value.get_value[1]) 
+				JavaFX::ReadOnlyStringWrapper.new(e.getValue.getValue[1]) 
 			end )
 			@col2.setPrefWidth(1200)
 			setColumnResizePolicy(JavaFX::TreeTableView::CONSTRAINED_RESIZE_POLICY)
 			if @data.is_a?(PKMNEE::Util::DataSet) # collection of data objects
-				root = JavaFX::TreeItem.new([@data.to_s, @data.inspect])
+				root = PKMNEE::Control::DataTreeItem.new([@data.to_s, @data.inspect], @data.data)
+				root.getChildren
 				root.setExpanded(true)
 				setRoot(root)
-				recursiveAppendChildren(@data.data, root)
+				# recursiveAppendChildren(@data.data, root)
 			else # is single data object
-				root = JavaFX::TreeItem.new([@data.to_s, @data.id])
+				root = PKMNEE::Control::DataTreeItem.new([@data.to_s, @data.id], @data)
 				root.setExpanded(true)
+				root.getChildren
 				setRoot(root)
-				recursiveAppendChildren(@data, root)
+				# recursiveAppendChildren(@data, root)
 			end
 			getColumns.addAll(@col1, @col2)
 			setShowRoot(true)

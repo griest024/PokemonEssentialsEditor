@@ -1,3 +1,4 @@
+require_relative 'plugin/rmxp/rgss'
 require_relative 'pkmn'
 require_relative 'items'
 require_relative 'maps'
@@ -16,7 +17,7 @@ module PKMNEE
 		end
 
 		def self.all
-			rxdata
+			# rxdata
 			puts "Importing everything..."
 			maps
 			types

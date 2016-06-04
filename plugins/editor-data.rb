@@ -37,11 +37,11 @@ module PKMNEE::Plugin
 				setMaxHeight(Java::Double::MAX_VALUE)
 				# setPrefHeight(1000)
 				if data # load a discrete set of data
-					getChildren.add(PKMNEE::Control::DataTree.new(data))
+					getChildren.add(PKMNEE::Control::DataTreeView.new(data))
 				else # load everything
 					@accordion = JavaFX::Accordion.new
 					$data.each do |k,v| 
-						@accordion.getPanes.add(JavaFX::TitledPane.new(k.to_s, PKMNEE::Control::DataTree.new(v)))
+						@accordion.getPanes.add(JavaFX::TitledPane.new(k.to_s, PKMNEE::Control::DataTreeView.new(v)))
 					end
 					@accordion.setMaxHeight(Java::Double::MAX_VALUE)
 					getChildren.add(@accordion)

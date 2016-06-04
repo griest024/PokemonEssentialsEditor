@@ -2,8 +2,7 @@ module Kernel
 
 	def simpleType?(data)
 		is_class = false
-		simpleTypes = [Numeric, String, FalseClass, TrueClass, Symbol]
-		simpleTypes.each { |type| is_class ||= data.is_a?(type) }
+		[Numeric, String, FalseClass, TrueClass, Symbol].each { |type| is_class ||= data.is_a?(type) }
 		is_class
 	end
 

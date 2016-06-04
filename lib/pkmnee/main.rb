@@ -73,7 +73,8 @@ module PKMNEE
 		def start(stage)
 			puts "\n***************************Pokemon Essentials Editor****************************\n\n"
 			self.class.initPlugins
-			PKMNEE::Import.all
+			# PKMNEE::Import.all
+			p $data
 			@stage = stage
 			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
 				fxml Editor
@@ -141,7 +142,7 @@ module PKMNEE
 			Main.loadPlugins
 			puts "Plugins loaded: #{Main.names}"
 			@splitpane.bindHeightToScene
-			@data_hbox.getChildren.add(PKMNEE::Plugin::RawData.new)
+			# @data_hbox.getChildren.add(PKMNEE::Plugin::RawData.new)
 		end
 
 		def openPluginSelect
