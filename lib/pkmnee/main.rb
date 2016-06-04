@@ -45,27 +45,6 @@ module PKMNEE
 	$data = {}
 	$data_classes = []
 
-	# class PluginManager
-		
-	# 	def initialize(plugins)
-	# 		@plugins = []
-	# 		@plugins = plugins
-	# 	end
-		
-	# 	def self.get_instance(i, type = :default, *controller_args)
-	# 		@plugins[i].get_instance(type, *controller_args)
- # 		end
-
- # 		def self.names
- # 			@plugins.map { |p| p.class.name }
- # 		end
-
- # 		def self.num_plugins
- # 			@plugins.size
- # 		end
-
-	# end
-
 	class Main < JRubyFX::Application
 
 		@plugins = []
@@ -73,7 +52,7 @@ module PKMNEE
 		def start(stage)
 			puts "\n***************************Pokemon Essentials Editor****************************\n\n"
 			self.class.initPlugins
-			# PKMNEE::Import.all
+			PKMNEE::Import.all
 			# p $data
 			@stage = stage
 			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
@@ -142,7 +121,7 @@ module PKMNEE
 			Main.loadPlugins
 			puts "Plugins loaded: #{Main.names}"
 			@splitpane.bindHeightToScene
-			# @data_hbox.getChildren.add(PKMNEE::Plugin::RawData.new)
+			@data_hbox.getChildren.add(PKMNEE::Plugin::RawData.new)
 		end
 
 		def openPluginSelect

@@ -28,10 +28,10 @@ STDERR.sync = true
 $stderr = StringIO.new
 
 $root_dir = File.expand_path(File.dirname(__FILE__))
+$project_dir = "#{$root_dir}/project"
 
 # init module so declaring submodules is quicker
-module PKMNEE
-end
+module PKMNEE; end
 
 # load library
 require_relative 'lib/lib'
