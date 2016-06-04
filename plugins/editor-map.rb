@@ -32,7 +32,11 @@ module PKMNEE::Plugin
 			fxml 'editor-map.fxml'
 
 			def initialize(map = nil)
-				@map = map
+				if map
+					loadMap(map)
+				else
+					
+				end
 				@layer_buttons = [@layer1_button, @layer2_button, @layer3_button]
 				connectControllers
 				setupGUI
@@ -58,6 +62,11 @@ module PKMNEE::Plugin
 				addEventHandlers
 				bindProperties
 				formatSliderLabels
+			end
+
+			def unbindProperties
+				# zoom slider
+
 			end
 
 			def bindProperties
@@ -99,17 +108,17 @@ module PKMNEE::Plugin
 				3.times do |n|
 					layer = JavaFX::TilePane.new
 					layer.setFocusTraversable(true)
-					set_node_size(layer, xsize*32, ysize*32)
+					setNodeSize(layer, xsize*32, ysize*32)
 					ysize.times do |y|
 						xsize.times do |x|
-							img = JavaFX::ImageView.new(@tileset.get_image(@map_table[x, y, n]))
+							img = JavaFX::ImageView.new(@tileset.getImage(@map_table[x, y, n]))
 							layer.add(img)
 						end
 					end
-					@map_stack_pane.get_children.add(layer)
+					@map_stack_pane.getChildren.add(layer)
 					@layers << layer
 				end
-				set_node_size(@map_stack_pane, @map_table.xsize*32, @map_table.ysize*32)
+				setNodeSize(@map_stack_pane, @map_table.xsize*32, @map_table.ysize*32)
 				# @map_stack_pane.setPickOnBounds(false)
 			end
 
@@ -119,7 +128,7 @@ module PKMNEE::Plugin
 				end
 				@tileset = result[0]
 				@tileset_tile_pane = JavaFX::TilePane.new
-				set_node_size(@tileset_tile_pane, @tileset.get_width, @tileset.get_height)
+				setNodeSize(@tileset_tile_pane, @tileset.get_width, @tileset.get_height)
 				@tileset_tile_pane.set_pref_columns(8)
 				@tileset.each_image_index do |e,i|
 					@tileset_tile_pane.getChildren.add(JavaFX::ImageView.new(e))
@@ -127,8 +136,8 @@ module PKMNEE::Plugin
 				@tileset_scroll_pane.setContent(@tileset_tile_pane)
 			end
 
-			def loadMap(map_id)
-				@map = loadYAML("Map#{map_id.to_s}")
+			def loadMap(map)
+				@map = map
 				loadTileset(@map["root"].tileset_id)
 				buildMap
 			end

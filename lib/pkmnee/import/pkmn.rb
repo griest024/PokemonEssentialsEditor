@@ -79,51 +79,49 @@ module PKMN
 		attr_accessor :battleback_name
 
 		def getWidth
-			loadImages if !@image
 			@image.getWidth
 		end
 
 		def getHeight
-			loadImages if !@image
 			@image.getHeight
 		end
 
-		def loadImages
-			@images = []
-			@autotiles = []
-			@autotile_names.unshift("").map! { |s| s == "" ? "autotile_blank" : s }
-			@autotile_names.each do |e|
-				autotile = []
-				img = JavaFX::Image.new("/res/img/#{e}.png")
-				reader = img.getPixelReader
-				if img.getHeight == 128
-					8.times do |y|
-						6.times do |x|
-							img = JavaFX::WritableImage.new(reader, x*16, y*16, 16, 16)
-							autotile << img
-						end
-					end
-					$autotile_def.each do |a|
-						tile = JavaFX::WritableImage.new(32, 32)
-						writer = tile.getPixelWriter
-						writer.setPixels(0, 0, 16, 16, autotile[a[0]].getPixelReader, 0, 0)
-						writer.setPixels(16, 0, 16, 16, autotile[a[1]].getPixelReader, 0, 0)
-						writer.setPixels(0, 16, 16, 16, autotile[a[2]].getPixelReader, 0, 0)
-						writer.setPixels(16, 16, 16, 16, autotile[a[3]].getPixelReader, 0, 0)
-						@autotiles << tile
-					end
-				else
-					48.times {@autotiles << JavaFX::WritableImage.new(reader, 0, 0, 32, 32)}
-				end
-			end
-			# @image = JavaFX::Image.new(resource_url(:images, "#{tileset_name}.png").to_s)
-			reader = @image.get_pixel_reader
-			(@image.getHeight/32).to_i.times do |y|
-				8.times do |x|
-					@images << JavaFX::WritableImage.new(reader,x*32,y*32,32,32)
-				end
-			end
-		end
+		# def loadImages
+		# 	@images = []
+		# 	@autotiles = []
+		# 	@autotile_names.unshift("").map! { |s| s == "" ? "autotile_blank" : s }
+		# 	@autotile_names.each do |e|
+		# 		autotile = []
+		# 		img = JavaFX::Image.new("/res/img/#{e}.png")
+		# 		reader = img.getPixelReader
+		# 		if img.getHeight == 128
+		# 			8.times do |y|
+		# 				6.times do |x|
+		# 					img = JavaFX::WritableImage.new(reader, x*16, y*16, 16, 16)
+		# 					autotile << img
+		# 				end
+		# 			end
+		# 			$autotile_def.each do |a|
+		# 				tile = JavaFX::WritableImage.new(32, 32)
+		# 				writer = tile.getPixelWriter
+		# 				writer.setPixels(0, 0, 16, 16, autotile[a[0]].getPixelReader, 0, 0)
+		# 				writer.setPixels(16, 0, 16, 16, autotile[a[1]].getPixelReader, 0, 0)
+		# 				writer.setPixels(0, 16, 16, 16, autotile[a[2]].getPixelReader, 0, 0)
+		# 				writer.setPixels(16, 16, 16, 16, autotile[a[3]].getPixelReader, 0, 0)
+		# 				@autotiles << tile
+		# 			end
+		# 		else
+		# 			48.times {@autotiles << JavaFX::WritableImage.new(reader, 0, 0, 32, 32)}
+		# 		end
+		# 	end
+		# 	# @image = JavaFX::Image.new(resource_url(:images, "#{tileset_name}.png").to_s)
+		# 	reader = @image.get_pixel_reader
+		# 	(@image.getHeight/32).to_i.times do |y|
+		# 		8.times do |x|
+		# 			@images << JavaFX::WritableImage.new(reader,x*32,y*32,32,32)
+		# 		end
+		# 	end
+		# end
 
 		def getImage(id = 0)
 			loadImages if @images.empty?
@@ -153,7 +151,6 @@ module PKMN
 		end
 
 		def eachTile
-			loadImages if @images.empty?
 			@images.each_index do |i|
 				yield(getTile(i))
 			end

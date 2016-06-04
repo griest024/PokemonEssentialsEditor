@@ -1,10 +1,10 @@
 module PKMNEE::Import
 
 	def self.species
+		puts "Importing pokemon species..."
 		ary = []
 		str = ""
 		species = {}
-
 		pokemon = File.open("#{$rmxp_dir}/PBS/pokemon.txt", "r")
 		pokemon.pos= 3
 		# parse file, adding each section to an array

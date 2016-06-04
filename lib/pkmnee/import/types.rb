@@ -1,6 +1,7 @@
 module PKMNEE::Import
 
 	def self.types
+		puts "Importing types..."
 		ary = []
 		str = ""
 		types = {}

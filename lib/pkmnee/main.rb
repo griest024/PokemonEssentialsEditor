@@ -44,7 +44,6 @@ module PKMNEE
 
 	$data = {}
 	$data_classes = []
-	$rmxp_dir = Dir.home + "/PokemonEssentialsEditor/src"
 
 	# class PluginManager
 		

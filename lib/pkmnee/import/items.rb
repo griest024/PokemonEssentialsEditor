@@ -1,6 +1,7 @@
 module PKMNEE::Import
 
 	def self.items
+		puts "Importing items..."
 		items = {}
 		item_file = File.open("#{$rmxp_dir}/PBS/items.txt", "r")
 		item_file.pos= 3

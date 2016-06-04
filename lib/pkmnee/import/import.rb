@@ -9,6 +9,7 @@ module PKMNEE
 
 		move_funtion_codes = {002 => :hurtUserQuarter}
 		$stat_order = [:hp, :attack, :defense, :speed, :special_attack, :special_defense]
+		$rmxp_dir = "#{$root_dir}/src"
 
 		def self.rxdata
 			require_relative 'plugin/export.rb' # change this to PKMNEE::Import::Plugin.export once rxdata plugin is namespaced
@@ -16,6 +17,7 @@ module PKMNEE
 
 		def self.all
 			rxdata
+			puts "Importing everything..."
 			maps
 			types
 			species
