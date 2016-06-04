@@ -73,3 +73,24 @@ module ClassAttrAccessor
 		self.define_singleton_method(name) { self.class_variable_get("@@#{name}".to_sym)}
 	end
 end
+
+module PropertyAccessor
+
+  def property_reader(*names)
+    attr_reader(*names)
+    names.each {|name| define_method("get#{name.camelCase.to_s.capitalize}") { instance_variable_get("@name").getValue } }
+  end
+
+  def property_writer(*names)
+    attr_writer(*names)
+    names.each {|name| define_method("set#{name.camelCase.to_s.capitalize}") { |v| instance_variable_get("@name").setValue(s) } }
+  end
+
+  def property_accessor(*names)
+    attr_accessor(*names)
+    names.each do |name|
+      define_method("get#{name.camelCase.to_s.capitalize}") { instance_variable_get("@#{name}").getValue }
+      define_method("set#{name.camelCase.to_s.capitalize}") { |v| instance_variable_get("@#{name}").setValue(s) }
+    end
+  end 
+end

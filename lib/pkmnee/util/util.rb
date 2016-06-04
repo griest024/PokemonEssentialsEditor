@@ -1,5 +1,6 @@
 require_relative 'autotile_def'
 require_relative 'attr_accessor'
+require_relative 'table'
 require_relative 'data_set'
 require_relative 'nil_class'
 require_relative 'symbol'

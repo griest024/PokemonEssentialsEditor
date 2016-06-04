@@ -13,3 +13,13 @@ class Java::JavafxSceneLayout::Region
 		bindWidthToScene
 	end
 end
+
+class Java::JavafxScene::Node
+
+	def setNodeSize(width, height)
+		setMinWidth(width)
+		setMaxWidth(width)
+		setMinHeight(height)
+		setMaxHeight(height)
+	end
+end

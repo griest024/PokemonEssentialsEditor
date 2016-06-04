@@ -3,6 +3,7 @@
 class Object
   extend ScopedAttrAccessor
   extend ClassAttrAccessor
+  extend PropertyAccessor
   def toString
   	self.to_s
   end

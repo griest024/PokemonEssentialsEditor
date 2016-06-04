@@ -24,7 +24,7 @@ module Kernel
 		loadYAML("#{$rmxp_dir}/export/Data/#{filename}.yaml")
 	end
 
-	def set_node_size(node, width, height)
+	def setNodeSize(node, width, height)
 		node.setMinWidth(width)
 		node.setMaxWidth(width)
 		node.setMinHeight(height)
