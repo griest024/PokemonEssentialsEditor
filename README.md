@@ -33,7 +33,7 @@ General
 - [x] Open plugin popup
 	- [x] Find a better way to get plugin list to plugin popup ()
 - [x] Add file handling protocols to plugin architecture
-- [ ] Automatically load all data files into main
+- [x] Automatically load all data files into main (can do this but DON'T!!!!)
 - [ ] Convert yaml data into native objects (tiles, maps, etc.)
 
 - [ ] Add context menus
