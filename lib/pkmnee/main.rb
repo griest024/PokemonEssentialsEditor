@@ -16,34 +16,10 @@
 
 ###############################################################################
 
-
-# $data_types = {
-# 	Game => :game,
-# 	Pokemon => :pokemon,
-# 	Species => :species,
-# 	Item => :item,
-# 	Move => :move,
-# 	Player => :player,
-# 	Map => :map,
-# 	Bag => :bag,
-# 	PC => :pc,
-# 	Ability => :ability,
-# 	Map => :map,
-# 	Tile => :tile,
-# 	Tileset => :tileset,
-# 	Trainer => :trainer,
-# 	Nature => :nature,
-# 	Status => :status,
-# 	Sprite => :sprite,
-# 	Music => :music,
-# 	Type => :type,
-
-# }
-
 module PKMNEE
 
 	$data = {}
-	$data_classes = []
+	$data_classes = {}
 
 	class Main < JRubyFX::Application
 
@@ -53,7 +29,8 @@ module PKMNEE
 			puts "\n***************************Pokemon Essentials Editor****************************\n\n"
 			self.class.initPlugins
 			PKMNEE::Import.all
-			# p $data
+			self.class.loadProjectData
+			p $data[:type].load(:dragon)
 			@stage = stage
 			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
 				fxml Editor
@@ -71,6 +48,13 @@ module PKMNEE
 		end
 
 		class << self
+
+			def loadProjectData
+				(Dir["#{$project_dir}/data/*"].select { |dir| File.directory?(dir) && $data_classes.keys.include?(File.basename(dir).to_sym) }).each do |dir|
+					type = File.basename(dir).to_sym
+					$data[type] = PKMNEE::Util::DataSet.new(type, dir)
+				end 
+			end
 
 			def initPlugins
 				@plugins.each { |plugin| plugin.initPlugin }
@@ -121,7 +105,7 @@ module PKMNEE
 			Main.loadPlugins
 			puts "Plugins loaded: #{Main.names}"
 			@splitpane.bindHeightToScene
-			@data_hbox.getChildren.add(PKMNEE::Plugin::RawData.new)
+			# @data_hbox.getChildren.add(PKMNEE::Plugin::RawData.new)
 		end
 
 		def openPluginSelect

@@ -23,7 +23,7 @@ module PKMNEE::Import
 			id = e.scan(/^InternalName=(.*)$/)[0][0].to_id
 			name = e.scan(/^Name=(.*)$/)[0][0]
 			type_class = (e.scan(/^IsSpecialType=true$/).empty? ? :physical : :special)
-			# I'm sure this section can be optimized but I don't know enough Ruby/don't want to mess around with eval and bindings
+			# I'm sure this section can be optimized but I don't want to mess around with eval and bindings
 			weaknesses = e.scan(/^Weaknesses=(.*)$/)
 			weaknesses = weaknesses[0][0].split(',') unless weaknesses.empty?
 			resistances = e.scan(/^Resistances=(.*)$/)
@@ -34,7 +34,7 @@ module PKMNEE::Import
 			type = PKMN::Type.new(id, name, type_class, weaknesses, resistances, immunities)
 			types[type.id] = type
 		end
-		folder = "#{$project_dir}/data/types"
+		folder = "#{$project_dir}/data/type"
 		Dir.mkdir(folder) unless File.exists?(folder)
 		types.each do |id, type|
 			File.open("#{folder}/#{id}.yaml", "w") { |file| file.write type.to_yaml }
