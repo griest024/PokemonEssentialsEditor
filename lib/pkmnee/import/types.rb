@@ -34,6 +34,11 @@ module PKMNEE::Import
 			type = PKMN::Type.new(id, name, type_class, weaknesses, resistances, immunities)
 			types[type.id] = type
 		end
-		$data[:types] = PKMNEE::Util::DataSet.new(PKMN::Type::Base, *(types.values))
+		folder = "#{$project_dir}/data/types"
+		Dir.mkdir(folder) unless File.exists?(folder)
+		types.each do |id, type|
+			File.open("#{folder}/#{id}.yaml", "w") { |file| file.write type.to_yaml }
+		end
+		# $data[:types] = PKMNEE::Util::DataSet.new(PKMN::Type::Base, *(types.values))
 	end
 end

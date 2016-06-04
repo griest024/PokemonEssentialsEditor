@@ -38,7 +38,11 @@ module PKMNEE::Import
 			item.description = desc
 			items[item.id] = item
 		end
-		# p items
-		$data[:items] = PKMNEE::Util::DataSet.new(PKMN::Item::Base, *(items.values))	
+		folder = "#{$project_dir}/data/items"
+		Dir.mkdir(folder) unless File.exists?(folder)
+		items.each do |id, item|
+			File.open("#{folder}/#{id}.yaml", "w") { |file| file.write item.to_yaml }
+		end
+		# $data[:items] = PKMNEE::Util::DataSet.new(PKMN::Item::Base, *(items.values))	
 	end
 end
