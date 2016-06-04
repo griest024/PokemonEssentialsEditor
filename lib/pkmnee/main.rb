@@ -74,7 +74,7 @@ module PKMNEE
 			puts "\n***************************Pokemon Essentials Editor****************************\n\n"
 			self.class.initPlugins
 			# PKMNEE::Import.all
-			p $data
+			# p $data
 			@stage = stage
 			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
 				fxml Editor
