@@ -30,7 +30,6 @@ module PKMNEE
 			self.class.initPlugins
 			PKMNEE::Import.all
 			self.class.loadProjectData
-			p $data[:type].load(:dragon)
 			@stage = stage
 			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
 				fxml Editor

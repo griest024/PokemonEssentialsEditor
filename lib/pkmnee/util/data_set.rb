@@ -24,6 +24,10 @@ module PKMNEE::Util
 			addData(*(Dir[@dir + "/*"].select { |e| !File.directory?(e) })) # add files but not subdirectories
 		end
 
+		def [](name)
+			load(name)
+		end
+
 		def load(name)
 			name.is_a?(Symbol) ? loadFromID(name) : loadFromPath(name)
 		end
