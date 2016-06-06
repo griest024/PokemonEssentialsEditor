@@ -28,7 +28,7 @@ module PKMNEE
 		def start(stage)
 			puts "\n***************************Pokemon Essentials Editor****************************\n\n"
 			self.class.initPlugins
-			PKMNEE::Import.all
+			# PKMNEE::Import.all
 			self.class.loadProjectData
 			@stage = stage
 			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
@@ -104,6 +104,7 @@ module PKMNEE
 			Main.loadPlugins
 			puts "Plugins loaded: #{Main.names}"
 			@splitpane.bindHeightToScene
+			@split_pane.getScene.getStylesheets.add("tiwulfx.css")
 			# @data_hbox.getChildren.add(PKMNEE::Plugin::RawData.new)
 		end
 
@@ -158,7 +159,7 @@ module PKMNEE
 			       		show
 					end
 				else # open in tab pane
-					tab = build(JavaFX::Tab) do
+					tab = build(TiwulFX::DetachableTab) do
 						setText(plugin.to_s)
 						setContent(plugin.new)
 					end	

@@ -1,13 +1,13 @@
 
 module TiwulFX
-	include_package "com.panemu.tiwulfx.common"
-	include_package "com.panemu.tiwulfx.control"
-	include_package "com.panemu.tiwulfx.control.behavior"
-	include_package "com.panemu.tiwulfx.control.sidemenu"
-	include_package "com.panemu.tiwulfx.control.skin"
-	include_package "com.panemu.tiwulfx.dialog"
-	include_package "com.panemu.tiwulfx.form"
-	include_package "com.panemu.tiwulfx.table"
+	include_package "tiwulfx.common"
+	include_package "tiwulfx.control"
+	include_package "tiwulfx.control.behavior"
+	include_package "tiwulfx.control.sidemenu"
+	include_package "tiwulfx.control.skin"
+	include_package "tiwulfx.dialog"
+	include_package "tiwulfx.form"
+	include_package "tiwulfx.table"
 end
 
 

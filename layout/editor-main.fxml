@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.panemu.tiwulfx.control.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -8,7 +9,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="tab_pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <children>
       <ToolBar prefHeight="40.0" prefWidth="200.0">
         <items>
@@ -54,10 +55,10 @@
             <Button fx:id="plugin_select" mnemonicParsing="false" onAction="#openPluginSelect" text="Plugin selection" />
         </items>
       </ToolBar>
-      <SplitPane fx:id="splitpane" dividerPositions="0.3333" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+      <SplitPane fx:id="splitpane" dividerPositions="0.3" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
         <items>
             <HBox fx:id="data_hbox" prefHeight="100.0" prefWidth="200.0" />
-            <TabPane fx:id="tab_pane" />
+            <DetachableTabPane />
         </items>
       </SplitPane>
   </children>
