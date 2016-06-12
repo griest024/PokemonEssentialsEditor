@@ -6,6 +6,7 @@ require_relative 'nil_class'
 require_relative 'symbol'
 require_relative 'string'
 require_relative 'object'
+require_relative 'wrapper'
 
 module PKMNEE::Util
 

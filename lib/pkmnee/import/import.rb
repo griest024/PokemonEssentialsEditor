@@ -1,5 +1,4 @@
 require_relative 'plugin/rmxp/rgss'
-require_relative 'pkmn'
 require_relative 'items'
 require_relative 'maps'
 require_relative 'species'
@@ -11,7 +10,7 @@ module PKMNEE
 		move_funtion_codes = {002 => :hurtUserQuarter}
 		$stat_order = [:hp, :attack, :defense, :speed, :special_attack, :special_defense]
 		$rmxp_dir = "#{$root_dir}/src"
-		Dir.mkdir("#{$project_dir}/data") unless File.exists?("#{$project_dir}/data")
+		safe_mkdir "#{$project_dir}/data"
 
 		def self.rxdata
 			require_relative 'plugin/export.rb' # change this to PKMNEE::Import::Plugin.export once rxdata plugin is namespaced

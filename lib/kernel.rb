@@ -6,6 +6,10 @@ module Kernel
 		is_class
 	end
 
+	def safe_mkdir(folder)
+		Dir.mkdir(folder) unless File.exists?(folder)
+	end
+
 	def simpleType(data)
 		simpleType?(data) ? "#{data}" : "#{data.class}, ID: #{data.object_id}"
 	end

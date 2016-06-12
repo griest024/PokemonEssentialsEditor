@@ -4,12 +4,19 @@ class Object
   extend ScopedAttrAccessor
   extend ClassAttrAccessor
   extend PropertyAccessor
+
   def toString
   	self.to_s
   end
+
+  def get
+  	self
+  end
+
   private
-  	# monkey patch method_missing to look for camelCase versions of snake_case methods
-  	# broken ATM
+  
+	# monkey patch method_missing to look for camelCase versions of snake_case methods
+	# broken ATM
 	def method_missing(id, *args, &block)
 		ary = id.id2name.split("_")
 		camel = ary.delete_at(0).downcase

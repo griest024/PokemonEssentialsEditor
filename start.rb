@@ -15,17 +15,20 @@
 
 #!/usr/bin/ruby
 
+#suppress annoying warnings
+$stderr = StringIO.new
+
 # load gems
 require 'java'
-require 'jrubyfx'
+# require 'jrubyfx'
+# require_relative 'lib/fxmlloader/pkg/jrubyfx-fxmlloader-0.4.1-java/lib/jrubyfx-fxmlloader'
+require_relative 'lib/jrubyfx/lib/jrubyfx'
 require 'require_all'
 require 'yaml'
 require 'psych'
 
 STDOUT.sync = true
 STDERR.sync = true
-
-$stderr = StringIO.new
 
 $root_dir = File.expand_path(File.dirname(__FILE__))
 $project_dir = "#{$root_dir}/project"
@@ -41,6 +44,8 @@ require_rel 'plugins'
 
 fxml_root(File.dirname(__FILE__) + '/layout')
 resource_root(:images, File.join(File.dirname(__FILE__), "res", "img"), "res/img")
+resource_root(:graphics, File.join(File.dirname(__FILE__), "src", "Graphics"), "src/Graphics")
+resource_root(:tiles, File.join(File.dirname(__FILE__), "project", "res", "tiles"), "project/res/tiles")
 
 $icon = JavaFX::Image.new("/res/img/pkball.gif")
 
