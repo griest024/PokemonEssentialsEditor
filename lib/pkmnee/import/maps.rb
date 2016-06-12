@@ -14,6 +14,7 @@ module PKMNEE::Import
 		Psych.load_file("#{$rmxp_dir}/export/Data/Tilesets.yaml")["root"].compact.reject { |e| e.name == '' }.each do |e| # load file and skip tilesets with no name
 			tileset = PKMN::Map::Tileset.new
 			tileset.id = e.name.to_id
+			tileset.num = e.id
 			puts "	#{tileset.id}"
 			safe_mkdir "#{$project_dir}/res/tiles/#{tileset.id}"
 			tileset.name = e.tileset_name
@@ -68,7 +69,7 @@ module PKMNEE::Import
 			tileset.image = tileset_image
 			tileset.tiles = tyles
 			# tiles[tileset.id] = tyles
-			# tilesets[tileset.id] = tileset
+			tilesets[tileset.num] = tileset
 			File.open("#{folder}/#{tileset.id}.yaml", "w") do |file|
 				file.write tileset.to_yaml
 			end
@@ -89,10 +90,11 @@ module PKMNEE::Import
 		# end
 		# $tilesets = tilesets
 		# $data[:tilesets] = PKMNEE::Util::DataSet.new(PKMN::Map::Tileset, *(tilesets.values))
+		tilesets
 	end
 
 	def self.maps
-		tilesets
+		ts = tilesets
 		puts "Importing maps..."
 		maps = {}
 		map_info = Psych.load_file("#{$rmxp_dir}/export/Data/MapInfos.yaml")["root"]
@@ -106,6 +108,7 @@ module PKMNEE::Import
 				map.height = rmxp.height
 				map.events = rmxp.events
 				map.data = rmxp.data
+				map.tileset = ts[rmxp.tileset_id].wrap
 				maps[map.id] = map
 			end
 		end

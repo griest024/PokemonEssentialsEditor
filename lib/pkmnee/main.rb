@@ -28,7 +28,7 @@ module PKMNEE
 		def start(stage)
 			puts "\n***************************Pokemon Essentials Editor****************************\n\n"
 			self.class.initPlugins
-			# PKMNEE::Import.all
+			PKMNEE::Import.all
 			self.class.loadProjectData
 			@stage = stage
 			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
