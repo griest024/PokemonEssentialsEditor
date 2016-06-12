@@ -109,7 +109,6 @@ module PKMNEE
 			puts "Plugins loaded: #{Main.names}"
 			@splitpane.bindHeightToScene
 			# @data_hbox.getChildren.add(PKMNEE::Plugin::RawData.new)
-			# @data_hbox.getChildren.add(JavaFX::ImageView.new($data[:tileset][:outside].tiles[1].image.get))
 		end
 
 		def openPluginSelect

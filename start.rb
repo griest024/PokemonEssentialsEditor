@@ -26,7 +26,6 @@ require_relative 'lib/jrubyfx/lib/jrubyfx'
 require 'require_all'
 require 'yaml'
 require 'psych'
-require_relative 'lib/jvyamlb.jar'
 
 STDOUT.sync = true
 STDERR.sync = true
