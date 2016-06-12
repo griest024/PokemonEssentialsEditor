@@ -1,5 +1,13 @@
 module PKMN
 
+	module Util
+
+		class DataPointer
+			
+			
+		end
+	end
+
 	# extend this so you can use klass.is_a? PKMN::DataClass
 	module DataClass
 
@@ -7,10 +15,6 @@ module PKMN
 
 			def to_sym
 				self.instance_variable_get(:@type)
-			end
-
-			def to_s
-				@id.to_s
 			end
 		end
 

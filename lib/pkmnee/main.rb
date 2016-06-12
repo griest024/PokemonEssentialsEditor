@@ -28,7 +28,7 @@ module PKMNEE
 		def start(stage)
 			puts "\n***************************Pokemon Essentials Editor****************************\n\n"
 			self.class.initPlugins
-			PKMNEE::Import.all
+			# PKMNEE::Import.all
 			self.class.loadProjectData
 			@stage = stage
 			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
@@ -49,9 +49,13 @@ module PKMNEE
 		class << self
 
 			def loadProjectData
-				(Dir["#{$project_dir}/data/*"].select { |dir| File.directory?(dir) && $data_classes.keys.include?(File.basename(dir).to_sym) }).each do |dir|
+				Dir["#{$project_dir}/data/*"].select { |dir| File.directory?(dir) && $data_classes.keys.include?(File.basename(dir).to_sym) }.each do |dir|
 					type = File.basename(dir).to_sym
-					$data[type] = PKMNEE::Util::DataSet.new(type, dir)
+					data_set = PKMNEE::Util::DataSet.new($data_classes[type])
+					Dir["#{dir}/*.yaml"].each do |file|
+						data_set.addData(PKMNEE::Util::DataWrapper.new($data_classes[type], file))
+					end
+					$data[type] = data_set
 				end 
 			end
 
@@ -105,6 +109,7 @@ module PKMNEE
 			puts "Plugins loaded: #{Main.names}"
 			@splitpane.bindHeightToScene
 			# @data_hbox.getChildren.add(PKMNEE::Plugin::RawData.new)
+			# @data_hbox.getChildren.add(JavaFX::ImageView.new($data[:tileset][:outside].tiles[1].image.get))
 		end
 
 		def openPluginSelect
