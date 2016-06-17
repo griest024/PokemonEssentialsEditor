@@ -20,32 +20,32 @@ module PKMNEE::Import
 
 		ary.each do |e|
 			sp = PKMN::Species::Species.new
-			sp.number= e.scan(/^\[(\d*)\]$/)[0][0]
-			sp.id= e.scan(/^InternalName=(.*)$/)[0][0].to_id
-			sp.name= e.scan(/^Name=(.*)$/)[0][0]
-			sp.type1= e.scan(/^Type1=(.*)$/)[0][0].to_id
+			sp.number = e.scan(/^\[(\d*)\]$/)[0][0]
+			sp.id = (id = e.scan(/^InternalName=(.*)$/)[0][0].to_id)
+			puts "	#{id}"
+			sp.name = e.scan(/^Name=(.*)$/)[0][0]
+			sp.type1 = e.scan(/^Type1=(.*)$/)[0][0].to_id
 			type = e.scan(/^Type2=(.*)$/)[0]
-			sp.type2= type[0].to_id if type
+			sp.type2 = type[0].to_id if type
 			st = e.scan(/^BaseStats=(.*)$/)[0][0].split(",")
 			ev = e.scan(/^EffortPoints=(.*)$/)[0][0].split(",")
-			sp.stats= {}
-			sp.ev_yield= {}
+			sp.stats = {}
+			sp.ev_yield = {}
 			$stat_order.each_index do |i|
 				sp.stats[$stat_order[i]] = st[i].to_i
 				sp.ev_yield[$stat_order[i]] = ev[i].to_i
 			end
-			sp.xp_yield= e.scan(/^BaseEXP=(.*)$/)[0][0].to_i
-			sp.catch_rate= e.scan(/^Rareness=(.*)$/)[0][0].to_i
-			sp.happiness= e.scan(/^Happiness=(.*)$/)[0][0].to_i
+			sp.xp_yield = e.scan(/^BaseEXP=(.*)$/)[0][0].to_i
+			sp.catch_rate = e.scan(/^Rareness=(.*)$/)[0][0].to_i
+			sp.happiness = e.scan(/^Happiness=(.*)$/)[0][0].to_i
 			sp.hatch_steps = e.scan(/^StepsToHatch=(.*)$/)[0][0].to_i
-			sp.height= e.scan(/^Height=(.*)$/)[0][0].to_f
-			sp.weight= e.scan(/^Weight=(.*)$/)[0][0].to_f
-			sp.kind= e.scan(/^Kind=(.*)$/)[0][0]
-			sp.description= e.scan(/^Pokedex=(.*)$/)[0][0]
+			sp.height = e.scan(/^Height=(.*)$/)[0][0].to_f
+			sp.weight = e.scan(/^Weight=(.*)$/)[0][0].to_f
+			sp.kind = e.scan(/^Kind=(.*)$/)[0][0]
+			sp.description = e.scan(/^Pokedex=(.*)$/)[0][0]
 			species[sp.id] = sp
 		end
-		folder = "#{$project_dir}/data/species"
-		Dir.mkdir(folder) unless File.exists?(folder)
+		safe_mkdir (folder = "#{$project_dir}/data/species")
 		species.each do |id, sp|
 			File.open("#{folder}/#{id}.yaml", "w") { |file| file.write sp.to_yaml }
 		end
