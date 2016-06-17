@@ -65,6 +65,9 @@ module PKMN
 			attr_accessor :priority
 			attr_accessor :terrain_tag
 
+			def getImage
+				image.get
+			end
 		end
 
 		class Weather
@@ -92,6 +95,16 @@ module PKMN
 			attr_accessor :fog_sx
 			attr_accessor :fog_sy
 			attr_accessor :battleback_name
+			attr_accessor :image_width
+			attr_accessor :image_height
+
+			def initialize
+				@tiles = []
+			end
+
+			def addTiles(*tiles)
+				tiles.each { |tile| @tiles << tile }
+			end
 
 			def getWidth
 				@image.getWidth
@@ -139,38 +152,13 @@ module PKMN
 			# end
 
 			def getImage(id = 0)
-				loadImages if @images.empty?
-				id < 384 ? @autotiles[id] : @images[id - 384]
+				getTile(id).getImage
 			end
 
-			def eachImageIndex
-				loadImages if @images.empty?
-				if block_given?
-					@images.each_index do |i|
-						yield(@images[i], i)
-					end
-				else
-					return @images.each
-				end
+			def getTile(id = 0)
+				# id < 384 ? @autotiles[id] : @tiles[id - 384]
+				@tiles[id]
 			end
-
-			def getTile(id)
-				loadImages if @images.empty?
-				tile = PKMNEE::Tile.new
-				tile.image=(getImage(id))
-				tile.id=(id)
-				tile.passage=(@passages[id])
-				tile.priority=(@priorities[id])
-				tile.terrain_tag=(@terrain_tags[id])
-				tile.tileset_id=(@id)
-			end
-
-			def eachTile
-				@images.each_index do |i|
-					yield(getTile(i))
-				end
-			end
-
 		end
 	end
 

@@ -16,7 +16,7 @@ end
 
 class Java::JavafxScene::Node
 
-	def setNodeSize(width, height)
+	def setSize(width, height)
 		setMinWidth(width)
 		setMaxWidth(width)
 		setMinHeight(height)

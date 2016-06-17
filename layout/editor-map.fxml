@@ -25,16 +25,12 @@
       <Label fx:id="info" text="Label" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
-      <SplitPane dividerPositions="0.5">
+      <SplitPane dividerPositions="0.2569573283858998">
          <items>
             <ScrollPane fx:id="tileset_scroll_pane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefViewportWidth="256.0" prefWidth="274.0" />
             <ScrollPane fx:id="map_scroll_pane" pannable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <content>
-                  <Group fx:id="map_group">
-                     <children>
-                        <StackPane fx:id="map_stack_pane" alignment="TOP_LEFT" prefHeight="150.0" prefWidth="200.0" />
-                     </children>
-                  </Group>
+                  <Group fx:id="map_group" />
                </content>
             </ScrollPane>
          </items>

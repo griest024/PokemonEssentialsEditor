@@ -22,18 +22,18 @@ module PKMNEE::Plugin
 				@name = "Map Editor"
 				@author = "griest"
 				@description = "You can edit maps, tilesets, tiles, and the world map with this plugin."
-				@handler = DataHandler.new(MapEditorController)
+				@handler = DataHandler.new(MapView).handleAll
 			end
 		end
 		
-		class MapEditorController < JavaFX::BorderPane
+		class MapView < JavaFX::BorderPane
 			include JRubyFX::Controller
 
 			fxml 'editor-map.fxml'
 
 			def initialize(map = nil)
 				if map
-					loadMap(map)
+					loadMap(map.get)
 				else
 					
 				end
@@ -44,7 +44,7 @@ module PKMNEE::Plugin
 			end
 
 			def setupGUI
-				(@map_scroll_pane.get_children.select { |e| e.is_a?(JavaFX::ScrollBar) }).each { |e| e.setBlockIncrement(32) }
+				@map_scroll_pane.get_children.select { |e| e.is_a?(JavaFX::ScrollBar) }.each { |e| e.setBlockIncrement(32) }
 				# makeTabs
 			end
 
@@ -59,7 +59,7 @@ module PKMNEE::Plugin
 			end
 
 			def connectControllers
-				addEventHandlers
+				# addEventHandlers
 				bindProperties
 				formatSliderLabels
 			end
@@ -75,13 +75,13 @@ module PKMNEE::Plugin
 				@map_stack_pane.scaleYProperty.bind(@map_scale_slider.value_property)
 				#layer visibility buttons
 				3.times do |n|
-					@layer_buttons[n].selectedProperty.bindBidirectional(@layers[n].visibleProperty)
+					@layer_buttons[n].selectedProperty.bindBidirectional(@map_stack_pane.layers[n].visibleProperty)
 				end
 			end
 
 			def formatSliderLabels
-				map_scale_slider_formatter = PKMNEE::Util::FractionFormatter.new
-				@map_scale_slider.set_label_formatter(map_scale_slider_formatter)
+				# map_scale_slider_formatter = PKMNEE::Util::FractionFormatter.new
+				@map_scale_slider.set_label_formatter(PKMNEE::Util::FractionFormatter.new)
 			end
 
 			def addEventHandlers
@@ -137,9 +137,10 @@ module PKMNEE::Plugin
 			end
 
 			def loadMap(map)
-				@map = map
-				loadTileset(@map["root"].tileset_id)
-				buildMap
+				@map_stack_pane = PKMNEE::Control::MapStackPane.new(map.get)
+				@tileset_tile_pane = PKMNEE::Control::TilesetTilePane.new(map.tileset.get)
+				@map_group.getChildren.setAll(@map_stack_pane)
+				@tileset_scroll_pane.setContent(@tileset_tile_pane)
 			end
 		end
 	end
