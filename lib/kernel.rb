@@ -6,8 +6,8 @@ module Kernel
 		is_class
 	end
 
-	def safe_mkdir(folder)
-		Dir.mkdir(folder) unless File.exists?(folder)
+	def safe_mkdir(*folders)
+		folders.each { |folder| Dir.mkdir(folder) unless File.exists?(folder) }
 	end
 
 	def simpleType(data)
