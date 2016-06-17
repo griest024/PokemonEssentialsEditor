@@ -8,7 +8,7 @@ module PKMNEE::Plugin
 		attr_accessor :universal
 
 		# define helper methods for handling data types
-		# $data_classes.each { |e| define_method(e.to_sym) { |controller| addHandle(controller, e.to_sym) } }
+		$data_classes.keys.each { |e| self.define_method(e.to_sym) { |controller| addHandle(controller, e.to_sym) } }
 
 		def initialize(default = nil)
 			@universal = false
@@ -21,7 +21,7 @@ module PKMNEE::Plugin
 		end
 
 		def getController(data)
-			@handles[data.to_sym]
+			@handles[data.class.to_sym]
 		end
 
 		def handle(data)
@@ -48,7 +48,7 @@ module PKMNEE::Plugin
 		# returns true if this handler can handle the specified data type
 		# can take either a Symbol or a Class
 		def canHandle?(data)
-			@handles.keys.include?(data.to_sym) || @universal
+			@handles.keys.include?(data.class.to_sym) || @universal
 		end
 
 		# specifies that the plugin can handle files of type

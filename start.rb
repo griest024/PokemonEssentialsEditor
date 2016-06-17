@@ -45,7 +45,8 @@ require_rel 'plugins'
 fxml_root(File.dirname(__FILE__) + '/layout')
 resource_root(:images, File.join(File.dirname(__FILE__), "res", "img"), "res/img")
 resource_root(:graphics, File.join(File.dirname(__FILE__), "src", "Graphics"), "src/Graphics")
-resource_root(:tiles, File.join(File.dirname(__FILE__), "project", "res", "tiles"), "project/res/tiles")
+resource_root(:tiles, File.join(File.dirname(__FILE__), "project", "res", "tile"), "project/res/tile")
+resource_root(:autotiles, File.join(File.dirname(__FILE__), "project", "res", "autotile"), "project/res/autotile")
 
 $icon = JavaFX::Image.new("/res/img/pkball.gif")
 

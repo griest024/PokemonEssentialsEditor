@@ -21,6 +21,7 @@ module PKMNEE::Import
 
 		ary.each do |e|
 			id = e.scan(/^InternalName=(.*)$/)[0][0].to_id
+			puts "	#{id}"
 			name = e.scan(/^Name=(.*)$/)[0][0]
 			type_class = (e.scan(/^IsSpecialType=true$/).empty? ? :physical : :special)
 			# I'm sure this section can be optimized but I don't want to mess around with eval and bindings

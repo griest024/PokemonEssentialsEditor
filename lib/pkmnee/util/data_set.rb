@@ -2,20 +2,19 @@
 module PKMNEE::Util
 
 	# no nested DataSets ATM
-	# stores paths instead of actual objects to reduce memory overhead
 	class DataSet
 		attr_accessor :data_class
-		attr_accessor :data_files
+		attr_accessor :wrappers
 		# attr_accessor :dir
 		
-		def initialize(klass, *data_files)
-			@data_files = {}
+		def initialize(klass, *wrappers)
+			@wrappers = {}
 			@data_class = (klass.is_a?(Class) ? klass : $data_classes[klass])
-			addData(*data_files)
+			addData(*wrappers)
 		end
 
-		def addData(*data_files)
-			data_files.each { |e| @data_files[e.id] = e }
+		def addData(*wrappers)
+			wrappers.each { |e| @wrappers[e.id] = e }
 			self
 		end
 
@@ -28,7 +27,7 @@ module PKMNEE::Util
 		end
 
 		def load(id)
-			@data_files[id].get
+			@wrappers[id].get
 		end
 		
 		def class
@@ -40,7 +39,7 @@ module PKMNEE::Util
 		end
 
 		def inspect
-			"DataSet<#{@data_class}>, size: #{@data_files.size}"
+			"DataSet<#{@data_class}>, size: #{@wrappers.size}"
 		end
 
 		def to_s

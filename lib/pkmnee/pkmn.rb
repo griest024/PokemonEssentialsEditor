@@ -1,20 +1,23 @@
 module PKMN
 
-	module Util
-
-		class DataPointer
-			
-			
-		end
-	end
-
 	# extend this so you can use klass.is_a? PKMN::DataClass
 	module DataClass
 
 		module InstanceMethods
 
+			def wrap
+				PKMNEE::Util::DataWrapper.new(self.class, "#{$project_dir}/data/#{self.class.to_sym}/#{self.id}.yaml")
+			end
+		end
+
+		module ClassMethods
+
 			def to_sym
 				self.instance_variable_get(:@type)
+			end
+
+			def to_s
+				@id.to_s
 			end
 		end
 
@@ -22,154 +25,142 @@ module PKMN
 			id = klass.to_s.scan(/::(\w*)$/)[0][0].snake_case.to_id
 			$data_classes[id] = klass
 			klass.instance_variable_set(:@type, id)
+			klass.include InstanceMethods
 			class << klass
-				include DataClass::InstanceMethods
+				include DataClass::ClassMethods
 
 				attr_accessor :type
 			end
 		end
 	end
 
-	module PKMN::Map
+	module Map
 
-	class Map
-		extend PKMN::DataClass
+		class Map
+			extend PKMN::DataClass
 
-		attr_accessor :id # The symbol by which the map is referred to internally - Symbol
-		attr_accessor :tileset # The optional tileset can be specified for a map - Tileset
-		attr_accessor :width
-		attr_accessor :height
-		attr_accessor :encounter_list
-		attr_accessor :data
-		attr_accessor :events
-		attr_accessor :layout # The layout of the tiles - Array(Array(Tile))
-		attr_accessor :encounters # The encounters for the map - EncounterList
-		attr_accessor :music # Optional sound list for the map - Array(Sound)
-		attr_accessor :trainers # Optional list of trainers that appear on the map - Hash(id: Trainer)
-		attr_accessor :tiles # A list of tiles that are used to make the map - Array(Tile)
-		attr_accessor :weather # A list of weather that can occur on this map - Hash(id: Weather)
-		attr_accessor :region # The region this map appears in - Region
+			attr_accessor :id # The symbol by which the map is referred to internally - Symbol
+			attr_accessor :tileset # The optional tileset can be specified for a map - Tileset
+			attr_accessor :width
+			attr_accessor :height
+			attr_accessor :encounter_list
+			attr_accessor :data
+			attr_accessor :events
+			attr_accessor :layout # The layout of the tiles - Array(Array(Tile))
+			attr_accessor :encounters # The encounters for the map - EncounterList
+			attr_accessor :music # Optional sound list for the map - Array(Sound)
+			attr_accessor :trainers # Optional list of trainers that appear on the map - Hash(id: Trainer)
+			attr_accessor :tiles # A list of tiles that are used to make the map - Array(Tile)
+			attr_accessor :weather # A list of weather that can occur on this map - Hash(id: Weather)
+			attr_accessor :region # The region this map appears in - Region
 
-	end
-
-	class Tile
-		extend PKMN::DataClass
-
-		attr_accessor :id # The symbol by which the tile is referred to internally - Symbol
-		attr_accessor :image # The appearance of the tile - Image
-		attr_accessor :passage
-		attr_accessor :priority
-		attr_accessor :terrain_tag
-
-	end
-
-	class Weather
-		attr_accessor :id # The symbol by which the weather is referred to internally - Symbol
-	end
-
-	class Tileset
-		extend PKMN::DataClass
-
-		attr_accessor :id # The symbol by which the tileset is referred to internally - Symbol
-		attr_accessor :images
-		attr_accessor :image
-		attr_accessor :autotiles
-		attr_accessor :tiles
-		attr_accessor :name
-		attr_accessor :tileset_name
-		attr_accessor :autotile_names
-		attr_accessor :panorama_name
-		attr_accessor :panorama_hue
-		attr_accessor :fog_name
-		attr_accessor :fog_hue
-		attr_accessor :fog_opacity
-		attr_accessor :fog_blend_type
-		attr_accessor :fog_zoom
-		attr_accessor :fog_sx
-		attr_accessor :fog_sy
-		attr_accessor :battleback_name
-
-		def getWidth
-			@image.getWidth
 		end
 
-		def getHeight
-			@image.getHeight
-		end
+		class Tile
+			extend PKMN::DataClass
 
-		# def loadImages
-		# 	@images = []
-		# 	@autotiles = []
-		# 	@autotile_names.unshift("").map! { |s| s == "" ? "autotile_blank" : s }
-		# 	@autotile_names.each do |e|
-		# 		autotile = []
-		# 		img = JavaFX::Image.new("/res/img/#{e}.png")
-		# 		reader = img.getPixelReader
-		# 		if img.getHeight == 128
-		# 			8.times do |y|
-		# 				6.times do |x|
-		# 					img = JavaFX::WritableImage.new(reader, x*16, y*16, 16, 16)
-		# 					autotile << img
-		# 				end
-		# 			end
-		# 			$autotile_def.each do |a|
-		# 				tile = JavaFX::WritableImage.new(32, 32)
-		# 				writer = tile.getPixelWriter
-		# 				writer.setPixels(0, 0, 16, 16, autotile[a[0]].getPixelReader, 0, 0)
-		# 				writer.setPixels(16, 0, 16, 16, autotile[a[1]].getPixelReader, 0, 0)
-		# 				writer.setPixels(0, 16, 16, 16, autotile[a[2]].getPixelReader, 0, 0)
-		# 				writer.setPixels(16, 16, 16, 16, autotile[a[3]].getPixelReader, 0, 0)
-		# 				@autotiles << tile
-		# 			end
-		# 		else
-		# 			48.times {@autotiles << JavaFX::WritableImage.new(reader, 0, 0, 32, 32)}
-		# 		end
-		# 	end
-		# 	# @image = JavaFX::Image.new(resource_url(:images, "#{tileset_name}.png").to_s)
-		# 	reader = @image.get_pixel_reader
-		# 	(@image.getHeight/32).to_i.times do |y|
-		# 		8.times do |x|
-		# 			@images << JavaFX::WritableImage.new(reader,x*32,y*32,32,32)
-		# 		end
-		# 	end
-		# end
+			attr_accessor :id # The symbol by which the tile is referred to internally - Symbol
+			attr_accessor :image # The appearance of the tile - Image
+			attr_accessor :passage
+			attr_accessor :priority
+			attr_accessor :terrain_tag
 
-		def getImage(id = 0)
-			loadImages if @images.empty?
-			id < 384 ? @autotiles[id] : @images[id - 384]
-		end
-
-		def eachImageIndex
-			loadImages if @images.empty?
-			if block_given?
-				@images.each_index do |i|
-					yield(@images[i], i)
-				end
-			else
-				return @images.each
+			def getImage
+				image.get
 			end
 		end
 
-		def getTile(id)
-			loadImages if @images.empty?
-			tile = PKMNEE::Tile.new
-			tile.image=(getImage(id))
-			tile.id=(id)
-			tile.passage=(@passages[id])
-			tile.priority=(@priorities[id])
-			tile.terrain_tag=(@terrain_tags[id])
-			tile.tileset_id=(@id)
+		class Weather
+			attr_accessor :id # The symbol by which the weather is referred to internally - Symbol
 		end
 
-		def eachTile
-			@images.each_index do |i|
-				yield(getTile(i))
+		class Tileset
+			extend PKMN::DataClass
+
+			attr_accessor :id # The symbol by which the tileset is referred to internally - Symbol
+			attr_accessor :num
+			attr_accessor :image
+			attr_accessor :autotiles
+			attr_accessor :tiles
+			attr_accessor :name
+			attr_accessor :tileset_name
+			attr_accessor :autotile_names
+			attr_accessor :panorama_name
+			attr_accessor :panorama_hue
+			attr_accessor :fog_name
+			attr_accessor :fog_hue
+			attr_accessor :fog_opacity
+			attr_accessor :fog_blend_type
+			attr_accessor :fog_zoom
+			attr_accessor :fog_sx
+			attr_accessor :fog_sy
+			attr_accessor :battleback_name
+			attr_accessor :image_width
+			attr_accessor :image_height
+
+			def initialize
+				@tiles = []
+			end
+
+			def addTiles(*tiles)
+				tiles.each { |tile| @tiles << tile }
+			end
+
+			def getWidth
+				@image.getWidth
+			end
+
+			def getHeight
+				@image.getHeight
+			end
+
+			# def loadImages
+			# 	@images = []
+			# 	@autotiles = []
+			# 	@autotile_names.unshift("").map! { |s| s == "" ? "autotile_blank" : s }
+			# 	@autotile_names.each do |e|
+			# 		autotile = []
+			# 		img = JavaFX::Image.new("/res/img/#{e}.png")
+			# 		reader = img.getPixelReader
+			# 		if img.getHeight == 128
+			# 			8.times do |y|
+			# 				6.times do |x|
+			# 					img = JavaFX::WritableImage.new(reader, x*16, y*16, 16, 16)
+			# 					autotile << img
+			# 				end
+			# 			end
+			# 			$autotile_def.each do |a|
+			# 				tile = JavaFX::WritableImage.new(32, 32)
+			# 				writer = tile.getPixelWriter
+			# 				writer.setPixels(0, 0, 16, 16, autotile[a[0]].getPixelReader, 0, 0)
+			# 				writer.setPixels(16, 0, 16, 16, autotile[a[1]].getPixelReader, 0, 0)
+			# 				writer.setPixels(0, 16, 16, 16, autotile[a[2]].getPixelReader, 0, 0)
+			# 				writer.setPixels(16, 16, 16, 16, autotile[a[3]].getPixelReader, 0, 0)
+			# 				@autotiles << tile
+			# 			end
+			# 		else
+			# 			48.times {@autotiles << JavaFX::WritableImage.new(reader, 0, 0, 32, 32)}
+			# 		end
+			# 	end
+			# 	# @image = JavaFX::Image.new(resource_url(:images, "#{tileset_name}.png").to_s)
+			# 	reader = @image.get_pixel_reader
+			# 	(@image.getHeight/32).to_i.times do |y|
+			# 		8.times do |x|
+			# 			@images << JavaFX::WritableImage.new(reader,x*32,y*32,32,32)
+			# 		end
+			# 	end
+			# end
+
+			def getImage(id = 0)
+				getTile(id).getImage
+			end
+
+			def getTile(id = 0)
+				# id < 384 ? @autotiles[id] : @tiles[id - 384]
+				@tiles[id]
 			end
 		end
-
 	end
-	
-end
 
 	module Species
 

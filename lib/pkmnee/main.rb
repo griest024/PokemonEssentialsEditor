@@ -28,7 +28,7 @@ module PKMNEE
 		def start(stage)
 			puts "\n***************************Pokemon Essentials Editor****************************\n\n"
 			self.class.initPlugins
-			# PKMNEE::Import.all
+			PKMNEE::Import.maps
 			self.class.loadProjectData
 			@stage = stage
 			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
@@ -49,10 +49,11 @@ module PKMNEE
 		class << self
 
 			def loadProjectData
+				# gets all data subfolders that contain PKMN data
 				Dir["#{$project_dir}/data/*"].select { |dir| File.directory?(dir) && $data_classes.keys.include?(File.basename(dir).to_sym) }.each do |dir|
 					type = File.basename(dir).to_sym
 					data_set = PKMNEE::Util::DataSet.new($data_classes[type])
-					Dir["#{dir}/*.yaml"].each do |file|
+					Dir["#{dir}/*.yaml"].each do |file| # populate the data set with all yaml files in directory
 						data_set.addData(PKMNEE::Util::DataWrapper.new($data_classes[type], file))
 					end
 					$data[type] = data_set
@@ -108,7 +109,16 @@ module PKMNEE
 			Main.loadPlugins
 			puts "Plugins loaded: #{Main.names}"
 			@splitpane.bindHeightToScene
-			# @data_hbox.getChildren.add(PKMNEE::Plugin::RawData.new)
+			# scroll = JavaFX::ScrollPane.new
+			# scroll.setContent(PKMNEE::Control::TilesetTilePane.new($data[:tileset][:caves]))
+			# @data_hbox.getChildren.add(scroll)
+			tab = build(JavaFX::Tab) do
+				setText(PKMNEE::Plugin::MapEditor.to_s)
+				setContent(PKMNEE::Plugin::MapEditor.new($data[:map][:rock_cave]))
+			end
+			@tab_pane.getTabs.add(tab)
+			@tab_pane.getSelectionModel.select(tab)
+			# p $data[:map][:rock_cave].tileset.get
 		end
 
 		def openPluginSelect

@@ -10,6 +10,7 @@ module PKMNEE::Plugin
 				attr_reader :instances, :handler, :author, :description, :preview, :name
 
 				def new(data = nil)
+					data = data.get
 					if open?(data)
 						return open(data)
 					else

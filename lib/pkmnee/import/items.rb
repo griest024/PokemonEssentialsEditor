@@ -29,7 +29,8 @@ module PKMNEE::Import
 			when 8 # Key item
 				PKMN::Item::KeyItem.new
 			end
-			item.id = temp[0].to_id
+			item.id = (id = temp[0].to_id)
+			puts "	#{id}"
 			item.name = temp[1]
 			item.plural_name = temp[2]
 			item.price = temp[4].to_i
