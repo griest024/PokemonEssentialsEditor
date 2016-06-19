@@ -28,7 +28,7 @@ module PKMNEE
 		def start(stage)
 			puts "\n***************************Pokemon Essentials Editor****************************\n\n"
 			self.class.initPlugins
-			# PKMNEE::Import.all
+			PKMNEE::Import.all
 			self.class.loadProjectData
 			@stage = stage
 			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
@@ -114,7 +114,7 @@ module PKMNEE
 			# @data_hbox.getChildren.add(scroll)
 			tab = build(JavaFX::Tab) do
 				setText(PKMNEE::Plugin::MapEditor.to_s)
-				setContent(PKMNEE::Plugin::MapEditor.new($data[:map][:rock_cave]))
+				setContent(PKMNEE::Plugin::MapEditor.new($data[:map][:va_beach]))
 			end
 			@tab_pane.getTabs.add(tab)
 			@tab_pane.getSelectionModel.select(tab)

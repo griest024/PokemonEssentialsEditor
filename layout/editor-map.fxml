@@ -25,7 +25,7 @@
       <Label fx:id="info" text="Label" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
-      <SplitPane dividerPositions="0.2569573283858998">
+      <SplitPane dividerPositions="0.1">
          <items>
             <ScrollPane fx:id="tileset_scroll_pane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefViewportWidth="256.0" prefWidth="274.0" />
             <ScrollPane fx:id="map_scroll_pane" pannable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">

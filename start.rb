@@ -26,6 +26,7 @@ require_relative 'lib/jrubyfx/lib/jrubyfx'
 require 'require_all'
 require 'yaml'
 require 'psych'
+require 'benchmark'
 
 STDOUT.sync = true
 STDERR.sync = true
@@ -49,5 +50,8 @@ resource_root(:tiles, File.join(File.dirname(__FILE__), "project", "res", "tile"
 resource_root(:autotiles, File.join(File.dirname(__FILE__), "project", "res", "autotile"), "project/res/autotile")
 
 $icon = JavaFX::Image.new("/res/img/pkball.gif")
+
+$blank_tile = JavaFX::WritableImage.new(32, 32)
+$black_tile = JavaFX::Image.new(resource_url(:images, "black_tile.png").to_s)
 
 PKMNEE::Main.launch

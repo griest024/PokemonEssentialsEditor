@@ -49,7 +49,6 @@ module PKMNEE::Import
 	def self.tilesets
 		auto = autotiles
 		puts "Importing tilesets..."
-		resource_root(:graphics, "#{$rmxp_dir}/Graphics")
 		tilesets = {}
 		tiles = {}
 		incr = 0
@@ -61,7 +60,7 @@ module PKMNEE::Import
 			puts "	#{tileset.id}"
 			safe_mkdir "#{$project_dir}/res/tile/#{tileset.id}"
 			tileset.name = e.tileset_name
-			tileset_image = JavaFX::Image.new("/src/Graphics/Tilesets/#{e.tileset_name}.png")
+			tileset_image = JavaFX::Image.new(resource_url(:graphics, "Tilesets/#{e.name}.png").to_s)
 			# autotiles
 			names = e.autotile_names.unshift("").map { |s| s == "" ? "blank" : s }
 			incr = 0
@@ -84,13 +83,14 @@ module PKMNEE::Import
 				8.times do |x|
 					tile = PKMN::Map::Tile.new
 					tile.id = (id = (y * 8) + x + 384)
-					puts "zero" if id == 1
 					tile.passage = e.passages[id]
 					tile.priority = e.priorities[id]
 					tile.terrain_tag = e.terrain_tags[id]
 					# tile.image = JavaFX::WritableImage.new(reader,x*32,y*32,32,32)
 					tile_path = "#{tileset.id}/#{id}.png"
-					JavaX::ImageIO.write(JavaFX::SwingFXUtils.fromFXImage(JavaFX::WritableImage.new(reader,x*32,y*32,32,32), nil), "png", Java::File.new("#{$project_dir}/res/tile/#{tile_path}")) # save image to file
+					tile_image = JavaFX::WritableImage.new(reader,x*32,y*32,32,32)
+					tile_image = $blank_tile if tile_image.equals $black_tile
+					JavaX::ImageIO.write(JavaFX::SwingFXUtils.fromFXImage(tile_image, nil), "png", Java::File.new("#{$project_dir}/res/tile/#{tile_path}")) # save image to file
 					tile.image = PKMNEE::Util::TileImageWrapper.new(tile_path)
 					tyles << tile # tiles should be in ascending order but add at index anyway to be safe
 				end
