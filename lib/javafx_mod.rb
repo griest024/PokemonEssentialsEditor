@@ -23,3 +23,35 @@ class Java::JavafxScene::Node
 		setMaxHeight(height)
 	end
 end
+
+class Java::JavafxSceneImage::Image
+	def equals(img)
+		ret = getHeight == img.getHeight && getWidth == img.getWidth
+		this_reader = getPixelReader
+		other_reader = img.getPixelReader
+		if ret
+			getWidth.to_i.times do |x|
+				getHeight.to_i.times do |y|
+					ret = ret && this_reader.getArgb(x, y) == other_reader.getArgb(x, y)
+				end
+			end
+		end
+		ret
+	end
+end
+
+class Java::JavafxSceneImage::WritableImage
+	def equals(img)
+		ret = getHeight == img.getHeight && getWidth == img.getWidth
+		this_reader = getPixelReader
+		other_reader = img.getPixelReader
+		if ret
+			getWidth.to_i.times do |x|
+				getHeight.to_i.times do |y|
+					ret = ret && this_reader.getArgb(x, y) == other_reader.getArgb(x, y)
+				end
+			end
+		end
+		ret
+	end
+end
