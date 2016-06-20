@@ -14,7 +14,10 @@
  #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 module PKMNEE::Plugin
+
 	class MapEditor < Base
+
+		$default_plugins[:map] = self
 
 		class << self
 

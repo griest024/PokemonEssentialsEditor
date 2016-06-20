@@ -20,6 +20,7 @@ module PKMNEE
 
 	$data = {}
 	$data_classes = {}
+	$default_plugins = {}
 
 	class Main < JRubyFX::Application
 
@@ -72,12 +73,35 @@ module PKMNEE
 	 			@plugins.map { |plugin| plugin.name }
 	 		end
 
+	 		def openInTab(data)
+	 			tab = JavaFX::Tab.new
+	 			tab.setText("#{defaultPlugin(data).to_s} - #{data.id}")
+				tab.setContent(open(data))
+				$main_tab_pane.getTabs.add(tab)
+				$main_tab_pane.getSelectionModel.select(tab)
+	 		end
+
+	 		def openInWindow(data)
+	 			build(stage, title: plugin.to_s, width: 800, height: 600) do
+					icons.add($icon)
+					setMaximized(true)
+					layout_scene(800, 600) do
+           	open(data)
+       		end
+       		show
+				end
+	 		end
+
+	 		def defaultPlugin(data)
+	 			$default_plugins[data.class.to_sym]
+	 		end
+
 	 		def open(data)
-				openWith(data, $default_plugins[data.to_sym])
+				openWith(data, defaultPlugin(data))
 	 		end
 
 	 		def openWith(data, plugin)
-	 			
+	 			plugin.new(data)
 	 		end
 
 	 		def eachName(&block)
@@ -107,15 +131,16 @@ module PKMNEE
 
 		def initialize
 			Main.loadPlugins
+			$main_tab_pane = @tab_pane
 			puts "Plugins loaded: #{Main.names}"
 			@splitpane.bindHeightToScene
 			@data_hbox.getChildren.add(PKMNEE::Plugin::RawData.new)
-			tab = build(JavaFX::Tab) do
-				setText(PKMNEE::Plugin::MapEditor.to_s)
-				setContent(PKMNEE::Plugin::MapEditor.new($data[:map][:va_beach]))
-			end
-			@tab_pane.getTabs.add(tab)
-			@tab_pane.getSelectionModel.select(tab)
+			# tab = build(JavaFX::Tab) do
+			# 	setText(PKMNEE::Plugin::MapEditor.to_s)
+			# 	setContent(PKMNEE::Plugin::MapEditor.new($data[:map][:va_beach]))
+			# end
+			# @tab_pane.getTabs.add(tab)
+			# @tab_pane.getSelectionModel.select(tab)
 		end
 
 		def openPluginSelect

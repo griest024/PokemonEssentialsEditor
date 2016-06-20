@@ -6,6 +6,10 @@ module PKMNEE::Control
 
 		def initialize(data)
 			super()
+			open_item = JavaFX::MenuItem.new("Open")
+			open_item.setOnAction lambda { |event| PKMNEE::Main.openInTab(getSelectionModel.getSelectedItems.toArray.to_a[0].data) }
+			menu = JavaFX::ContextMenu.new(open_item)
+			setContextMenu(menu)
 			setMinHeight(self.class::USE_PREF_SIZE)
 			setMaxHeight(Java::Double::MAX_VALUE)
 			setPrefHeight(900)
@@ -23,17 +27,17 @@ module PKMNEE::Control
 			setColumnResizePolicy(JavaFX::TreeTableView::CONSTRAINED_RESIZE_POLICY)
 			if @data.is_a?(PKMNEE::Util::DataSet) # collection of data objects
 				root = PKMNEE::Control::DataTreeItem.new([@data.to_s, @data.inspect], @data)
-				root.getChildren
-				root.setExpanded(true)
 				setRoot(root)
 			else # is single data object
 				root = PKMNEE::Control::DataTreeItem.new([@data.to_s, @data.id], @data)
-				root.setExpanded(true)
-				root.getChildren
 				setRoot(root)
 			end
 			getColumns.addAll(@name_col, @value_col)
 			setShowRoot(true)
+		end
+
+		def loadChildren
+			root.getChildren
 		end
 	end
 end
