@@ -11,7 +11,7 @@ module PKMNEE::Plugin
 
 				def new(data = nil)
 					data = data.get
-					if open?(data)
+					if data == nil || open?(data) # explicitly check for data being nil, we don't want to let a boolean pass through
 						return open(data)
 					else
 						puts "#{name} is unable to open #{data.class}"

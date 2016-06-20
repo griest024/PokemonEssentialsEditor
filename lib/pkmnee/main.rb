@@ -28,7 +28,7 @@ module PKMNEE
 		def start(stage)
 			puts "\n***************************Pokemon Essentials Editor****************************\n\n"
 			self.class.initPlugins
-			PKMNEE::Import.all
+			# PKMNEE::Import.all
 			self.class.loadProjectData
 			@stage = stage
 			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
@@ -109,16 +109,13 @@ module PKMNEE
 			Main.loadPlugins
 			puts "Plugins loaded: #{Main.names}"
 			@splitpane.bindHeightToScene
-			# scroll = JavaFX::ScrollPane.new
-			# scroll.setContent(PKMNEE::Control::TilesetTilePane.new($data[:tileset][:caves]))
-			# @data_hbox.getChildren.add(scroll)
+			@data_hbox.getChildren.add(PKMNEE::Plugin::RawData.new)
 			tab = build(JavaFX::Tab) do
 				setText(PKMNEE::Plugin::MapEditor.to_s)
 				setContent(PKMNEE::Plugin::MapEditor.new($data[:map][:va_beach]))
 			end
 			@tab_pane.getTabs.add(tab)
 			@tab_pane.getSelectionModel.select(tab)
-			# p $data[:map][:rock_cave].tileset.get
 		end
 
 		def openPluginSelect
@@ -146,12 +143,12 @@ module PKMNEE
 				@data_label.setWrapText(true)
 				@description_label.setWrapText(true)
 				@plugin_list.setItems(JavaFX::FXCollections.observableArrayList(PKMNEE::Main.plugins))
-				@plugin_list.getSelectionModel.selectedItemProperty.java_send(:addListener, [javafx.beans.value.ChangeListener], lambda do |ov,old,new|
+				@plugin_list.getSelectionModel.selectedItemProperty.java_send(:addListener, [javafx.beans.value.ChangeListener], lambda do |ov, old, new|
 						plugin = ov.getValue
 						@author_label.text = plugin.author
 						@description_label.text = plugin.description
 						str = ""
-						plugin.handler.handleList.each { |type| str += type.to_s } # concatonates the data types from the handler
+						plugin.handler.handleList.each { |type| str += type.to_s } # concatenates the data types from the handler
 						@data_label.text = str
 						@preview_imageview.setImage(plugin.preview)
 					end)
@@ -167,9 +164,9 @@ module PKMNEE
 						icons.add($icon)
 						setMaximized(true)
 						layout_scene(800, 600) do
-			           		plugin.new
-			       		end
-			       		show
+	           	plugin.new
+	       		end
+	       		show
 					end
 				else # open in tab pane
 					tab = build(JavaFX::Tab) do

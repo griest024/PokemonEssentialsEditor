@@ -9,7 +9,7 @@ module PKMNEE::Control
 			setMinHeight(self.class::USE_PREF_SIZE)
 			setMaxHeight(Java::Double::MAX_VALUE)
 			setPrefHeight(900)
-			@data = data
+			@data = data.get
 			@name_col = JavaFX::TreeTableColumn.new("Name")
 			@name_col.setCellValueFactory(lambda do |e| 
 				JavaFX::ReadOnlyStringWrapper.new(e.getValue.getValue[0]) 

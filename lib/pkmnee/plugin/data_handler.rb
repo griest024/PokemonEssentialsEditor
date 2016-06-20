@@ -48,7 +48,7 @@ module PKMNEE::Plugin
 		# returns true if this handler can handle the specified data type
 		# can take either a Symbol or a Class
 		def canHandle?(data)
-			@handles.keys.include?(data.class.to_sym) || @universal
+			@universal || @handles.keys.include?(data.class.to_sym)
 		end
 
 		# specifies that the plugin can handle files of type

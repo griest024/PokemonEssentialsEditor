@@ -13,6 +13,10 @@ class Object
   	self
   end
 
+  def to_sym
+  	self.class.to_s.to_sym
+  end
+
   private
   
 	# monkey patch method_missing to look for camelCase versions of snake_case methods

@@ -22,10 +22,6 @@ module PKMNEE::Util
 			load(id)
 		end
 
-		def get(id)
-			load(id)
-		end
-
 		def load(id)
 			@wrappers[id].get
 		end
