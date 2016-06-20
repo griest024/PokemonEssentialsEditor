@@ -17,8 +17,6 @@ elsif OS_VERSION.index( "Windows" )
   $rmxp_dir = String.new( $rmxp_dir ).gsub! "/", "\\"
 end
 
-puts "project directory: #{$rmxp_dir}"
-
 $DATA_TYPE = "rxdata"
 $RE_EXPORT = true
 $plugin_root = File.expand_path(File.dirname(__FILE__))

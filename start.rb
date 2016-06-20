@@ -21,7 +21,7 @@ $stderr = StringIO.new
 # load gems
 require 'java'
 # require 'jrubyfx'
-# require_relative 'lib/fxmlloader/pkg/jrubyfx-fxmlloader-0.4.1-java/lib/jrubyfx-fxmlloader'
+# require_relative 'lib/fxmlloader/lib/jrubyfx-fxmlloader'
 require_relative 'lib/jrubyfx/lib/jrubyfx'
 require 'require_all'
 require 'yaml'

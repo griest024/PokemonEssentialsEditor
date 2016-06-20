@@ -7,6 +7,7 @@ module PKMNEE::Import
 		item_file.pos= 3
 		# parse file, adding each section to an array
 		item_file.each_line do |line|
+			line.force_encoding("UTF-8")
 			desc = line.slice!(",\"" + line.scan(/"(.*)"/)[0][0] + "\"") # pulls the description out
 			desc.slice!(0..1) # remove leading comma and quotation
 			temp = line.split(",") << desc.chop! # gets data and adds description on at end with trailing quote removed

@@ -20,6 +20,7 @@ module PKMNEE::Import
 		ary.delete_at(0)
 
 		ary.each do |e|
+			e.force_encoding("UTF-8")
 			id = e.scan(/^InternalName=(.*)$/)[0][0].to_id
 			puts "	#{id}"
 			name = e.scan(/^Name=(.*)$/)[0][0]
