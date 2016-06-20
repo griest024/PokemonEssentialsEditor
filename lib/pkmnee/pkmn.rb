@@ -8,16 +8,16 @@ module PKMN
 			def wrap
 				PKMNEE::Util::DataWrapper.new(self.class, "#{$project_dir}/data/#{self.class.to_sym}/#{self.id}.yaml")
 			end
+
+			def to_s
+				@id.to_s
+			end
 		end
 
 		module ClassMethods
 
 			def to_sym
 				self.instance_variable_get(:@type)
-			end
-
-			def to_s
-				@id.to_s
 			end
 		end
 
