@@ -44,6 +44,7 @@ module PKMNEE::Plugin
 						@accordion.getPanes.add(JavaFX::TitledPane.new(k.to_s, PKMNEE::Control::DataTreeView.new(v)))
 					end
 					@accordion.setMaxHeight(Java::Double::MAX_VALUE)
+					@accordion.expandedPaneProperty.addListener lambda { |ov, old, new| ov.getValue.getContent.loadChildren }
 					getChildren.add(@accordion)
 				end
 			end

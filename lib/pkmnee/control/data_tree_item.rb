@@ -11,6 +11,7 @@ module PKMNEE::Control
 			@is_first_time_child = true
 			@is_first_time_leaf = true
 			addEventHandler(JavaFX::TreeItem::TreeModificationEvent::ANY, lambda { |event| event.getTarget.getChildren.toArray.each { |e| e.getChildren } if event.wasExpanded })
+			# addEventHandler(JavaFX::TreeItem::TreeModificationEvent::ANY, lambda { |event| event.getTarget.getChildren if event.wasExpanded })
 		end
 
 		def isLeaf?
