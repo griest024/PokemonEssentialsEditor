@@ -95,7 +95,7 @@ module PKMNEE::Import
 					tyles << tile # tiles should be in ascending order but add at index anyway to be safe
 				end
 			end
-			tileset.image = tileset_image
+			# tileset.image = tileset_image
 			tileset.image_height = tileset_image.getHeight
 			tileset.image_width = tileset_image.getWidth
 			tileset.addTiles *tyles

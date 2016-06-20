@@ -7,7 +7,7 @@ module PKMNEE::Control
 
 		def initialize(value, data)
 			super(value)
-			@data = data
+			@data = data.get
 			@is_first_time_child = true
 			@is_first_time_leaf = true
 			addEventHandler(JavaFX::TreeItem::TreeModificationEvent::ANY, lambda { |event| event.getTarget.getChildren.toArray.each { |e| e.getChildren } if event.wasExpanded })
@@ -33,19 +33,27 @@ module PKMNEE::Control
 			if !isLeaf?
 				children = JavaFX::FXCollections.observableArrayList
 				case @data
+				when PKMNEE::Util::DataSet
+					@data.wrappers.each do |id, wrapper|
+						v = wrapper.get
+						item = PKMNEE::Control::DataTreeItem.new( [id.to_s, simpleType(v)], v)
+						children.add(item)
+					end
 				when Hash
-					@data.each do |k,v|
+					@data.each do |k, v|
+						v = v.get
 						item = PKMNEE::Control::DataTreeItem.new( [k.to_s, simpleType(v)], v)
 						children.add(item)
 					end
 				when Array
 					@data.each.with_index do |e, i|
+						e = e.get
 						item = PKMNEE::Control::DataTreeItem.new( [i.to_s, simpleType(e)], e)
 						children.add(item)
 					end
 				else
 					@data.instance_variables.each do |e|
-						value = @data.instance_variable_get(e)
+						value = @data.instance_variable_get(e).get
 						item = PKMNEE::Control::DataTreeItem.new( [e.to_s, simpleType(value)], value)
 						children.add(item)
 					end

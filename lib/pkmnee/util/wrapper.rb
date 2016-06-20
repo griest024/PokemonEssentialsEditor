@@ -5,7 +5,7 @@ module PKMNEE::Util
 		attr_accessor :path, :id
 
 		def initialize(klass, path)
-			@path = path
+			@path = path.force_encoding("UTF-8")
 			@id = File.basename(path, ".*").to_sym
 		end
 		
@@ -21,7 +21,7 @@ module PKMNEE::Util
 	class TileImageWrapper < DataWrapper
 
 		def initialize(path)
-			@path = path
+			@path = path.force_encoding("UTF-8")
 			@id = File.basename(path, ".*")
 		end
 		
