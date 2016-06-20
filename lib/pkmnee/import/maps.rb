@@ -10,7 +10,7 @@ module PKMNEE::Import
 		Dir["#{$rmxp_dir}/Graphics/Autotiles/*"].each do |file|
 			tiles = []
 			autotile = []
-			id = (name = File.basename(file, ".*")).to_id
+			id = (name = File.basename(file, ".*")).force_encoding("UTF-8").to_id
 			puts "	#{id}"
 			safe_mkdir "#{$project_dir}/res/autotile/#{id}", "#{$project_dir}/data/autotile/#{id}"
 			img = JavaFX::Image.new(resource_url(:graphics, "Autotiles/#{name}.png").to_s)
@@ -28,7 +28,7 @@ module PKMNEE::Import
 					writer.setPixels(16, 0, 16, 16, autotile[a[1]].getPixelReader, 0, 0)
 					writer.setPixels(0, 16, 16, 16, autotile[a[2]].getPixelReader, 0, 0)
 					writer.setPixels(16, 16, 16, 16, autotile[a[3]].getPixelReader, 0, 0)
-					image_path = "#{id}/#{i}.png"
+					image_path = "#{id}/#{i}.png".force_encoding("UTF-8")
 					# tile = PKMN::Map::Tile.new
 					# tile.id = name
 					JavaX::ImageIO.write(JavaFX::SwingFXUtils.fromFXImage(auto_image, nil), "png", Java::File.new("#{$project_dir}/res/autotile/#{image_path}"))
@@ -36,7 +36,7 @@ module PKMNEE::Import
 				end
 			else
 				48.times do |n|
-					image_path = "#{id}/#{n}.png"
+					image_path = "#{id}/#{n}.png".force_encoding("UTF-8")
 					JavaX::ImageIO.write(JavaFX::SwingFXUtils.fromFXImage(JavaFX::WritableImage.new(reader, 0, 0, 32, 32), nil), "png", Java::File.new("#{$project_dir}/res/autotile/#{image_path}"))
 					tiles << PKMNEE::Util::AutotileImageWrapper.new(image_path)
 				end
@@ -55,11 +55,11 @@ module PKMNEE::Import
 		safe_mkdir "#{$project_dir}/res/tile", "#{$project_dir}/data/tileset"
 		Psych.load_file("#{$rmxp_dir}/export/Data/Tilesets.yaml")["root"].compact.reject { |e| e.name == '' }.each do |e| # load file and skip tilesets with no name
 			tileset = PKMN::Map::Tileset.new
-			tileset.id = e.name.to_id
+			tileset.id = e.name.force_encoding("UTF-8").to_id
 			tileset.num = e.id
 			puts "	#{tileset.id}"
 			safe_mkdir "#{$project_dir}/res/tile/#{tileset.id}"
-			tileset.name = e.tileset_name
+			tileset.name = e.tileset_name.force_encoding("UTF-8")
 			tileset_image = JavaFX::Image.new(resource_url(:graphics, "Tilesets/#{e.name}.png").to_s)
 			# autotiles
 			names = e.autotile_names.unshift("").map { |s| s == "" ? "blank" : s }
@@ -67,7 +67,7 @@ module PKMNEE::Import
 			names.each do |an|
 				auto[auto_id = an.to_id].each do |image_wrapper|
 					tile = PKMN::Map::Tile.new
-					tile.id = "#{auto_id}_#{incr}"
+					tile.id = "#{auto_id}_#{incr}".force_encoding("UTF-8")
 					tile.passage = e.passages[incr]
 					tile.priority = e.priorities[incr]
 					tile.terrain_tag = e.terrain_tags[incr]
@@ -87,7 +87,7 @@ module PKMNEE::Import
 					tile.priority = e.priorities[id]
 					tile.terrain_tag = e.terrain_tags[id]
 					# tile.image = JavaFX::WritableImage.new(reader,x*32,y*32,32,32)
-					tile_path = "#{tileset.id}/#{id}.png"
+					tile_path = "#{tileset.id}/#{id}.png".force_encoding("UTF-8")
 					tile_image = JavaFX::WritableImage.new(reader,x*32,y*32,32,32)
 					tile_image = $blank_tile if tile_image.equals $black_tile
 					JavaX::ImageIO.write(JavaFX::SwingFXUtils.fromFXImage(tile_image, nil), "png", Java::File.new("#{$project_dir}/res/tile/#{tile_path}")) # save image to file
@@ -133,7 +133,7 @@ module PKMNEE::Import
 			path.scan(/Map(\d*).yaml$/) do |id| # get the map idber
 				map = PKMN::Map::Map.new
 				rmxp = Psych.load_file(path)["root"]
-				map.id = map_info[id[0].to_i].name.to_id # extract the id from the map info using the map id we got
+				map.id = map_info[id[0].to_i].name.force_encoding("UTF-8").to_id # extract the id from the map info using the map id we got
 				puts "	#{map.id}"
 				map.width = rmxp.width
 				map.height = rmxp.height
