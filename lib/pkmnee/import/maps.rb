@@ -29,8 +29,6 @@ module PKMNEE::Import
 					writer.setPixels(0, 16, 16, 16, autotile[a[2]].getPixelReader, 0, 0)
 					writer.setPixels(16, 16, 16, 16, autotile[a[3]].getPixelReader, 0, 0)
 					image_path = "#{id}/#{i}.png".force_encoding("UTF-8")
-					# tile = PKMN::Map::Tile.new
-					# tile.id = name
 					JavaX::ImageIO.write(JavaFX::SwingFXUtils.fromFXImage(auto_image, nil), "png", Java::File.new("#{$project_dir}/res/autotile/#{image_path}"))
 					tiles << PKMNEE::Util::AutotileImageWrapper.new(image_path)
 				end
@@ -60,7 +58,7 @@ module PKMNEE::Import
 			puts "	#{tileset.id}"
 			safe_mkdir "#{$project_dir}/res/tile/#{tileset.id}"
 			tileset.name = e.tileset_name.force_encoding("UTF-8")
-			tileset_image = JavaFX::Image.new(resource_url(:graphics, "Tilesets/#{e.name}.png").to_s)
+			tileset_image = JavaFX::Image.new(resource_url(:graphics, "Tilesets/#{tileset.name}.png").to_s)
 			# autotiles
 			names = e.autotile_names.unshift("").map { |s| s == "" ? "blank" : s }
 			incr = 0
