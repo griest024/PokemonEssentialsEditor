@@ -156,7 +156,6 @@ module PKMN
 			end
 
 			def getTile(id = 0)
-				# id < 384 ? @autotiles[id] : @tiles[id - 384]
 				@tiles[id]
 			end
 		end

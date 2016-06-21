@@ -52,7 +52,7 @@ end
 #             SCRIPT
 #######################################
 
-["export", "export/data", "export/scripts"].each { |e| Dir.mkdir("#{$rmxp_dir}/#{e}") unless File.exists?("#{$rmxp_dir}/#{e}") }
+["export", "export/data", "export/scripts"].each { |e| safe_mkdir "#{$rmxp_dir}/#{e}" }
 
 # Get the list of plugins in the plugin directory
 plugins = Dir.entries( "#{$plugin_root}/plugins" )

@@ -17,7 +17,7 @@ require 'yaml'
 $DATA_DIR            = "Data"
 $YAML_DIR            = "export/data"
 $SCRIPTS_DIR         = "export/scripts"
-$DATA_IGNORE_LIST    = ["Scripts.rxdata"]
+$DATA_IGNORE_LIST    = ["Scripts.rxdata", "EditorScripts.rxdata"]
 $VERBOSE             = true
 $MAGIC_NUMBER        = 77323823
 $DEFAULT_STARTUP_MAP = 1
