@@ -44,7 +44,7 @@ module PKMNEE::Plugin
 				#type: the type of instance to get
 				#*controller_args: optional args to pass to instance
 				def open(data = nil)
-					puts "Opening #{data} with #{self}"
+					puts "Opening #{data ? data : "everything"} with #{self}..."
 					@instances << ctrl = @handler.get(data).new(data)
 					ctrl
 				end

@@ -54,7 +54,7 @@
             <Button fx:id="plugin_select" mnemonicParsing="false" onAction="#openPluginSelect" text="Plugin selection" />
         </items>
       </ToolBar>
-      <SplitPane fx:id="splitpane" dividerPositions="0.1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+      <SplitPane fx:id="splitpane" dividerPositions="0.05" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
         <items>
             <HBox fx:id="data_hbox" prefHeight="100.0" prefWidth="200.0" />
             <TabPane fx:id="tab_pane" />

@@ -75,11 +75,10 @@ module PKMNEE
 
 	 		def openInTab(data)
 	 			tab = JavaFX::Tab.new
-	 			tab.setText("#{defaultPlugin(data).to_s} - #{data.id}")
-				tab.setContent(open(data))
-				tab.setStyle("-fx-background-color:blue")
-				$main_tab_pane.getTabs.add(tab)
-				$main_tab_pane.getSelectionModel.select(tab)
+	 			tab.setText "#{defaultPlugin(data).to_s} - #{data.id}"
+				tab.setContent open(data).anchor
+				$main_tab_pane.getTabs.add tab
+				$main_tab_pane.getSelectionModel.select tab
 	 		end
 
 	 		def openInWindow(data)
@@ -130,27 +129,10 @@ module PKMNEE
 
 		def initialize
 			Main.loadPlugins
-			# @tab_pane = JavaFX::TabPane.new
-			# @splitpane.getItems.add(PKMNEE::Control::FillBox.new(@tab_pane))
 			$main_tab_pane = @tab_pane # make global so other classes can add tabs
-			@tab_pane.setStyle("-fx-background-color:purple")
 			puts "Plugins loaded: #{Main.names}"
 			@splitpane.bindHeightToScene
-			@splitpane.setDividerPositions(0, 0.1)
-			@data_hbox.getChildren.add(PKMNEE::Plugin::RawData.new)
-			tab = build(JavaFX::Tab) do
-				plugin = PKMNEE::Plugin::MapEditor.new($data[:map][:va_beach])
-				anchor = JavaFX::AnchorPane.new(plugin)
-				# anchor.setBottomAnchor(plugin, 0.0)
-				# anchor.setLeftAnchor(plugin, 0.0)
-				# anchor.setRightAnchor(plugin, 0.0)
-				# anchor.setTopAnchor(plugin, 0.0)
- 				anchor.setStyle("-fx-background-color:blue")
-				setText PKMNEE::Plugin::MapEditor.to_s
-				setContent anchor
-			end
-			@tab_pane.getTabs.add(tab)
-			@tab_pane.getSelectionModel.select(tab)
+			@data_hbox.getChildren.add PKMNEE::Plugin::RawData.new.anchor
 		end
 
 		def openPluginSelect
