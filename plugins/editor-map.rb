@@ -41,13 +41,15 @@ module PKMNEE::Plugin
 					
 				end
 				@layer_buttons = [@layer1_button, @layer2_button, @layer3_button]
-				connectControllers
+				# addEventHandlers
+				bindProperties
+				formatSliderLabels
 				setupGUI
-				@info.setText("Loading...Done")
+				@info.setText "Loading...Done"
 			end
 
 			def setupGUI
-				@map_scroll_pane.get_children.select { |e| e.is_a?(JavaFX::ScrollBar) }.each { |e| e.setBlockIncrement(32) }
+				# @map_scroll_pane.getStylesheets.add "/res/css/map-editor.css"
 				# makeTabs
 			end
 
@@ -59,12 +61,6 @@ module PKMNEE::Plugin
 					@tab_pane.getTabs.add(tab)
 					@tabs << tab
 				end
-			end
-
-			def connectControllers
-				# addEventHandlers
-				bindProperties
-				formatSliderLabels
 			end
 
 			def unbindProperties

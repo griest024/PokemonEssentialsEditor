@@ -133,6 +133,8 @@ module PKMNEE
 			puts "Plugins loaded: #{Main.names}"
 			@splitpane.bindHeightToScene
 			@data_hbox.getChildren.add PKMNEE::Plugin::RawData.new.anchor
+			Main.openInTab $data[:map][:va_beach]
+			
 		end
 
 		def openPluginSelect
@@ -145,6 +147,7 @@ module PKMNEE
 				end
 		      show
 			end
+			p @splitpane.lookupAll(".scroll-bar").to_a
 		end
 
 		class PluginSelect < JavaFX::VBox
