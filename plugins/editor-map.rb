@@ -35,6 +35,7 @@ module PKMNEE::Plugin
 			fxml 'editor-map.fxml'
 
 			def initialize(map = nil)
+				setStyle("-fx-background-color:green")
 				if map
 					loadMap(map.get)
 				else
