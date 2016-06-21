@@ -16,6 +16,14 @@ module PKMNEE::Util
 		def get
 			load
 		end
+
+		def to_s
+			@id.to_s
+		end
+
+		def toString
+			to_s
+		end
 	end
 
 	class TileImageWrapper < DataWrapper

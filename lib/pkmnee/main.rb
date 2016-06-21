@@ -75,21 +75,19 @@ module PKMNEE
 
 	 		def openInTab(data)
 	 			tab = JavaFX::Tab.new
-	 			tab.setText("#{defaultPlugin(data).to_s} - #{data.id}")
-				tab.setContent(open(data))
-				$main_tab_pane.getTabs.add(tab)
-				$main_tab_pane.getSelectionModel.select(tab)
+	 			tab.setText "#{defaultPlugin(data).to_s} - #{data.id}"
+				tab.setContent open(data).anchor
+				$main_tab_pane.getTabs.add tab
+				$main_tab_pane.getSelectionModel.select tab
 	 		end
 
 	 		def openInWindow(data)
-	 			build(stage, title: plugin.to_s, width: 800, height: 600) do
-					icons.add($icon)
-					setMaximized(true)
-					layout_scene(800, 600) do
-           	open(data)
-       		end
-       		show
-				end
+	 			stage = JavaFX::Stage.new
+	 			stage.setScene JavaFX::Scene.new(open(data))
+	 			stage.setTitle "#{defaultPlugin(data).to_s}: #{data}"
+	 			stage.icons.add $icon
+	 			stage.setMaximized true
+	 			stage.show
 	 		end
 
 	 		def defaultPlugin(data)
@@ -131,16 +129,10 @@ module PKMNEE
 
 		def initialize
 			Main.loadPlugins
-			$main_tab_pane = @tab_pane
+			$main_tab_pane = @tab_pane # make global so other classes can add tabs
 			puts "Plugins loaded: #{Main.names}"
 			@splitpane.bindHeightToScene
-			@data_hbox.getChildren.add(PKMNEE::Plugin::RawData.new)
-			# tab = build(JavaFX::Tab) do
-			# 	setText(PKMNEE::Plugin::MapEditor.to_s)
-			# 	setContent(PKMNEE::Plugin::MapEditor.new($data[:map][:va_beach]))
-			# end
-			# @tab_pane.getTabs.add(tab)
-			# @tab_pane.getSelectionModel.select(tab)
+			@data_hbox.getChildren.add PKMNEE::Plugin::RawData.new.anchor
 		end
 
 		def openPluginSelect
@@ -182,7 +174,6 @@ module PKMNEE
 			def openPlugin
 				plugin = @plugin_list.getSelectionModel.getSelectedItem
 				return unless plugin
-				puts "Opening #{plugin}..."
 				if @window_checkbox.isSelected # open in new window
 					stage = JavaFX::Stage.new
 					with(stage, title: plugin.to_s, width: 800, height: 600) do

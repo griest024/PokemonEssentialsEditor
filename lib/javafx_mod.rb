@@ -22,6 +22,10 @@ class Java::JavafxScene::Node
 		setMinHeight(height)
 		setMaxHeight(height)
 	end
+
+	def anchor
+		PKMNEE::Control::AnchorPane.new(self)
+	end
 end
 
 class Java::JavafxSceneImage::Image

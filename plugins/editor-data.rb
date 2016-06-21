@@ -33,19 +33,25 @@ module PKMNEE::Plugin
 
 			def initialize(data = nil)
 				super()
-				# setMinHeight(self.class::USE_PREF_SIZE)
-				setMaxHeight(Java::Double::MAX_VALUE)
-				# setPrefHeight(1000)
+				setMaxHeight Java::Double::MAX_VALUE
 				if data # load a discrete set of data
-					getChildren.add(PKMNEE::Control::DataTreeView.new(data))
+					getChildren.add PKMNEE::Control::DataTreeView.new(data)
 				else # load everything
 					@accordion = JavaFX::Accordion.new
 					$data.each do |k,v|
-						@accordion.getPanes.add(JavaFX::TitledPane.new(k.to_s, PKMNEE::Control::DataTreeView.new(v)))
+						lv = JavaFX::ListView.new(JavaFX::FXCollections.observableArrayList(v.wrappers.values))
+						lv.setOnMouseClicked lambda { |click| PKMNEE::Main.openInTab lv.getSelectionModel.getSelectedItem.get if click.getClickCount == 2 }
+						open_tab = JavaFX::MenuItem.new("Open in tab")
+						open_tab.setOnAction lambda { |event| PKMNEE::Main.openInTab(lv.getSelectionModel.getSelectedItem.get) }
+						open_window = JavaFX::MenuItem.new("Open in window")
+						open_window.setOnAction lambda { |event| PKMNEE::Main.openInWindow(lv.getSelectionModel.getSelectedItem.get) }
+						menu = JavaFX::ContextMenu.new(open_tab, open_window)
+						lv.setContextMenu menu
+						@accordion.getPanes.add JavaFX::TitledPane.new(k.to_s, lv)
 					end
-					@accordion.setMaxHeight(Java::Double::MAX_VALUE)
-					@accordion.expandedPaneProperty.addListener lambda { |ov, old, new| ov.getValue.getContent.loadChildren }
-					getChildren.add(@accordion)
+					@accordion.setMaxHeight Java::Double::MAX_VALUE
+					# @accordion.expandedPaneProperty.addListener lambda { |ov, old, new| ov.getValue.getContent.loadChildren }
+					getChildren.add @accordion
 				end
 			end
 		end
