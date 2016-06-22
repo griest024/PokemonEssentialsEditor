@@ -28,6 +28,19 @@ module PKMNEE
 
 		def start(stage)
 			puts "\n***************************Pokemon Essentials Editor****************************\n\n"
+			# img = JavaFX::WritableImage.new(32, 32)
+			# writer = img.getPixelWriter
+			# format = img.getPixelReader.getPixelFormat
+			# black = JavaFX::Color::BLACK
+			# white = JavaFX::Color::WHITE
+			# [[3, 28, black], [1, 30, white], [2, 29, white], [0, 31, black]].each do |e|
+			# 	32.times do |x|
+			# 		32.times do |y|
+			# 			writer.setColor(x, y, e[2]) if x == e[0] || y == e[0] || x == e[1] || y == e[1]
+			# 		end
+			# 	end
+			# end
+			# JavaX::ImageIO.write(JavaFX::SwingFXUtils.fromFXImage(img, nil), "png", Java::File.new("#{$root_dir}/res/test.png"))
 			self.class.initPlugins
 			# PKMNEE::Import.all
 			self.class.loadProjectData
@@ -131,10 +144,7 @@ module PKMNEE
 			Main.loadPlugins
 			$main_tab_pane = @tab_pane # make global so other classes can add tabs
 			puts "Plugins loaded: #{Main.names}"
-			@splitpane.bindHeightToScene
-			@data_hbox.getChildren.add PKMNEE::Plugin::RawData.new.anchor
-			Main.openInTab $data[:map][:va_beach]
-			
+			@data_hbox.getChildren.addAll PKMNEE::Plugin::RawData.new.anchor, JavaFX::Separator.new(JavaFX::Orientation::VERTICAL)
 		end
 
 		def openPluginSelect
@@ -147,7 +157,6 @@ module PKMNEE
 				end
 		      show
 			end
-			p @splitpane.lookupAll(".scroll-bar").to_a
 		end
 
 		class PluginSelect < JavaFX::VBox
