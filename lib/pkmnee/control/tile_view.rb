@@ -1,7 +1,7 @@
 
 class PKMNEE::Control::TileView < JavaFX::StackPane
 
-	attr_accessor :tile, :image, :isSelected
+	attr_accessor :tile, :image, :isSelected, :position
 
 	@@select_images = {:single => "single", :left => "left-edge", :right => "right-edge", :top => "top-edge", :bottom => "bottom-edge", :ne => "ne-corner", :nw => "nw-corner", :se => "se-corner", :sw => "sw-corner", :no_right => "right-missing", :no_left => "left-missing", :no_top => "top-missing", :no_bottom => "bottom-missing", :ver => "vertical", :hor => "horizontal"}
 
@@ -17,8 +17,8 @@ class PKMNEE::Control::TileView < JavaFX::StackPane
 		@isSelected
 	end
 	
-	def select(id = :single)
-		getChildren.setAll @image_view, JavaFX::ImageView.new(resource_url(:images, "select-#{@@select_images[id]}.png").to_s)
+	def select(id = nil)
+		getChildren.setAll(@image_view, JavaFX::ImageView.new(resource_url(:images, "select-#{@@select_images[id]}.png").to_s)) if id
 		@isSelected = true
 		self
 	end
@@ -27,5 +27,11 @@ class PKMNEE::Control::TileView < JavaFX::StackPane
 		getChildren.setAll @image_view
 		@isSelected = false
 		self
+	end
+
+	def setTile(tile)
+		@tile = tile
+		@image = @tile.getImage
+		getChildren.setAll @image_view = JavaFX::ImageView.new(@image)
 	end
 end
