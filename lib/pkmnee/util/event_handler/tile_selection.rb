@@ -1,9 +1,9 @@
 
 module PKMNEE::Util::EventHandler
 	
-	def self.dragTileSelect(tile_pane)
-		drag_handler = JavaFX::EventHandler.clone
-		class << drag_handler
+	def self.tileSelection(tile_pane)
+		handler = JavaFX::EventHandler.clone
+		class << handler
 
 			attr_accessor :tile_pane, :selected_tiles, :tiles
 
@@ -13,17 +13,27 @@ module PKMNEE::Util::EventHandler
 				@selected_tiles = []
 			end
 
+			def clearTiles
+				@selected_tiles.each { |tile| tile.deselect }
+				@selected_tiles = []
+			end
+
 			def handle(event)
 				case event.getEventType.getName
+				when "MOUSE_CLICKED"
+					clearTiles
+					@selected_tiles << event.getSource.select
 				when "DRAG_DETECTED"
-					@selected_tiles.each { |tile| tile.deselect }
-					@selected_tiles = []
-					(@start = event.getSource).startFullDrag
+					clearTiles
+					(@start = event.getSource).select.startFullDrag
 				when "MOUSE-DRAG_ENTERED"
+					clearTiles
 					@end = event.getSource
 					type = :nil
 					## TODO: OPTIMIZE ME PLEASE
-					if x(@end) > x(@start) && y(@end) > y(@start) # nw to se
+					if @start == @end
+						@selected_tiles << @start.select
+					elsif x(@end) > x(@start) && y(@end) > y(@start) # nw to se
 						type = :box
 						@nw = @start
 						@se = @end
@@ -48,15 +58,22 @@ module PKMNEE::Util::EventHandler
 						@sw = tile x(@nw), y(@se)
 						@ne = tile x(@se), y(@nw)
 					elsif x(@end) > x(@start) # w to e
-						type = :line
+						type = :hor
+						@left = @start
+						@right = @end
 					elsif x(@end) < x(@start) # e to w
-						type = :line
+						type = :hor
+						@left = @end
+						@right = @start
 					elsif y(@end) > y(@start) # n to s
-						type = :line
+						type = :ver
+						@top = @start
+						@bottom = @end
 					elsif y(@end) < y(@start) # s to n
-						type = :line
+						type = :ver
+						@top = @end
+						@bottom = @start
 					end
-					p type
 					if type == :box
 						((x @nw)..(x @ne)).each do |i| # top edge
 							@selected_tiles << ((tile i, y(@nw)).select :top)
@@ -70,10 +87,22 @@ module PKMNEE::Util::EventHandler
 						((y @nw)..(y @sw)).each do |i| # left edge
 							@selected_tiles << ((tile x(@nw), i).select :left)
 						end
-						@nw.select :nw
-						@ne.select :ne
-						@sw.select :sw
-						@se.select :se
+						@selected_tiles << (@nw.select :nw)
+						@selected_tiles << (@ne.select :ne)
+						@selected_tiles << (@sw.select :sw)
+						@selected_tiles << (@se.select :se)
+					elsif type == :ver
+						((y @top)..(y @bottom)).each do |i| # right edge
+							@selected_tiles << ((tile x(@top), i).select :ver)
+						end
+						@selected_tiles << (@top.select :no_bottom)
+						@selected_tiles << (@bottom.select :no_top)
+					elsif type == :hor
+						((x @left)..(x @right)).each do |i| # right edge
+							@selected_tiles << ((tile i, y(@left)).select :hor)
+						end
+						@selected_tiles << (@left.select :no_right)
+						@selected_tiles << (@right.select :no_left)
 					end
 					##
 				end
@@ -95,7 +124,7 @@ module PKMNEE::Util::EventHandler
 				(@tiles.find_index tile_view) / @tile_pane.getPrefColumns
 			end
 		end
-		drag_handler.init tile_pane
-		drag_handler
+		handler.init tile_pane
+		handler
 	end
 end

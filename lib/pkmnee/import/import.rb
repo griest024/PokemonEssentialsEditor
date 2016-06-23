@@ -17,7 +17,7 @@ module PKMNEE
 		end
 
 		def self.all
-			# rxdata
+			rxdata
 			puts "Importing everything..."
 			maps
 			types
