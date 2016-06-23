@@ -53,14 +53,18 @@ module PKMNEE
 				setMaximized(true)
 				show
 			end
+			@stage.class.startLogging
 		end
 
 		def stop
 			super
+			self.class.getChildStages.each { |stage| stage.close }
 			puts "\n********************************************************************************"
 		end
 
 		class << self
+
+			@child_stages = []
 
 			def loadProjectData
 				# gets all data subfolders that contain PKMN data
@@ -72,6 +76,15 @@ module PKMNEE
 					end
 					$data[type] = data_set
 				end 
+			end
+
+			def addChildStage(stage)
+				@child_stages << stage
+				stage
+			end
+
+			def getChildStages
+				@child_stages
 			end
 
 			def initPlugins

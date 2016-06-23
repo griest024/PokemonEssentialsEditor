@@ -14,6 +14,20 @@ class Java::JavafxSceneLayout::Region
 	end
 end
 
+class Java::JavafxStage::Stage
+
+	@log_stages = false
+	
+	def self.new
+		stage = super
+		@log_stages ? PKMNEE::Main.addChildStage(stage) : stage
+	end
+
+	def self.startLogging
+		@log_stages = true
+	end
+end
+
 class Java::JavafxScene::Node
 
 	def setSize(width, height)
