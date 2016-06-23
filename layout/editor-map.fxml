@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root fx:id="border_pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="border_pane" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <ToolBar fx:id="toolbar" prefHeight="40.0" prefWidth="200.0">
          <items>
@@ -25,15 +25,8 @@
       <Label fx:id="info" text="Label" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
-      <ScrollPane fx:id="map_scroll_pane" pannable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <content>
-            <Group fx:id="map_group" />
-         </content>
-      </ScrollPane>
+      <ScrollPane fx:id="map_scroll_pane" pannable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </center>
-   <right>
-      <TabPane fx:id="tab_pane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER" />
-   </right>
    <left>
       <ScrollPane fx:id="tileset_scroll_pane" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefViewportWidth="256.0" prefWidth="274.0" BorderPane.alignment="CENTER" />
    </left>

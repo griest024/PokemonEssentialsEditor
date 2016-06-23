@@ -7,6 +7,7 @@ require_relative 'symbol'
 require_relative 'string'
 require_relative 'object'
 require_relative 'wrapper'
+require_relative 'event_handler/event_handler'
 
 module PKMNEE::Util
 
