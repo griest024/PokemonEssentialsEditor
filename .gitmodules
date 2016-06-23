@@ -7,3 +7,6 @@
 [submodule "lib/fxmlloader"]
 	path = lib/fxmlloader
 	url = https://github.com/byteit101/JRubyFX-FXMLLoader
+[submodule "pkmne"]
+	path = pkmne
+	url = C:\\Users\\Peter\\essentials-sample-project
