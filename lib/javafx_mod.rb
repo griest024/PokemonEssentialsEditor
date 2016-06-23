@@ -16,15 +16,22 @@ end
 
 class Java::JavafxStage::Stage
 
-	@log_stages = false
-	
+	@@global_parent = nil
+	@@global_children = []
+
 	def self.new
 		stage = super
-		@log_stages ? PKMNEE::Main.addChildStage(stage) : stage
+		@@global_children << stage if @@global_parent
+		stage
 	end
 
-	def self.startLogging
-		@log_stages = true
+	def self.global_children
+		@@global_children
+	end
+
+	def setGlobalParent
+		addEventHandler JavaFX::WindowEvent::WINDOW_CLOSE_REQUEST, lambda { |event| event.getTarget.class.global_children.each { |stage| stage.close } }
+		@@global_parent = self
 	end
 end
 

@@ -25,6 +25,7 @@ module PKMNEE
 	class Main < JRubyFX::Application
 
 		@plugins = []
+		@child_stages = []
 
 		def start(stage)
 			puts "\n***************************Pokemon Essentials Editor****************************\n\n"
@@ -44,7 +45,7 @@ module PKMNEE
 			self.class.initPlugins
 			# PKMNEE::Import.all
 			self.class.loadProjectData
-			@stage = stage
+			@stage = stage.setGlobalParent
 			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
 				fxml Editor
 				setX(50)
@@ -53,7 +54,6 @@ module PKMNEE
 				setMaximized(true)
 				show
 			end
-			@stage.class.startLogging
 		end
 
 		def stop
@@ -63,8 +63,6 @@ module PKMNEE
 		end
 
 		class << self
-
-			@child_stages = []
 
 			def loadProjectData
 				# gets all data subfolders that contain PKMN data
