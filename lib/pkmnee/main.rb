@@ -43,7 +43,7 @@ module PKMNEE
 			# end
 			# JavaX::ImageIO.write(JavaFX::SwingFXUtils.fromFXImage(img, nil), "png", Java::File.new("#{$root_dir}/res/test.png"))
 			self.class.initPlugins
-			PKMNEE::Import.all
+			# PKMNEE::Import.all
 			self.class.loadProjectData
 			@stage = stage.setGlobalParent
 			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
@@ -58,7 +58,6 @@ module PKMNEE
 
 		def stop
 			super
-			self.class.getChildStages.each { |stage| stage.close }
 			puts "\n********************************************************************************"
 		end
 
@@ -73,16 +72,7 @@ module PKMNEE
 						data_set.addData(PKMNEE::Util::DataWrapper.new($data_classes[type], file))
 					end
 					$data[type] = data_set
-				end 
-			end
-
-			def addChildStage(stage)
-				@child_stages << stage
-				stage
-			end
-
-			def getChildStages
-				@child_stages
+				end
 			end
 
 			def initPlugins

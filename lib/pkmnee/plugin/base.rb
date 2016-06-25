@@ -45,8 +45,8 @@ module PKMNEE::Plugin
 				#*controller_args: optional args to pass to instance
 				def open(data = nil)
 					puts "Opening #{data ? data : "everything"} with #{self}..."
-					@instances << ctrl = @handler.get(data).new(data)
-					ctrl
+					# @instances << ctrl = @handler.get(data).new(data)
+					@handler.get(data).new(data)
 				end
 
 				def to_s

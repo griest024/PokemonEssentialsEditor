@@ -22,6 +22,7 @@ class Java::JavafxStage::Stage
 	def self.new
 		stage = super
 		@@global_children << stage if @@global_parent
+		stage.addEventHandler JavaFX::WindowEvent::WINDOW_CLOSE_REQUEST, lambda { |event| event.getTarget.class.global_children.delete stage }
 		stage
 	end
 
