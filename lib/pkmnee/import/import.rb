@@ -9,7 +9,7 @@ module PKMNEE
 
 		move_funtion_codes = {002 => :hurtUserQuarter}
 		$stat_order = [:hp, :attack, :defense, :speed, :special_attack, :special_defense]
-		$rmxp_dir = "#{$root_dir}/src"
+		$rmxp_dir = "#{$root_dir}/pkmne"
 		safe_mkdir "#{$project_dir}", "#{$project_dir}/data", "#{$project_dir}/res"
 
 		def self.rxdata

@@ -20,9 +20,9 @@ $stderr = StringIO.new
 
 # load gems
 require 'java'
-# require 'jrubyfx'
+require 'jrubyfx'
 # require_relative 'lib/fxmlloader/lib/jrubyfx-fxmlloader'
-require_relative 'lib/jrubyfx/lib/jrubyfx'
+# require_relative 'lib/jrubyfx/lib/jrubyfx'
 require 'require_all'
 require 'yaml'
 require 'psych'
@@ -46,7 +46,7 @@ require_rel 'plugins'
 fxml_root(File.dirname(__FILE__) + '/layout')
 resource_root(:images, File.join(File.dirname(__FILE__), "res", "img"), "res/img")
 resource_root(:css, File.join(File.dirname(__FILE__), "res", "css"), "res/css")
-resource_root(:graphics, File.join(File.dirname(__FILE__), "src", "Graphics"), "src/Graphics")
+resource_root(:graphics, File.join(File.dirname(__FILE__), "pkmne", "Graphics"), "pkmne/Graphics")
 resource_root(:tiles, File.join(File.dirname(__FILE__), "project", "res", "tile"), "project/res/tile")
 resource_root(:autotiles, File.join(File.dirname(__FILE__), "project", "res", "autotile"), "project/res/autotile")
 

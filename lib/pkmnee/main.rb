@@ -43,7 +43,7 @@ module PKMNEE
 			# end
 			# JavaX::ImageIO.write(JavaFX::SwingFXUtils.fromFXImage(img, nil), "png", Java::File.new("#{$root_dir}/res/test.png"))
 			self.class.initPlugins
-			# PKMNEE::Import.all
+			PKMNEE::Import.all
 			self.class.loadProjectData
 			@stage = stage.setGlobalParent
 			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
