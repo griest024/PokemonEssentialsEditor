@@ -5,24 +5,24 @@ module PKMNEE::Util::EventHandler
 		handler = JavaFX::EventHandler.clone
 		class << handler
 
-			attr_accessor :tile_pane, :selected_tiles, :tiles
+			attr_accessor :tile_pane, :tiles
 
 			def init(tile_pane)
 				@tile_pane = tile_pane
 				@tiles = @tile_pane.getChildren.to_a
-				@selected_tiles = []
+				@@selected_tiles = []
 			end
 
 			def clearTiles
-				@selected_tiles.each { |tile| tile.deselect }
-				@selected_tiles = []
+				@@selected_tiles.each { |tile| tile.deselect }
+				@@selected_tiles = []
 			end
 
 			def handle(event)
 				case event.getEventType.getName
 				when "MOUSE_CLICKED"
 					clearTiles
-					@selected_tiles << event.getSource.select
+					@@selected_tiles << event.getSource.select
 				when "DRAG_DETECTED"
 					clearTiles
 					(@start = event.getSource).select.startFullDrag
@@ -30,9 +30,14 @@ module PKMNEE::Util::EventHandler
 					clearTiles
 					@end = event.getSource
 					type = :nil
+					([y(@start), y(@end)].min..[y(@start), y(@end)].max).each do |tile_y|
+						([x(@start), x(@end)].min..[x(@start), x(@end)].max).each do |tile_x|
+							@@selected_tiles << tile(tile_x, tile_y)
+						end
+					end
 					## TODO: OPTIMIZE ME PLEASE
 					if @start == @end
-						@selected_tiles << @start.select
+						@start.select
 					elsif x(@end) > x(@start) && y(@end) > y(@start) # nw to se
 						type = :box
 						@nw = @start
@@ -76,36 +81,76 @@ module PKMNEE::Util::EventHandler
 					end
 					if type == :box
 						((x @nw)..(x @ne)).each do |i| # top edge
-							@selected_tiles << ((tile i, y(@nw)).select :top)
+							((tile i, y(@nw)).select :top)
 						end
 						((x @sw)..(x @se)).each do |i| # bottom edge
-							@selected_tiles << ((tile i, y(@sw)).select :bottom)
+							((tile i, y(@sw)).select :bottom)
 						end
 						((y @ne)..(y @se)).each do |i| # right edge
-							@selected_tiles << ((tile x(@ne), i).select :right)
+							((tile x(@ne), i).select :right)
 						end
 						((y @nw)..(y @sw)).each do |i| # left edge
-							@selected_tiles << ((tile x(@nw), i).select :left)
+							((tile x(@nw), i).select :left)
 						end
-						@selected_tiles << (@nw.select :nw)
-						@selected_tiles << (@ne.select :ne)
-						@selected_tiles << (@sw.select :sw)
-						@selected_tiles << (@se.select :se)
+						(@nw.select :nw)
+						(@ne.select :ne)
+						(@sw.select :sw)
+						(@se.select :se)
 					elsif type == :ver
 						((y @top)..(y @bottom)).each do |i| # right edge
-							@selected_tiles << ((tile x(@top), i).select :ver)
+							((tile x(@top), i).select :ver)
 						end
-						@selected_tiles << (@top.select :no_bottom)
-						@selected_tiles << (@bottom.select :no_top)
+						(@top.select :no_bottom)
+						(@bottom.select :no_top)
 					elsif type == :hor
 						((x @left)..(x @right)).each do |i| # right edge
-							@selected_tiles << ((tile i, y(@left)).select :hor)
+							((tile i, y(@left)).select :hor)
 						end
-						@selected_tiles << (@left.select :no_right)
-						@selected_tiles << (@right.select :no_left)
+						(@left.select :no_right)
+						(@right.select :no_left)
 					end
 					##
 				end
+			end
+
+			def selected_tiles
+				@@selected_tiles
+			end
+
+			def above(tile_view)
+				tile x(tile_view), y(tile_view) - 1
+			end
+
+			def below(tile_view)
+				tile x(tile_view), y(tile_view) + 1
+			end
+
+			def left(tile_view)
+				tile x(tile_view) - 1, y(tile_view)
+			end
+
+			def right(tile_view)
+				tile x(tile_view) + 1, y(tile_view)
+			end
+
+			def above?(tile_view)
+				tv = above tile_view
+				tv && @@selected_tiles.include?(tv)
+			end
+
+			def below?(tile_view)
+				tv = below tile_view
+				tv && @@selected_tiles.include?(tv)
+			end
+
+			def left?(tile_view)
+				tv = left tile_view
+				tv && @@selected_tiles.include?(tv)
+			end
+
+			def right?(tile_view)
+				tv = right tile_view
+				tv && @@selected_tiles.include?(tv)
 			end
 
 			def tile(x, y)

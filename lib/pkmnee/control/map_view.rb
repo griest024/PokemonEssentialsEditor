@@ -8,6 +8,7 @@ class PKMNEE::Control::MapView < JavaFX::StackPane
 		@map = map.get
 		@map_table = @map.data
 		@layers = []
+		handler = PKMNEE::Util::EventHandler.tilePlacement
 		@tileset = @map.tileset.get
 		xsize = @map_table.xsize
 		ysize = @map_table.ysize
@@ -17,9 +18,10 @@ class PKMNEE::Control::MapView < JavaFX::StackPane
 			layer.setSize xsize*32, ysize*32
 			ysize.times do |y|
 				xsize.times do |x|
-					iv = PKMNEE::Control::TileView.new(@tileset.getTile(@map_table[x, y, n]))
-					iv.setFocusTraversable false
-					layer.add iv
+					tv = PKMNEE::Control::TileView.new(@tileset.getTile(@map_table[x, y, n]))
+					tv.setOnMouseClicked handler
+					tv.setFocusTraversable false
+					layer.add tv
 				end
 			end
 			getChildren.add layer
