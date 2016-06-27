@@ -25,7 +25,6 @@ module PKMNEE
 	class Main < JRubyFX::Application
 
 		@plugins = []
-		@child_stages = []
 
 		def start(stage)
 			puts "\n***************************Pokemon Essentials Editor****************************\n\n"
