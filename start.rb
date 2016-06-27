@@ -32,7 +32,7 @@ STDOUT.sync = true
 STDERR.sync = true
 
 $root_dir = File.expand_path(File.dirname(__FILE__))
-$project_dir = "#{$root_dir}/pkmne"
+$project_dir = "#{$root_dir}/project"
 
 # init module so declaring submodules is quicker
 module PKMNEE; end
