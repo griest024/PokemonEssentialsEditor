@@ -23,6 +23,8 @@ class PKMNEE::Control::MapView < JavaFX::StackPane
 					layer.add tv
 				end
 			end
+			layer.setPrefRows @map_table.ysize
+			layer.setPrefColumns @map_table.xsize
 			handler = PKMNEE::Util::EventHandler.tilePlacement.init layer
 			layer.getChildren.each do |tv|
 				tv.setOnMouseClicked handler
@@ -30,8 +32,6 @@ class PKMNEE::Control::MapView < JavaFX::StackPane
 				tv.addEventHandler JavaFX::MouseDragEvent::ANY, handler
 			end
 			getChildren.add layer
-			layer.setPrefRows @map_table.ysize
-			layer.setPrefColumns @map_table.xsize
 			@layers << layer
 		end
 		# setSize @map_table.xsize*32, @map_table.ysize*32

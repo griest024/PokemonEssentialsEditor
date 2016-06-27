@@ -43,8 +43,6 @@ module PKMNEE::Util::EventHandler
 						resetTiles
 						([y(@start), y(@end)].min..[y(@start), y(@end)].max).each do |tile_y|
 							([x(@start), x(@end)].min..[x(@start), x(@end)].max).each do |tile_x|
-								p tile(tile_x, tile_y).id
-								p @@selected_tiles.dig(tile_y % @@selected_tiles.size, tile_x % @@selected_tiles[0].size).tile.id
 								tile(tile_x, tile_y).setTile @@selected_tiles.dig(tile_y % @@selected_tiles.size, tile_x % @@selected_tiles[0].size).tile # mod to wrap around the selected tiles
 							end
 						end
