@@ -8,13 +8,25 @@ class PKMNEE::Control::TileView < JavaFX::StackPane
 	def initialize(tile)
 		@tile = tile
 		@image = @tile.getImage
-		super(@image_view = JavaFX::ImageView.new(@image))
+		super @image_view = JavaFX::ImageView.new(@image)
 		@image_view.setFocusTraversable true
 		setFocusTraversable false
 	end
 
+	def setTile(tile)
+		@tile = tile
+		@image = @tile.getImage
+		getChildren.setAll @image_view = JavaFX::ImageView.new(@image)
+		self
+	end
+
 	def selected?
 		@isSelected
+	end
+
+	def preview(tile)
+		getChildren.setAll JavaFX::ImageView.new(tile.getImage)
+		self
 	end
 	
 	def select(id = :single)

@@ -11,7 +11,7 @@ class PKMNEE::Control::TilesetView < JavaFX::TilePane
 		setPrefColumns 8
 		setFocusTraversable true
 		
-		handler = PKMNEE::Util::EventHandler.tileSelection self
+		handler = PKMNEE::Util::EventHandler.tileSelection.init self
 		@tile_views.each do |tv|
 			tv.setOnMouseClicked handler
 			tv.setOnDragDetected handler
