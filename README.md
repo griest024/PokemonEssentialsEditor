@@ -34,7 +34,7 @@ General
 	- [x] Find a better way to get plugin list to plugin popup ()
 - [x] Add file handling protocols to plugin architecture
 - [x] Automatically load all data files into main (can do this but DON'T!!!!)
-- [ ] Convert yaml data into native objects (tiles, maps, etc.)
+- [x] Convert yaml data into native objects (tiles, maps, etc.)
 
 - [ ] Add context menus
 - [ ] Bind node properties to instance variable (node children, etc.)
@@ -50,9 +50,9 @@ General
     - [x] type
     - [x] species
     - [ ] trainers
-    - [ ] maps
+    - [x] maps
         - [ ] encounter lists
-    - [ ] tiles/tilesets
+    - [x] tiles/tilesets
     - [ ] music
     - [ ] moves
     - [ ] town map/map connnections
@@ -72,7 +72,7 @@ Plugins
 
 ### Map:
 - [ ] Make config 
-- [ ] multiple tile selection
+- [x] multiple tile selection
 
 ### Raw Data:
 - [x] Accordion file browser
