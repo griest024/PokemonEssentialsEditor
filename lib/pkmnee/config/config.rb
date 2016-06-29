@@ -22,13 +22,17 @@ class PKMNEE::Config
 		end
 	end
 
-	def to_yaml
+	def to_hash
 		hash = {}
 		@settings.each { |k, v| hash[k] = v.value }
-		hash.to_yaml
+		hash
+	end
+
+	def to_h
+		to_hash
 	end
 
 	def saveFile
-		File.open(PKMNEE::Main.config.config_dir, "w") { |file| file.write to_yaml }
+		File.open(PKMNEE::Main.config.config_dir, "w") { |file| file.write to_h.to_yaml }
 	end
 end
