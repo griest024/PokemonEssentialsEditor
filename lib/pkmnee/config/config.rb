@@ -5,6 +5,7 @@ class PKMNEE::Config
 	require_relative 'list'
 	require_relative 'edit'
 	require_relative 'boolean'
+	require_relative 'path'
 
 	TYPES = {:list => List, :edit => Edit, :bool => Boolean, :path => Path}
 

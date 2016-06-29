@@ -25,22 +25,10 @@ module PKMNEE
 	class Main < JRubyFX::Application
 
 		@plugins = []
+		@config = PKMNEE::Config.new path: {:id => :config_dir, :name => "Configuration Directory"}
 
 		def start(stage)
 			puts "\n***************************Pokemon Essentials Editor****************************\n\n"
-			# img = JavaFX::WritableImage.new(32, 32)
-			# writer = img.getPixelWriter
-			# format = img.getPixelReader.getPixelFormat
-			# black = JavaFX::Color::BLACK
-			# white = JavaFX::Color::WHITE
-			# [[3, 28, black], [1, 30, white], [2, 29, white], [0, 31, black]].each do |e|
-			# 	32.times do |x|
-			# 		32.times do |y|
-			# 			writer.setColor(x, y, e[2]) if x == e[0] || y == e[0] || x == e[1] || y == e[1]
-			# 		end
-			# 	end
-			# end
-			# JavaX::ImageIO.write(JavaFX::SwingFXUtils.fromFXImage(img, nil), "png", Java::File.new("#{$root_dir}/res/test.png"))
 			self.class.initPlugins
 			# PKMNEE::Import.all
 			self.class.loadProjectData
@@ -72,6 +60,10 @@ module PKMNEE
 					end
 					$data[type] = data_set
 				end
+			end
+
+			def config
+				@config
 			end
 
 			def initPlugins
