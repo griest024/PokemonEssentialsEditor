@@ -16,6 +16,9 @@
 
 ###############################################################################
 
+require 'util/factory/project_chooser'
+require 'util/factory/pkmn_file_chooser'
+
 module PKMNEE
 
 	$data = {}
@@ -25,6 +28,9 @@ module PKMNEE
 	class Main < JRubyFX::Application
 
 		@plugins = []
+		@project_chooser = PKMNEE::Util::Factory.projectChooser
+		@file_chooser = PKMNEE::Util::Factory.fileChooser
+		@stage
 
 		def start(stage)
 			puts "\n***************************Pokemon Essentials Editor****************************\n\n"
@@ -61,6 +67,18 @@ module PKMNEE
 		end
 
 		class << self
+
+			def stage
+				@stage
+			end
+
+			def file_chooser
+				@file_chooser
+			end
+
+			def project_chooser
+				@project_chooser
+			end
 
 			def loadProjectData
 				# gets all data subfolders that contain PKMN data
@@ -145,6 +163,10 @@ module PKMNEE
 			$main_tab_pane = @tab_pane # make global so other classes can add tabs
 			puts "Plugins loaded: #{Main.names}"
 			@data_hbox.getChildren.addAll PKMNEE::Plugin::RawData.new.anchor, JavaFX::Separator.new(JavaFX::Orientation::VERTICAL)
+		end
+
+		def openDialog
+			files = Main.file_chooser.showOpenMultipleDialog Main.stage
 		end
 
 		def openPluginSelect
