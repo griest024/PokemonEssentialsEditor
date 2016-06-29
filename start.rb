@@ -34,6 +34,8 @@ STDERR.sync = true
 $root_dir = File.expand_path(File.dirname(__FILE__))
 $project_dir = "#{$root_dir}/project"
 
+$LOAD_PATH.unshift("#{$root_dir}/lib/pkmnee")
+
 # init module so declaring submodules is quicker
 module PKMNEE; end
 
@@ -54,5 +56,6 @@ $icon = JavaFX::Image.new("/res/img/pkball.gif")
 
 $blank_tile = JavaFX::WritableImage.new(32, 32)
 $black_tile = JavaFX::Image.new(resource_url(:images, "black_tile.png").to_s)
+
 
 PKMNEE::Main.launch
