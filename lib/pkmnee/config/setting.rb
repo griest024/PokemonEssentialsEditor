@@ -1,21 +1,10 @@
 
 class PKMNEE::Config::Setting
 
-	attr_accessor :id, :name, :value, :default
+	attr_accessor :id, :name, :value
 
 	def initialize(args)
-		@id = args[:id]
-		@name = args[:name]
-		@default = args[:default]
-		reset
-	end
-
-	def resetValue
-		@value = @default.clone
-	end
-
-	def reset
-		resetValue
-	end
-	
+		@id = args[:id].to_sym
+		@name = args[:name].to_s
+	end	
 end
