@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.input.*?>
 <?import com.panemu.tiwulfx.control.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
@@ -8,7 +9,6 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
-
 
 <BorderPane focusTraversable="true" prefHeight="616.0" prefWidth="942.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <left>
@@ -22,18 +22,29 @@
         <items>
           <MenuBar>
             <menus>
-              <Menu mnemonicParsing="false" text="File">
+              <Menu fx:id="menu_file" mnemonicParsing="false" text="File">
                 <items>
-                  <MenuItem mnemonicParsing="false" text="New" />
-                  <MenuItem mnemonicParsing="false" text="Open…" />
-                  <Menu mnemonicParsing="false" text="Open Recent" />
+                  <MenuItem fx:id="menu_file_new" mnemonicParsing="false" text="New" />
+                  <MenuItem fx:id="menu_file_open" mnemonicParsing="false" onAction="#openDialog" text="Open…">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator></MenuItem>
+                  <Menu fx:id="menu_file_open_recent" mnemonicParsing="false" text="Open Recent" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="Close" />
-                  <MenuItem mnemonicParsing="false" text="Save" />
-                  <MenuItem mnemonicParsing="false" text="Save As…" />
-                  <MenuItem mnemonicParsing="false" text="Revert" />
+                  <MenuItem fx:id="menu_file_save" mnemonicParsing="false" text="Save">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator></MenuItem>
+                  <MenuItem fx:id="menu_file_save_as" mnemonicParsing="false" text="Save As…">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
+                           </accelerator></MenuItem>
+                  <MenuItem fx:id="menu_file_revert" mnemonicParsing="false" text="Revert">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="Z" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator></MenuItem>
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="Preferences…" />
+                  <MenuItem fx:id="menu_file_settings" mnemonicParsing="false" text="Settings" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" text="Quit" />
                 </items>
