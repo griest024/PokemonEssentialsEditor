@@ -21,18 +21,35 @@ module PKMNEE
 	$data = {}
 	$data_classes = {}
 	$default_plugins = {}
+	$project_dir = "#{$root_dir}/project"
+	$home_dir = "#{ENV['HOME']}/.pokemaker"
+	$user_config_dir = "#{$home_dir}/config"
+	$default_config_dir = "#{$root_dir}/config"
+	$project_config_dir = "#{$project_dir}/config"
+
+	safe_mkdir $home_dir, $user_config_dir
 
 	class Main < JRubyFX::Application
 
 		@plugins = []
-		@config = PKMNEE::Config.new path: {:id => :config_dir, :name => "Configuration Directory"}
+		@config = PKMNEE::Config.new path: {id: :config_dir, name: "Configuration Directory"}
 
 		def start(stage)
 			puts "\n***************************Pokemon Essentials Editor****************************\n\n"
+
 			self.class.initPlugins
+
 			# PKMNEE::Import.all
+
 			self.class.loadProjectData
+
 			@stage = stage.setGlobalParent
+
+			# load configs
+			self.class.config.loadFile "#{$default_config_dir}/pokemaker.yaml" # defaults
+			self.class.config.loadFile "#{$user_config_dir}/pokemaker.yaml" # user
+
+			# open stage
 			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
 				fxml Editor
 				setX(50)
@@ -44,11 +61,20 @@ module PKMNEE
 		end
 
 		def stop
+			# save configs
+			self.class.config.saveFile "#{$default_config_dir}/pokemaker.yaml" # defaults
+			self.class.config.saveFile "#{$user_config_dir}/pokemaker.yaml" # user
+
 			super
+
 			puts "\n********************************************************************************"
 		end
 
 		class << self
+
+			def config_dir
+				$user_config_dir
+			end
 
 			def loadProjectData
 				# gets all data subfolders that contain PKMN data

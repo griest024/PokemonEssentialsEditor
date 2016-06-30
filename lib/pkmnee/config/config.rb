@@ -32,15 +32,19 @@ class PKMNEE::Config
 		to_hash
 	end
 
+	def to_yaml
+		to_hash.to_yaml
+	end
+
 	def loadHash(hash)
 		hash.each { |k, v| @settings[k].value = v if @settings[k] }
 	end
 
-	def loadFile(file)
-		loadHash Psych.load_file(file)
+	def loadFile(path)
+		loadHash Psych.load_file(path)
 	end
 
-	def saveFile
-		File.open(PKMNEE::Main.config.config_dir, "w") { |file| file.write to_h.to_yaml }
+	def saveFile(path)
+		File.open(path, "w") { |file| file.write to_yaml }
 	end
 end
