@@ -24,6 +24,13 @@ module PKMNEE
 	$data = {}
 	$data_classes = {}
 	$default_plugins = {}
+	$project_dir = "#{$root_dir}/project"
+	$home_dir = "#{ENV['HOME']}/.pokemaker"
+	$user_config_dir = "#{$home_dir}/config"
+	$default_config_dir = "#{$root_dir}/config"
+	$project_config_dir = "#{$project_dir}/config"
+
+	safe_mkdir $home_dir, $user_config_dir
 
 	class Main < JRubyFX::Application
 
@@ -31,26 +38,24 @@ module PKMNEE
 		@project_chooser = PKMNEE::Util::Factory.projectChooser
 		@file_chooser = PKMNEE::Util::Factory.fileChooser
 		@stage
+		@config = PKMNEE::Config.new path: {id: :config_dir, name: "Configuration Directory"}
 
 		def start(stage)
 			puts "\n***************************Pokemon Essentials Editor****************************\n\n"
-			# img = JavaFX::WritableImage.new(32, 32)
-			# writer = img.getPixelWriter
-			# format = img.getPixelReader.getPixelFormat
-			# black = JavaFX::Color::BLACK
-			# white = JavaFX::Color::WHITE
-			# [[3, 28, black], [1, 30, white], [2, 29, white], [0, 31, black]].each do |e|
-			# 	32.times do |x|
-			# 		32.times do |y|
-			# 			writer.setColor(x, y, e[2]) if x == e[0] || y == e[0] || x == e[1] || y == e[1]
-			# 		end
-			# 	end
-			# end
-			# JavaX::ImageIO.write(JavaFX::SwingFXUtils.fromFXImage(img, nil), "png", Java::File.new("#{$root_dir}/res/test.png"))
+
 			self.class.initPlugins
+
 			# PKMNEE::Import.all
+
 			self.class.loadProjectData
+
 			@stage = stage.setGlobalParent
+
+			# load configs
+			self.class.config.loadFile "#{$default_config_dir}/pokemaker.yaml" # defaults
+			self.class.config.loadFile "#{$user_config_dir}/pokemaker.yaml" # user
+
+			# open stage
 			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
 				fxml Editor
 				setX(50)
@@ -62,7 +67,12 @@ module PKMNEE
 		end
 
 		def stop
+			# save configs
+			self.class.config.saveFile "#{$default_config_dir}/pokemaker.yaml" # defaults
+			self.class.config.saveFile "#{$user_config_dir}/pokemaker.yaml" # user
+
 			super
+
 			puts "\n********************************************************************************"
 		end
 
@@ -70,6 +80,10 @@ module PKMNEE
 
 			def stage
 				@stage
+			end
+
+			def config_dir
+				$user_config_dir
 			end
 
 			def file_chooser
@@ -90,6 +104,10 @@ module PKMNEE
 					end
 					$data[type] = data_set
 				end
+			end
+
+			def config
+				@config
 			end
 
 			def initPlugins

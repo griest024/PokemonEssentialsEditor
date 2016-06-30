@@ -1,4 +1,5 @@
 require_relative 'util/util'
+require_relative 'config/config'
 require_rel 'control'
 require_relative 'main'
 require_relative 'plugin/plugin'

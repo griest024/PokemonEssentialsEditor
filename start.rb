@@ -15,24 +15,28 @@
 
 #!/usr/bin/ruby
 
-#suppress annoying warnings
+# suppress annoying warnings
 $stderr = StringIO.new
+
+# configure root directory
+$root_dir = File.expand_path(File.dirname(__FILE__))
+
+# configure load path
+$LOAD_PATH.unshift("#{$root_dir}/lib/pkmnee", "#{$root_dir}/lib")
 
 # load gems
 require 'java'
 require 'jrubyfx'
-# require_relative 'lib/fxmlloader/lib/jrubyfx-fxmlloader'
-# require_relative 'lib/jrubyfx/lib/jrubyfx'
 require 'require_all'
 require 'yaml'
 require 'psych'
 require 'benchmark'
 
+# load modifications to the kernel
+require 'kernel'
+
 STDOUT.sync = true
 STDERR.sync = true
-
-$root_dir = File.expand_path(File.dirname(__FILE__))
-$project_dir = "#{$root_dir}/project"
 
 $LOAD_PATH.unshift("#{$root_dir}/lib/pkmnee") 
 
@@ -42,7 +46,7 @@ module PKMNEE; end
 # load library
 require_relative 'lib/lib'
 
-#load plugins
+# load plugins
 require_rel 'plugins'
 
 fxml_root(File.join(File.dirname(__FILE__), "res", "fxml"))
