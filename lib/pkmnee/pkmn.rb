@@ -6,7 +6,7 @@ module PKMN
 		module InstanceMethods
 
 			def wrap
-				PKMNEE::Util::DataWrapper.new(self.class, "#{$project_dir}/data/#{self.class.to_sym}/#{self.id}.yaml")
+				PKMNEE::Util::DataWrapper.new(self.class, "data/#{self.class.to_sym}/#{self.id}.yaml")
 			end
 
 			def to_s
@@ -40,6 +40,8 @@ module PKMN
 			extend PKMN::DataClass
 
 			attr_accessor :id # The symbol by which the map is referred to internally - Symbol
+			attr_accessor :name
+			attr_accessor :sort_id
 			attr_accessor :tileset # The optional tileset can be specified for a map - Tileset
 			attr_accessor :width
 			attr_accessor :height

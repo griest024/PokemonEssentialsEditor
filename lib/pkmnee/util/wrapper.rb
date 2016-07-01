@@ -10,7 +10,7 @@ module PKMNEE::Util
 		end
 		
 		def load
-			Psych.load_file(@path)
+			Psych.load_file("#{PKMNEE::Main.project_dir}/#{@path}")
 		end
 
 		def get

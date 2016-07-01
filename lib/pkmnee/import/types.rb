@@ -1,7 +1,7 @@
 module PKMNEE::Import
 
-	def self.types
-		puts "Importing types..."
+	def self.types(verbose = true)
+		puts "\nImporting types..."
 		ary = []
 		str = ""
 		types = {}
@@ -19,10 +19,10 @@ module PKMNEE::Import
 		end
 		ary.delete_at(0)
 
-		ary.each do |e|
+		ary.each.with_index do |e, i|
 			e.force_encoding("UTF-8")
 			id = e.scan(/^InternalName=(.*)$/)[0][0].to_id
-			puts "	#{id}"
+			puts "#{i}:	#{id}" if verbose
 			name = e.scan(/^Name=(.*)$/)[0][0]
 			type_class = (e.scan(/^IsSpecialType=true$/).empty? ? :physical : :special)
 			# I'm sure this section can be optimized but I don't want to mess around with eval and bindings
