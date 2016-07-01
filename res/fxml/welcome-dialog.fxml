@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<fx:root hgap="14.0" maxHeight="+Infinity" maxWidth="+Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="123.0" prefWidth="506.0" type="GridPane" vgap="20.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <children>
+    <VBox maxHeight="+Infinity" maxWidth="+Infinity" minHeight="-Infinity" prefHeight="113.0" prefWidth="460.0" spacing="7.0" GridPane.rowIndex="0">
+      <children>
+        <Label fx:id="message" text="A boot action has not been set. What would you like to do?" textAlignment="LEFT" wrapText="true">
+          <font>
+            <Font name="System Bold" size="13.0" />
+          </font>
+        </Label>
+          <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="+Infinity" minHeight="-Infinity" minWidth="-Infinity">
+            <children>
+            <Button fx:id="open_project" mnemonicParsing="false" text="Open a project" HBox.hgrow="NEVER">
+              <HBox.margin>
+                <Insets right="14.0" />
+              </HBox.margin>
+            </Button>
+            <Button fx:id="create_project" minWidth="80.0" mnemonicParsing="false" text="Create a new project" HBox.hgrow="NEVER">
+              <HBox.margin>
+                <Insets left="14.0" right="14.0" />
+              </HBox.margin>
+            </Button>
+                  <Button fx:id="open_file" mnemonicParsing="false" text="Open a file">
+                     <HBox.margin>
+                        <Insets left="14.0" right="14.0" />
+                     </HBox.margin>
+                  </Button>
+              <Button fx:id="do_nothing" minWidth="80.0" mnemonicParsing="false" text="Do nothing" HBox.hgrow="NEVER">
+                <HBox.margin>
+                  <Insets left="14.0" />
+                </HBox.margin>
+              </Button>
+            </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+          </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <CheckBox fx:id="default_action" mnemonicParsing="false" text="Set as default boot action">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </CheckBox>
+                  <CheckBox fx:id="do_not_show" mnemonicParsing="false" text="Don't show this box again">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </CheckBox>
+               </children>
+            </HBox>
+      </children>
+    </VBox>
+  </children>
+  <columnConstraints>
+    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="Infinity" minWidth="-Infinity" prefWidth="460.0" />
+    <ColumnConstraints hgrow="NEVER" maxWidth="0.0" minWidth="-Infinity" prefWidth="0.0" />
+  </columnConstraints>
+  <padding>
+    <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />
+  </padding>
+  <rowConstraints>
+    <RowConstraints maxHeight="+Infinity" minHeight="-Infinity" valignment="CENTER" vgrow="ALWAYS" />
+    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="NEVER" />
+  </rowConstraints>
+</fx:root>

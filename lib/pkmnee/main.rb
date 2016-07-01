@@ -183,8 +183,12 @@ module PKMNEE
 			@data_hbox.getChildren.addAll PKMNEE::Plugin::RawData.new.anchor, JavaFX::Separator.new(JavaFX::Orientation::VERTICAL)
 		end
 
-		def openDialog
+		def fileOpenDialog
 			files = Main.file_chooser.showOpenMultipleDialog Main.stage
+		end
+
+		def projectOpenDialog
+			project = Main.project_chooser.showOpenDialog Main.stage
 		end
 
 		def openPluginSelect
