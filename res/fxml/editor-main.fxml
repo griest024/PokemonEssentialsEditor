@@ -24,15 +24,20 @@
             <menus>
               <Menu fx:id="menu_file" mnemonicParsing="false" text="File">
                 <items>
-                  <MenuItem fx:id="menu_file_new" mnemonicParsing="false" text="New" />
+                        <Menu fx:id="menu_file_new" mnemonicParsing="false" text="New">
+                          <items>
+                            <MenuItem fx:id="menu_file_new_file" mnemonicParsing="false" onAction="#createNewFile" text="File..." />
+                              <MenuItem fx:id="menu_file_new_project" mnemonicParsing="false" onAction="#createNewProject" text="Project..." />
+                          </items>
+                        </Menu>
                         <Menu fx:id="menu_file_open" mnemonicParsing="false" text="Open">
                           <items>
-                        <MenuItem fx:id="menu_file_open_file" mnemonicParsing="false" onAction="#fileOpenDialog" text="Open File...">
+                        <MenuItem fx:id="menu_file_open_file" mnemonicParsing="false" onAction="#fileOpenDialog" text="File...">
                                  <accelerator>
                                     <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                                  </accelerator>
                               </MenuItem>
-                            <MenuItem fx:id="menu_file_open_project" mnemonicParsing="false" onAction="#projectOpenDialog" text="Open Project..." />
+                            <MenuItem fx:id="menu_file_open_project" mnemonicParsing="false" onAction="#projectOpenDialog" text="Project..." />
                           </items>
                         </Menu>
                   <Menu fx:id="menu_file_open_recent" mnemonicParsing="false" text="Open Recent" />

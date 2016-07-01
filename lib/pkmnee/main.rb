@@ -38,7 +38,7 @@ module PKMNEE
 		@project_chooser = PKMNEE::Util::Factory.projectChooser
 		@file_chooser = PKMNEE::Util::Factory.fileChooser
 		@stage
-		@config = PKMNEE::Config.new path: {id: :config_dir, name: "Configuration Directory"}
+		@config = PKMNEE::Config.new list: {id: :boot_action, name: "Action on program startup", list: [:open_last_project, :open_select]}
 
 		def start(stage)
 			puts "\n***************************Pokemon Essentials Editor****************************\n\n"
@@ -181,6 +181,18 @@ module PKMNEE
 			$main_tab_pane = @tab_pane # make global so other classes can add tabs
 			puts "Plugins loaded: #{Main.names}"
 			@data_hbox.getChildren.addAll PKMNEE::Plugin::RawData.new.anchor, JavaFX::Separator.new(JavaFX::Orientation::VERTICAL)
+		end
+
+		def showWelcomeDialog
+			dialog = PKMNEE::Control::WelcomeDialog.new self
+		end
+
+		def createNewFile
+			# open new file screen
+		end
+
+		def createNewProject
+			# open new project screen
 		end
 
 		def fileOpenDialog
