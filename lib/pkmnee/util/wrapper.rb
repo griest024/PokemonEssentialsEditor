@@ -18,7 +18,7 @@ module PKMNEE::Util
 		end
 
 		def to_s
-			@id.to_s
+			@id.to_name
 		end
 
 		def toString
