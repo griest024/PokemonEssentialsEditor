@@ -24,7 +24,7 @@ class PKMNEE::Control::TilesetView < JavaFX::TilePane
 		8.times do |n| # display only first tile of each autotile
 			views << PKMNEE::Control::TileView.new(@tileset.tiles[n * 48])
 		end
-		@tileset.tiles[384..(@tileset.tiles.size - 384)].each { |tile| views << PKMNEE::Control::TileView.new(tile) } # add the reg tiles
+		@tileset.tiles[384..(@tileset.tiles.size)].each { |tile| views << PKMNEE::Control::TileView.new(tile) } # add the reg tiles
 		views
 	end
 end

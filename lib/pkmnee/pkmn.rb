@@ -56,6 +56,13 @@ module PKMN
 			attr_accessor :weather # A list of weather that can occur on this map - Hash(id: Weather)
 			attr_accessor :region # The region this map appears in - Region
 
+			def to_s
+				@name
+			end
+
+			def toString
+				to_s
+			end
 		end
 
 		class Tile

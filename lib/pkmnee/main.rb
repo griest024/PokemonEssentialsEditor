@@ -30,6 +30,9 @@ module PKMNEE
 	$default_config_dir = "#{$root_dir}/config"
 	$project_config_dir = "#{$project_dir}/config"
 
+	resource_root(:tiles, File.join($project_dir, "res", "tile"), "#{$project_dir}/res/tile")
+	resource_root(:autotiles, File.join($project_dir, "res", "autotile"), "#{$project_dir}/res/autotile")
+
 	safe_mkdir $home_dir, $user_config_dir
 
 	class Main < JRubyFX::Application
