@@ -1,7 +1,7 @@
 module PKMNEE::Import
 
-	def self.species
-		puts "Importing pokemon species..."
+	def self.species(verbose = true)
+		puts "\nImporting pokemon species..."
 		ary = []
 		str = ""
 		species = {}
@@ -18,12 +18,12 @@ module PKMNEE::Import
 		end
 		ary.delete_at(0)
 
-		ary.each do |e|
+		ary.each.with_index do |e, i|
 			e.force_encoding("UTF-8")
 			sp = PKMN::Species::Species.new
 			sp.number = e.scan(/^\[(\d*)\]$/)[0][0]
 			sp.id = (id = e.scan(/^InternalName=(.*)$/)[0][0].to_id)
-			puts "	#{id}"
+			puts "#{i}:	#{id}" if verbose
 			sp.name = e.scan(/^Name=(.*)$/)[0][0]
 			sp.type1 = e.scan(/^Type1=(.*)$/)[0][0].to_id
 			type = e.scan(/^Type2=(.*)$/)[0]

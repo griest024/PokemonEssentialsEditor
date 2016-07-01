@@ -41,10 +41,8 @@ module PKMNEE::Plugin
 					$data.each do |k,v|
 						lv = JavaFX::ListView.new(JavaFX::FXCollections.observableArrayList(v.wrappers.values))
 						lv.setOnMouseClicked lambda { |click| PKMNEE::Main.openInTab lv.getSelectionModel.getSelectedItem.get if click.getClickCount == 2 }
-						open_tab = JavaFX::MenuItem.new("Open in tab")
-						open_tab.setOnAction lambda { |event| PKMNEE::Main.openInTab(lv.getSelectionModel.getSelectedItem.get) }
-						open_window = JavaFX::MenuItem.new("Open in window")
-						open_window.setOnAction lambda { |event| PKMNEE::Main.openInWindow(lv.getSelectionModel.getSelectedItem.get) }
+						(open_tab = JavaFX::MenuItem.new("Open in tab")).setOnAction lambda { |event| PKMNEE::Main.openInTab(lv.getSelectionModel.getSelectedItem.get) }
+						(open_window = JavaFX::MenuItem.new("Open in window")).setOnAction lambda { |event| PKMNEE::Main.openInWindow(lv.getSelectionModel.getSelectedItem.get) }
 						menu = JavaFX::ContextMenu.new(open_tab, open_window)
 						lv.setContextMenu menu
 						@accordion.getPanes.add JavaFX::TitledPane.new(k.to_s, lv)

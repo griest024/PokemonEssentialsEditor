@@ -24,11 +24,14 @@ module PKMNEE
 	$data = {}
 	$data_classes = {}
 	$default_plugins = {}
-	$project_dir = "#{$root_dir}/project"
+	$project_dir = "#{ENV['HOME']}/Pokemon-Virginia"
 	$home_dir = "#{ENV['HOME']}/.pokemaker"
 	$user_config_dir = "#{$home_dir}/config"
 	$default_config_dir = "#{$root_dir}/config"
 	$project_config_dir = "#{$project_dir}/config"
+
+	resource_root(:tiles, File.join($project_dir, "res", "tile"), "#{$project_dir}/res/tile")
+	resource_root(:autotiles, File.join($project_dir, "res", "autotile"), "#{$project_dir}/res/autotile")
 
 	safe_mkdir $home_dir, $user_config_dir
 
@@ -82,6 +85,10 @@ module PKMNEE
 				@stage
 			end
 
+			def project_dir
+				$project_dir
+			end
+
 			def config_dir
 				$user_config_dir
 			end
@@ -100,7 +107,7 @@ module PKMNEE
 					type = File.basename(dir).to_sym
 					data_set = PKMNEE::Util::DataSet.new($data_classes[type])
 					Dir["#{dir}/*.yaml"].each do |file| # populate the data set with all yaml files in directory
-						data_set.addData(PKMNEE::Util::DataWrapper.new($data_classes[type], file))
+						data_set.addData(PKMNEE::Util::DataWrapper.new($data_classes[type], file.gsub(project_dir, ''))) # gsub to get path relative to project_dir
 					end
 					$data[type] = data_set
 				end
