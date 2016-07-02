@@ -9,7 +9,7 @@ module PKMNEE::Import
 		tiles = {}
 		incr = 0
 		safe_mkdir "#{$project_dir}/res/tile", "#{$project_dir}/data/tileset"
-		Psych.load_file("#{$rmxp_dir}/export/Data/Tilesets.yaml")["root"].compact.reject { |e| e.name == '' }.each.with_index do |e, i| # load file and skip tilesets with no name
+		Psych.load_file("#{$rmxp_dir}/export/Data/Tilesets.yaml")["root"].compact.reject { |e| e.name == '' }.each.with_index 1 do |e, i| # load file and skip tilesets with no name
 			tileset = PKMN::Map::Tileset.new
 			tileset.id = e.name.force_encoding("UTF-8").to_id
 			tileset.num = e.id
@@ -57,7 +57,7 @@ module PKMNEE::Import
 			tileset.addTiles *tyles
 			# tiles[tileset.id] = tyles
 			tilesets[tileset.num] = tileset
-			File.open("#{$project_dir}/data/tileset/#{tileset.id}.yaml", "w") do |file|
+			File.open("#{$project_dir}/data/tileset/#{tileset.id}.pkmn", "w") do |file|
 				file.write tileset.to_yaml
 			end
 		end

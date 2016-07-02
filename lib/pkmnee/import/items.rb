@@ -6,7 +6,7 @@ module PKMNEE::Import
 		item_file = File.open("#{$rmxp_dir}/PBS/items.txt", "r")
 		item_file.pos= 3
 		# parse file, adding each section to an array
-		item_file.each_line.with_index do |line, i|
+		item_file.each_line.with_index 1 do |line, i|
 			line.force_encoding("UTF-8")
 			desc = line.slice!(",\"" + line.scan(/"(.*)"/)[0][0] + "\"") # pulls the description out
 			desc.slice!(0..1) # remove leading comma and quotation
@@ -41,7 +41,7 @@ module PKMNEE::Import
 		folder = "#{$project_dir}/data/item"
 		Dir.mkdir(folder) unless File.exists?(folder)
 		items.each do |id, item|
-			File.open("#{folder}/#{id}.yaml", "w") { |file| file.write item.to_yaml }
+			File.open("#{folder}/#{id}.pkmn", "w") { |file| file.write item.to_yaml }
 		end
 		# $data[:items] = PKMNEE::Util::DataSet.new(PKMN::Item::Base, *(items.values))	
 	end

@@ -8,7 +8,7 @@ module PKMNEE::Import
 		puts "\nImporting maps..."
 		maps = {}
 		map_info = Psych.load_file("#{$rmxp_dir}/export/Data/MapInfos.yaml")["root"]
-		(Dir["#{$rmxp_dir}/export/Data/Map*.yaml"].select { |file| file.match(/\d*.yaml$/) }).each.with_index do |path, i|
+		(Dir["#{$rmxp_dir}/export/Data/Map*.yaml"].select { |file| file.match(/\d*.yaml$/) }).each.with_index 1 do |path, i|
 			path.scan(/Map(\d*).yaml$/) do |id| # get the map idber
 				map = PKMN::Map::Map.new
 				rmxp = Psych.load_file(path)["root"]
@@ -26,7 +26,7 @@ module PKMNEE::Import
 		folder = "#{$project_dir}/data/map"
 		Dir.mkdir(folder) unless File.exists?(folder)
 		maps.each do |id, map|
-			File.open("#{folder}/#{id}.yaml", "w") { |file| file.write map.to_yaml }
+			File.open("#{folder}/#{id}.pkmn", "w") { |file| file.write map.to_yaml }
 		end
 		# $data[:maps] = PKMNEE::Util::DataSet.new(PKMN::Map::Base, *(maps.values))
 	end

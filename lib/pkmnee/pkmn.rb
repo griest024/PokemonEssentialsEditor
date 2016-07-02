@@ -6,7 +6,7 @@ module PKMN
 		module InstanceMethods
 
 			def wrap
-				PKMNEE::Util::DataWrapper.new(self.class, "data/#{self.class.to_sym}/#{self.id}.yaml")
+				PKMNEE::Util::DataWrapper.new(self.class, "data/#{self.class.to_sym}/#{self.id}.pkmn")
 			end
 
 			def to_s

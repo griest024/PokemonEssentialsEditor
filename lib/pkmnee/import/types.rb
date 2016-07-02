@@ -19,7 +19,7 @@ module PKMNEE::Import
 		end
 		ary.delete_at(0)
 
-		ary.each.with_index do |e, i|
+		ary.each.with_index 1 do |e, i|
 			e.force_encoding("UTF-8")
 			id = e.scan(/^InternalName=(.*)$/)[0][0].to_id
 			puts "#{i}:	#{id}" if verbose
@@ -39,7 +39,7 @@ module PKMNEE::Import
 		folder = "#{$project_dir}/data/type"
 		Dir.mkdir(folder) unless File.exists?(folder)
 		types.each do |id, type|
-			File.open("#{folder}/#{id}.yaml", "w") { |file| file.write type.to_yaml }
+			File.open("#{folder}/#{id}.pkmn", "w") { |file| file.write type.to_yaml }
 		end
 		# $data[:types] = PKMNEE::Util::DataSet.new(PKMN::Type::Base, *(types.values))
 	end

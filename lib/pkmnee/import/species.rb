@@ -18,7 +18,7 @@ module PKMNEE::Import
 		end
 		ary.delete_at(0)
 
-		ary.each.with_index do |e, i|
+		ary.each.with_index 1 do |e, i|
 			e.force_encoding("UTF-8")
 			sp = PKMN::Species::Species.new
 			sp.number = e.scan(/^\[(\d*)\]$/)[0][0]
@@ -48,7 +48,7 @@ module PKMNEE::Import
 		end
 		safe_mkdir (folder = "#{$project_dir}/data/species")
 		species.each do |id, sp|
-			File.open("#{folder}/#{id}.yaml", "w") { |file| file.write sp.to_yaml }
+			File.open("#{folder}/#{id}.pkmn", "w") { |file| file.write sp.to_yaml }
 		end
 		# $data[:species] = PKMNEE::Util::DataSet.new(PKMN::Species::Base, *(species.values))
 	end	

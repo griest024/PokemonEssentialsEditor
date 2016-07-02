@@ -48,7 +48,7 @@ module PKMNEE
 
 			self.class.initPlugins
 
-			# PKMNEE::Import.all
+			PKMNEE::Import.all
 
 			self.class.loadProjectData
 
@@ -106,7 +106,7 @@ module PKMNEE
 				Dir["#{$project_dir}/data/*"].select { |dir| File.directory?(dir) && $data_classes.keys.include?(File.basename(dir).to_sym) }.each do |dir|
 					type = File.basename(dir).to_sym
 					data_set = PKMNEE::Util::DataSet.new($data_classes[type])
-					Dir["#{dir}/*.yaml"].each do |file| # populate the data set with all yaml files in directory
+					Dir["#{dir}/*.pkmn"].each do |file| # populate the data set with all pkmn files in directory
 						data_set.addData(PKMNEE::Util::DataWrapper.new($data_classes[type], file.gsub(project_dir, ''))) # gsub to get path relative to project_dir
 					end
 					$data[type] = data_set

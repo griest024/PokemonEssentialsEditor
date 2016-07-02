@@ -6,7 +6,7 @@ module PKMNEE::Import
 		autotiles = {}
 		safe_mkdir "#{$project_dir}/res/autotile", "#{$project_dir}/data/autotile", "#{$project_dir}/res/autotile/blank"
 		JavaX::ImageIO.write(JavaFX::SwingFXUtils.fromFXImage(JavaFX::Image.new(resource_url(:images, "autotile_blank.png").to_s), nil), "png", Java::File.new("#{$rmxp_dir}/Graphics/Autotiles/Blank.png"))
-		Dir["#{$rmxp_dir}/Graphics/Autotiles/*"].each.with_index do |file, i|
+		Dir["#{$rmxp_dir}/Graphics/Autotiles/*"].each.with_index 1 do |file, i|
 			tiles = []
 			autotile = []
 			id = (name = File.basename(file, ".*")).force_encoding("UTF-8").to_id
