@@ -1,13 +1,17 @@
 module Kernel
 
-	def simpleType?(data)
-		is_class = false
-		[Numeric, String, FalseClass, TrueClass, Symbol].each { |type| is_class ||= data.is_a?(type) }
-		is_class
+	def safe_touch(*files)
+		files.each { |e| File.open(e, "w") { |file| yield file } unless File.exist? e }
 	end
 
 	def safe_mkdir(*folders)
 		folders.each { |folder| Dir.mkdir(folder) unless File.exists?(folder) }
+	end
+
+	def simpleType?(data)
+		is_class = false
+		[Numeric, String, FalseClass, TrueClass, Symbol].each { |type| is_class ||= data.is_a?(type) }
+		is_class
 	end
 
 	def simpleType(data)

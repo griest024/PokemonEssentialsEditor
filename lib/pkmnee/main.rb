@@ -25,7 +25,7 @@ module PKMNEE
 	$data_classes = {}
 	$default_plugins = {}
 	$project_dir = "#{ENV['HOME']}/Pokemon-Virginia"
-	$home_dir = "#{ENV['HOME']}/.pokemaker"
+	$home_dir = "#{ENV['HOME']}/.pokeforge"
 	$user_config_dir = "#{$home_dir}/config"
 	$default_config_dir = "#{$root_dir}/config"
 	$project_config_dir = "#{$project_dir}/config"
@@ -34,6 +34,7 @@ module PKMNEE
 	resource_root(:autotiles, File.join($project_dir, "res", "autotile"), "#{$project_dir}/res/autotile")
 
 	safe_mkdir $home_dir, $user_config_dir
+	safe_touch "#{$user_config_dir}/pokeforge.yaml"
 
 	class Main < JRubyFX::Application
 
@@ -48,15 +49,15 @@ module PKMNEE
 
 			self.class.initPlugins
 
-			PKMNEE::Import.all
+			# PKMNEE::Import.all
 
 			self.class.loadProjectData
 
 			@stage = stage.setGlobalParent
 
 			# load configs
-			self.class.config.loadFile "#{$default_config_dir}/pokemaker.yaml" # defaults
-			self.class.config.loadFile "#{$user_config_dir}/pokemaker.yaml" # user
+			self.class.config.loadFile "#{$default_config_dir}/pokeforge.yaml" # defaults
+			self.class.config.loadFile "#{$user_config_dir}/pokeforge.yaml" # user
 
 			# open stage
 			with(stage, title: "Pokemon Essentials Editor", width: 300, height: 300) do
@@ -71,8 +72,8 @@ module PKMNEE
 
 		def stop
 			# save configs
-			self.class.config.saveFile "#{$default_config_dir}/pokemaker.yaml" # defaults
-			self.class.config.saveFile "#{$user_config_dir}/pokemaker.yaml" # user
+			self.class.config.saveFile "#{$default_config_dir}/pokeforge.yaml" # defaults
+			self.class.config.saveFile "#{$user_config_dir}/pokeforge.yaml" # user
 
 			super
 
