@@ -1,7 +1,7 @@
 module Kernel
 
 	def safe_touch(*files)
-		files.each { |e| File.open(e, "w") { |file| yield file } unless File.exist? e }
+		files.each { |e| File.open(e, "w") { |file| yield file if block_given? } unless File.exist? e }
 	end
 
 	def safe_mkdir(*folders)

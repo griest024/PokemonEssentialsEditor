@@ -37,7 +37,7 @@ class PKMNEE::Config
 	end
 
 	def loadHash(hash)
-		hash.each { |k, v| @settings[k].value = v if @settings[k] }
+		hash.each { |k, v| @settings[k].value = v if @settings[k] } if hash.is_a? Hash
 	end
 
 	def loadFile(path)

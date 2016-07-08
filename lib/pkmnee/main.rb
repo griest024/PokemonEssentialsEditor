@@ -34,7 +34,10 @@ module PKMNEE
 	resource_root(:autotiles, File.join($project_dir, "res", "autotile"), "#{$project_dir}/res/autotile")
 
 	safe_mkdir $home_dir, $user_config_dir
-	safe_touch "#{$user_config_dir}/pokeforge.yaml"
+	safe_touch("#{$user_config_dir}/pokeforge.yaml", "#{$default_config_dir}/pokeforge.yaml") do |file|
+		temp = {}.to_yaml
+		file.write temp
+	end
 
 	class Main < JRubyFX::Application
 
