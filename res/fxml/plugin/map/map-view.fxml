@@ -8,19 +8,6 @@
 <?import javafx.scene.layout.*?>
 
 <fx:root fx:id="border_pane" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <top>
-      <ToolBar fx:id="toolbar" prefHeight="40.0" prefWidth="200.0">
-         <items>
-            <Slider fx:id="map_scale_slider" blockIncrement="0.25" majorTickUnit="0.25" max="1.0" min="0.25" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" />
-            <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0">
-               <padding>
-                  <Insets left="5.0" right="5.0" />
-               </padding></Separator>
-            <ToggleButton fx:id="layer1_button" mnemonicParsing="false" text="Layer 1" />
-            <ToggleButton fx:id="layer2_button" mnemonicParsing="false" text="Layer 2" />
-            <ToggleButton fx:id="layer3_button" mnemonicParsing="false" text="Layer 3" />
-         </items></ToolBar>
-   </top>
    <bottom>
       <Label fx:id="info" text="Label" BorderPane.alignment="CENTER" />
    </bottom>

@@ -136,7 +136,9 @@ module PKMNEE
 	 		def openInTab(data)
 	 			tab = JavaFX::Tab.new
 	 			tab.setText "#{defaultPlugin(data).to_s} - #{data.id}"
-				tab.setContent open(data).anchor
+	 			plugin = open data
+				tab.setContent plugin.anchor
+				$toolbar_hbox.getChildren.add plugin.toolbar
 				$main_tab_pane.getTabs.add tab
 				$main_tab_pane.getSelectionModel.select tab
 	 		end
@@ -190,6 +192,7 @@ module PKMNEE
 		def initialize
 			Main.loadPlugins
 			$main_tab_pane = @tab_pane # make global so other classes can add tabs
+			$toolbar_hbox = @toolbar_hbox
 			puts "Plugins loaded: #{Main.names}"
 			@data_hbox.getChildren.addAll PKMNEE::Plugin::RawData.new.anchor, JavaFX::Separator.new(JavaFX::Orientation::VERTICAL)
 		end

@@ -32,21 +32,37 @@ module PKMNEE::Plugin
 		class MapView < JavaFX::BorderPane
 			include JRubyFX::Controller
 
-			fxml 'editor-map.fxml'
+			class ToolBar < JavaFX::ToolBar
+				include JRubyFX::Controller
+
+				fxml 'plugin/map/toolbar.fxml'
+
+				attr_reader :layer1_button, :layer2_button, :layer3_button, :map_scale_slider
+
+				def initialize;	end # JRubyFX::Controller needs this for some reason
+			end
+
+			fxml 'plugin/map/map-view.fxml'
+
+			attr_reader :toolbar
 
 			def initialize(map = nil)
+				@toolbar = ToolBar.new
+				@layer_buttons = [@toolbar.layer1_button, @toolbar.layer2_button, @toolbar.layer3_button]
+				@map_scale_slider = @toolbar.map_scale_slider
+
 				if map
 					loadMap(map.get)
 				else
 					
 				end
 
-				@layer_buttons = [@layer1_button, @layer2_button, @layer3_button]
-
 				bindProperties
 				
 				# format sliders
 				@map_scale_slider.set_label_formatter PKMNEE::Util::FractionFormatter.new
+
+				setTop @toolbar unless getParent.is_a? JavaFX::Tab
 
 				@info.setText "Loading...Done"
 			end
@@ -58,18 +74,18 @@ module PKMNEE::Plugin
 
 			def bindProperties
 				# zoom slider
-				@map_stack_pane.scaleXProperty.bind(@map_scale_slider.value_property)
-				@map_stack_pane.scaleYProperty.bind(@map_scale_slider.value_property)
+				@map_stack_pane.scaleXProperty.bind @map_scale_slider.value_property
+				@map_stack_pane.scaleYProperty.bind @map_scale_slider.value_property
 
 				# layer visibility buttons
 				3.times do |n|
-					@layer_buttons[n].selectedProperty.bindBidirectional(@map_stack_pane.layers[n].visibleProperty)
+					@layer_buttons[n].selectedProperty.bindBidirectional @map_stack_pane.layers[n].visibleProperty
 				end
 			end
 
 			def loadMap(map)
-				@map_stack_pane = PKMNEE::Control::MapView.new(map.get)
-				@tileset_tile_pane = PKMNEE::Control::TilesetView.new(map.tileset.get)
+				@map_stack_pane = PKMNEE::Control::MapView.new map.get
+				@tileset_tile_pane = PKMNEE::Control::TilesetView.new map.tileset.get
 				@map_scroll_pane.setContent @map_stack_pane
 				@tileset_scroll_pane.setContent @tileset_tile_pane 
 			end

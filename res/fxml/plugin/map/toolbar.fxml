@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+
+<fx:root fx:id="toolbar" prefHeight="48.0" prefWidth="745.0" type="ToolBar" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <items>
+      <Slider fx:id="map_scale_slider" blockIncrement="0.25" majorTickUnit="0.25" max="1.0" min="0.25" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" />
+      <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />
+      <ToggleButton fx:id="layer1_button" mnemonicParsing="false" text="Layer 1" />
+      <ToggleButton fx:id="layer2_button" mnemonicParsing="false" text="Layer 2" />
+      <ToggleButton fx:id="layer3_button" mnemonicParsing="false" text="Layer 3" />
+      <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />
+   </items></fx:root>
