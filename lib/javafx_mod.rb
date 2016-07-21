@@ -1,3 +1,11 @@
+
+class Java::JavafxSceneControl::TextInputControl
+	
+	def emptyProperty
+		textProperty.isEqualTo ""
+	end
+end
+
 class Java::JavafxSceneLayout::Region
 
 	def bindHeightToScene

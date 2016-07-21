@@ -24,18 +24,42 @@
             <menus>
               <Menu fx:id="menu_file" mnemonicParsing="false" text="File">
                 <items>
-                  <MenuItem fx:id="menu_file_new" mnemonicParsing="false" text="New" />
-                  <MenuItem fx:id="menu_file_open" mnemonicParsing="false" onAction="#openDialog" text="Open…">
-                           <accelerator>
-                              <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                           </accelerator></MenuItem>
+                        <Menu fx:id="menu_file_new" mnemonicParsing="false" text="New">
+                           <items>
+                              <MenuItem fx:id="menu_file_new_file" mnemonicParsing="false" onAction="#newFile" text="File...">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                 </accelerator>
+                              </MenuItem>
+                              <MenuItem fx:id="menu_file_new_project" mnemonicParsing="false" onAction="#newProject" text="Project...">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
+                                 </accelerator>
+                              </MenuItem>
+                           </items>
+                        </Menu>
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <Menu fx:id="menu_file_open" mnemonicParsing="false" text="Open">
+                          <items>
+                            <MenuItem fx:id="menu_file_open_file" mnemonicParsing="false" onAction="#openFile" text="File...">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                 </accelerator>
+                              </MenuItem>
+                              <MenuItem fx:id="menu_file_open_project" mnemonicParsing="false" onAction="#openProject" text="Project...">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
+                                 </accelerator>
+                              </MenuItem>
+                          </items>
+                        </Menu>
                   <Menu fx:id="menu_file_open_recent" mnemonicParsing="false" text="Open Recent" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="menu_file_save" mnemonicParsing="false" text="Save">
+                  <MenuItem fx:id="menu_file_save_file" mnemonicParsing="false" onAction="#saveFile" text="Save File">
                            <accelerator>
                               <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                            </accelerator></MenuItem>
-                  <MenuItem fx:id="menu_file_save_as" mnemonicParsing="false" text="Save As…">
+                  <MenuItem fx:id="menu_file_save_project" mnemonicParsing="false" onAction="#saveProject" text="Save Project">
                            <accelerator>
                               <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
                            </accelerator></MenuItem>
@@ -46,7 +70,6 @@
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem fx:id="menu_file_settings" mnemonicParsing="false" text="Settings" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="Quit" />
                 </items>
               </Menu>
               <Menu mnemonicParsing="false" text="Edit">

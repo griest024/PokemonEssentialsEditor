@@ -18,6 +18,8 @@
 
 require 'util/factory/project_chooser'
 require 'util/factory/pkmn_file_chooser'
+require 'project'
+require 'control/new_project'
 
 module PKMNEE
 
@@ -54,7 +56,7 @@ module PKMNEE
 
 			# PKMNEE::Import.all
 
-			self.class.loadProjectData
+			# self.class.loadProjectData
 
 			@stage = stage.setGlobalParent
 
@@ -95,26 +97,6 @@ module PKMNEE
 
 			def config_dir
 				$user_config_dir
-			end
-
-			def file_chooser
-				@file_chooser
-			end
-
-			def project_chooser
-				@project_chooser
-			end
-
-			def loadProjectData
-				# gets all data subfolders that contain PKMN data
-				Dir["#{$project_dir}/data/*"].select { |dir| File.directory?(dir) && $data_classes.keys.include?(File.basename(dir).to_sym) }.each do |dir|
-					type = File.basename(dir).to_sym
-					data_set = PKMNEE::Util::DataSet.new($data_classes[type])
-					Dir["#{dir}/*.pkmn"].each do |file| # populate the data set with all pkmn files in directory
-						data_set.addData(PKMNEE::Util::DataWrapper.new($data_classes[type], file.gsub(project_dir, ''))) # gsub to get path relative to project_dir
-					end
-					$data[type] = data_set
-				end
 			end
 
 			def config
@@ -174,6 +156,26 @@ module PKMNEE
 				@plugins << plugin
 			end
 
+			def file_chooser
+				@file_chooser
+			end
+
+			def project_chooser
+				@project_chooser
+			end
+
+			def loadProjectData
+				$project.loadData $project_dir
+			end
+
+			def openProject(file)
+				
+			end
+
+			def createProject(options)
+				$project = Project.new options
+			end
+
 			#DELETE
 			def plugins
 				@plugins
@@ -196,6 +198,31 @@ module PKMNEE
 
 		def openDialog
 			files = Main.file_chooser.showOpenMultipleDialog Main.stage
+		end
+
+		def newProject
+			result = PKMNEE::Control::NewProject.new.showAndWait
+			PKMNEE::Main.createProject result.get if result.isPresent
+		end
+
+		def newFile
+			
+		end
+
+		def openFile
+			
+		end
+
+		def openProject
+			
+		end
+
+		def saveFile
+			
+		end
+
+		def saveProject
+			
 		end
 
 		def openPluginSelect
