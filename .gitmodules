@@ -4,9 +4,6 @@
 [submodule "lib/jrubyfx"]
 	path = lib/jrubyfx
 	url = https://github.com/jruby/jrubyfx
-[submodule "lib/fxmlloader"]
-	path = lib/fxmlloader
-	url = https://github.com/byteit101/JRubyFX-FXMLLoader
 [submodule "pkmne"]
 	path = pkmne
 url=https://github.com/griest024/essentials-sample-project
